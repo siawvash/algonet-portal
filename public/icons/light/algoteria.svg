@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="linear-gradient-1" x1="60" y1="61" x2="26" y2="31" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6768ff" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#6768ff" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <title>algoteria.svg</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <path d="M16 36 L56 36 C56 47.046 47.046 56 36 56 C24.954 56 16 47.046 16 36 Z" fill="url(#linear-gradient-1)"/>
+    <g>
+      <path d="M12 33 L52 33 C52 44.046 43.046 53 32 53 C20.954 53 12 44.046 12 33 Z" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M22 26 C19.333 23.667 19.333 21.333 22 19 C24.667 16.667 24.667 14.333 22 12" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M32 26 C29.333 23.667 29.333 21.333 32 19 C34.667 16.667 34.667 14.333 32 12" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M42 26 C39.333 23.667 39.333 21.333 42 19 C44.667 16.667 44.667 14.333 42 12" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

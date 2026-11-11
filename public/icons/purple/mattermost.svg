@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>mattermost</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="46" y1="46" x2="30" y2="24"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><path d="M32 12C32 12 40 21 40 28a8 8 0 0 1-16 0C24 21 32 12 32 12Z" transform="translate(4 5)"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M44 12.5A22.5 22.5 0 1 1 20 12.5"/><path d="M32 12C32 12 40 21 40 28a8 8 0 0 1-16 0C24 21 32 12 32 12Z"/></g>
+</svg>

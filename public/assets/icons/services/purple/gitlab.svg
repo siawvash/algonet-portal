@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>gitlab</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="32" y1="58" x2="32" y2="32"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><path d="M8 34L16 28L32 40L48 28L56 34L32 58Z" transform="translate(0 0)"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56L8 34L14 10L24 28H40L50 10L56 34Z"/><path d="M24 28L32 56L40 28"/></g>
+</svg>

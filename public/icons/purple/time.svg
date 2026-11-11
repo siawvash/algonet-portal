@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>time</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="48" y1="50" x2="24" y2="26"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><circle cx="35" cy="35" r="13"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="13"/><path d="M26 20L28 8H36L38 20"/><path d="M26 44L28 56H36L38 44"/><path d="M32 25V32L37 35"/></g>
+</svg>

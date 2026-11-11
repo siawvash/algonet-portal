@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>desk</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="52" y1="38" x2="26" y2="16"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><rect x="26" y="14" width="26" height="20" rx="4"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="8" width="28" height="22" rx="4"/><path d="M28 30V38"/><path d="M6 38H58"/><path d="M12 38V56"/><path d="M52 38V56"/><path d="M22 19L27 24L35 15"/></g>
+</svg>

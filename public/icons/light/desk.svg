@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="linear-gradient-1" x1="52" y1="38" x2="26" y2="16" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6768ff" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#6768ff" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <title>desk.svg</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <path d="M30 14 L48 14 C50.209 14 52 15.791 52 18 L52 30 C52 32.209 50.209 34 48 34 L30 34 C27.791 34 26 32.209 26 30 L26 18 C26 15.791 27.791 14 30 14 Z" fill="url(#linear-gradient-1)"/>
+    <g>
+      <path d="M18 8 L38 8 C40.209 8 42 9.791 42 12 L42 26 C42 28.209 40.209 30 38 30 L18 30 C15.791 30 14 28.209 14 26 L14 12 C14 9.791 15.791 8 18 8 Z" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="28" y1="30" x2="28" y2="38" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="6" y1="38" x2="58" y2="38" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="12" y1="38" x2="12" y2="56" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="52" y1="38" x2="52" y2="56" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="22,19 27,24 35,15" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

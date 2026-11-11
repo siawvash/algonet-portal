@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>nexus</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="56" y1="50" x2="22" y2="20"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><path d="M32 12L56 24L32 36L8 24Z" transform="translate(4 4)"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8L56 20L32 32L8 20Z"/><path d="M8 30L32 42L56 30"/><path d="M8 40L32 52L56 40"/></g>
+</svg>

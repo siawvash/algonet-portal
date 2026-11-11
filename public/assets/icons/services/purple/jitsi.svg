@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>jitsi</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="48" y1="52" x2="20" y2="26"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><rect x="14" y="26" width="34" height="26" rx="6"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="18" width="34" height="26" rx="6"/><path d="M42 27L56 19V43L42 35"/></g>
+</svg>

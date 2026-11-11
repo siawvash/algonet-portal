@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>ranger</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="58" y1="62" x2="30" y2="44"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><path d="M32 7L52 14V30C52 43 44 51 32 57C20 51 12 43 12 30V14Z" transform="translate(4 4)"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 7L52 14V30C52 43 44 51 32 57C20 51 12 43 12 30V14Z"/><path d="M26 42V22H33a6.5 6.5 0 0 1 0 13H26"/><path d="M33 35L40 42"/></g>
+</svg>

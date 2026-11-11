@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="linear-gradient-1" x1="32" y1="56.711" x2="32" y2="30.269" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6768ff" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#6768ff" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <title>gitlab.svg</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <path d="M9.511 28.978 L9.511 28.978 C12.035 27.296 15.324 27.296 17.849 28.978 L31.982 40.362 L46.151 28.978 C48.676 27.296 51.965 27.296 54.489 28.978 L54.489 28.978 C57.013 30.659 57.263 34.272 54.997 36.285 L36.994 52.275 C34.145 54.805 29.855 54.805 27.006 52.275 L9.003 36.285 C6.737 34.272 6.987 30.659 9.511 28.978 Z" fill="url(#linear-gradient-1)"/>
+    <g>
+      <path class="tanuki-shape tanuki" d="M55.086 27.209 L55.022 27.037 L48.521 10.079 C48.248 9.396 47.569 8.963 46.835 9.002 C46.1 9.042 45.472 9.545 45.273 10.253 L40.885 23.689 L23.115 23.689 L18.726 10.253 C18.524 9.548 17.897 9.049 17.165 9.01 C16.432 8.971 15.756 9.4 15.479 10.079 L8.982 27.041 L8.914 27.208 C6.992 32.231 8.624 37.92 12.918 41.158 L12.943 41.177 L12.997 41.22 L22.887 48.631 L27.793 52.34 L30.773 54.593 C31.492 55.136 32.484 55.136 33.203 54.593 L36.183 52.339 L41.09 48.631 L51.05 41.177 L51.078 41.155 C55.371 37.918 57.005 32.231 55.085 27.208 Z" fill="none" stroke="#6768ff" stroke-width="3" stroke-linejoin="round"/>
+      <path class="tanuki-shape right-cheek" d="M55.086 27.209 L55.022 27.037 C51.855 27.687 48.87 29.03 46.282 30.969 L32.008 41.763 L41.097 48.631 L51.057 41.177 L51.085 41.155 C55.376 37.916 57.008 32.23 55.086 27.208 Z" fill="none" stroke="#6768ff" stroke-width="3" stroke-miterlimit="10"/>
+      <path class="tanuki-shape chin" d="M22.888 48.631 L27.794 52.34 L30.774 54.593 C31.493 55.136 32.485 55.136 33.204 54.593 L36.184 52.339 L41.09 48.631 L32.002 41.763 L22.889 48.631 Z" fill="none" stroke="#6768ff" stroke-width="3" stroke-miterlimit="10"/>
+      <path class="tanuki-shape left-cheek" d="M17.718 30.969 C15.131 29.031 12.147 27.689 8.981 27.04 L8.914 27.209 C6.992 32.232 8.625 37.92 12.918 41.158 L12.943 41.177 L12.997 41.22 L22.887 48.631 L31.982 41.763 L17.719 30.969 Z" fill="none" stroke="#6768ff" stroke-width="3" stroke-miterlimit="10"/>
+    </g>
+  </g>
+</svg>

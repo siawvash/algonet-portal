@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>labelstudio</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="48" y1="48" x2="26" y2="26"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><rect x="24" y="24" width="24" height="24" rx="4"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20V14a6 6 0 0 1 6-6h6"/><path d="M44 8h6a6 6 0 0 1 6 6v6"/><path d="M56 44v6a6 6 0 0 1-6 6h-6"/><path d="M20 56h-6a6 6 0 0 1-6-6v-6"/><rect x="19" y="19" width="24" height="24" rx="4"/></g>
+</svg>

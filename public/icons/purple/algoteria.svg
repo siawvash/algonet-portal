@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>algoteria</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="56" y1="58" x2="22" y2="28"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><path d="M12 33H52A20 20 0 0 1 12 33Z" transform="translate(4 3)"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 33H52A20 20 0 0 1 12 33Z"/><path d="M22 26q-4-3.5 0-7t0-7"/><path d="M32 26q-4-3.5 0-7t0-7"/><path d="M42 26q-4-3.5 0-7t0-7"/></g>
+</svg>

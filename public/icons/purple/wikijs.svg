@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>wikijs</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="32" y1="62" x2="32" y2="38"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><path d="M32 36C22 36 13 40 13 47C13 55 26 53 32 42C38 53 51 55 51 47C51 40 42 36 32 36Z" transform="translate(0 4)"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 31C30 14 12 10 10 20C9 27 20 32 32 31C44 32 55 27 54 20C52 10 34 14 32 31Z"/><path d="M32 36C22 36 13 40 13 47C13 55 26 53 32 42C38 53 51 55 51 47C51 40 42 36 32 36Z"/></g>
+</svg>
