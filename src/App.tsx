@@ -3,6 +3,7 @@ import { PortalNavId, UserPresenceStatus } from './types';
 import { Sidebar } from './components/layout/Sidebar';
 import { Topbar } from './components/layout/Topbar';
 import { BottomNavigation } from './components/layout/BottomNavigation';
+import { SearchModal } from './components/home/SearchModal';
 import { HomeView } from './views/HomeView';
 import { ProfileView } from './views/ProfileView';
 import { PortfolioView } from './views/PortfolioView';
@@ -40,6 +41,45 @@ export const App: React.FC = () => {
 
   // User presence status
   const [presence, setPresence] = useState<UserPresenceStatus>('present');
+
+  // Favorites state (persisted in localStorage)
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('algonet-portal-favorites');
+      return saved ? JSON.parse(saved) : ['mail', 'mattermost', 'nextcloud'];
+    } catch {
+      return ['mail', 'mattermost', 'nextcloud'];
+    }
+  });
+
+  const toggleFavorite = (serviceId: string) => {
+    setFavorites((prev) => {
+      const next = prev.includes(serviceId)
+        ? prev.filter((id) => id !== serviceId)
+        : [...prev, serviceId];
+      try {
+        localStorage.setItem('algonet-portal-favorites', JSON.stringify(next));
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+  };
+
+  // Search Modal state (Command Palette / Ctrl+K)
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
+
+  // Global Ctrl + K / Cmd + K Shortcut Listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        setIsSearchModalOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Live Search query
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -144,6 +184,7 @@ export const App: React.FC = () => {
             onPresenceChange={setPresence}
             onOpenMobileMenu={() => setIsMobileMenuOpen((prev) => !prev)}
             isMobileMenuOpen={isMobileMenuOpen}
+            onOpenSearch={() => setIsSearchModalOpen(true)}
           />
         </div>
       </div>
@@ -169,6 +210,9 @@ export const App: React.FC = () => {
               <HomeView
                 searchQuery={searchQuery}
                 onNavigate={navigateWithTransition}
+                favorites={favorites}
+                onToggleFavorite={toggleFavorite}
+                onOpenSearch={() => setIsSearchModalOpen(true)}
               />
             ) : activeNav === 'profile' ? (
               <ProfileView onNavigate={navigateWithTransition} />
@@ -240,6 +284,17 @@ export const App: React.FC = () => {
         onNavigate={navigateWithTransition}
         onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         unreadNotifsCount={unreadNotifsCount}
+      />
+
+      {/* 
+        Global Search Modal (Command Palette / Ctrl+K)
+        جستجوی سریع میان تمام سامانه‌ها و سرویس‌های الگونت
+      */}
+      <SearchModal
+        isOpen={isSearchModalOpen}
+        onClose={() => setIsSearchModalOpen(false)}
+        favorites={favorites}
+        onToggleFavorite={toggleFavorite}
       />
     </div>
   );

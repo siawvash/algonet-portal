@@ -7,9 +7,18 @@ import { NewsItem } from '../components/home/NewsSlider';
 interface HomeViewProps {
   searchQuery?: string;
   onNavigate?: (navId: any) => void;
+  favorites?: string[];
+  onToggleFavorite?: (serviceId: string) => void;
+  onOpenSearch?: () => void;
 }
 
-export const HomeView: React.FC<HomeViewProps> = ({ searchQuery = '', onNavigate }) => {
+export const HomeView: React.FC<HomeViewProps> = ({
+  searchQuery = '',
+  onNavigate,
+  favorites,
+  onToggleFavorite,
+  onOpenSearch
+}) => {
   const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
 
   return (
@@ -25,7 +34,12 @@ export const HomeView: React.FC<HomeViewProps> = ({ searchQuery = '', onNavigate
       {/*
         سرویس‌های من (Services Grid)
       */}
-      <ServicesGrid searchQuery={searchQuery} />
+      <ServicesGrid
+        searchQuery={searchQuery}
+        favorites={favorites}
+        onToggleFavorite={onToggleFavorite}
+        onOpenSearch={onOpenSearch}
+      />
 
       {/* News Full Detail Modal (در صورت نیاز به باز شدن) */}
       {selectedNews && (

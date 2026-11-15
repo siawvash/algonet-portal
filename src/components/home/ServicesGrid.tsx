@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { toPersianDigits } from '../../utils/formatters';
 import { Service3DIcon } from './Service3DIcon';
-import { Layers, X, ChevronDown, ChevronUp, Filter } from 'lucide-react';
+import { Layers, X, ChevronDown, ChevronUp, Filter, Star, Search } from 'lucide-react';
 
 export type ServiceCategory =
   | 'all'
-  | 'company-projects'
   | 'general-services'
+  | 'company-projects'
   | 'idp'
   | 'data-ml';
 
@@ -28,15 +28,15 @@ export interface CategorySectionDef {
   persianSub: string;
 }
 
-// Portal Services Definitions - Algonet (Order & Categories matching reference screenshot)
-const CATEGORY_SECTIONS: CategorySectionDef[] = [
-  { id: 'company-projects', title: 'Company Projects', persianSub: 'پروژه‌های سازمانی' },
+// Portal Services Definitions - Algonet (Order: General Services first as requested)
+export const CATEGORY_SECTIONS: CategorySectionDef[] = [
   { id: 'general-services', title: 'General Services', persianSub: 'سرویس‌های عمومی' },
+  { id: 'company-projects', title: 'Company Projects', persianSub: 'پروژه‌های سازمانی' },
   { id: 'idp', title: 'Internal Development Platform (IDP)', persianSub: 'پلتفرم توسعه داخلی' },
   { id: 'data-ml', title: 'Data & ML Platform', persianSub: 'پلتفرم داده و هوش مصنوعی' }
 ];
 
-const ALL_SERVICES: PortalServiceItem[] = [
+export const ALL_SERVICES: PortalServiceItem[] = [
   // =========================================================================
   // ۱. Company Projects (پروژه‌های سازمانی) - Order in RTL: Algoagent, Annatopia, Arzyab, Asr-Datalake ...
   // =========================================================================
@@ -375,9 +375,44 @@ const ALL_SERVICES: PortalServiceItem[] = [
 
 interface ServicesGridProps {
   searchQuery?: string;
+  favorites?: string[];
+  onToggleFavorite?: (serviceId: string) => void;
+  onOpenSearch?: () => void;
 }
 
-export const ServicesGrid: React.FC<ServicesGridProps> = ({ searchQuery = '' }) => {
+export const ServicesGrid: React.FC<ServicesGridProps> = ({
+  searchQuery = '',
+  favorites: propFavorites,
+  onToggleFavorite: propToggleFavorite,
+  onOpenSearch
+}) => {
+  const [internalFavorites, setInternalFavorites] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('algonet-portal-favorites');
+      return saved ? JSON.parse(saved) : ['mail', 'mattermost', 'nextcloud'];
+    } catch {
+      return ['mail', 'mattermost', 'nextcloud'];
+    }
+  });
+
+  const currentFavorites = propFavorites ?? internalFavorites;
+
+  const handleToggleFav = (id: string) => {
+    if (propToggleFavorite) {
+      propToggleFavorite(id);
+    } else {
+      setInternalFavorites((prev) => {
+        const next = prev.includes(id)
+          ? prev.filter((item) => item !== id)
+          : [...prev, id];
+        try {
+          localStorage.setItem('algonet-portal-favorites', JSON.stringify(next));
+        } catch {}
+        return next;
+      });
+    }
+  };
+
   const [activeCategory, setActiveCategory] = useState<ServiceCategory>('all');
   const [isFilterBoxOpen, setIsFilterBoxOpen] = useState<boolean>(false);
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
@@ -416,18 +451,18 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({ searchQuery = '' }) 
     }));
   };
 
-  // Categories config for the top filter box matching the reference image
+  // Categories config for the top filter box (General Services first)
   const categoriesConfig: { id: ServiceCategory; label: string; count: number }[] = [
     { id: 'all', label: 'همه دسته‌ها', count: ALL_SERVICES.length },
-    {
-      id: 'company-projects',
-      label: 'Company Projects',
-      count: ALL_SERVICES.filter((s) => s.category === 'company-projects').length
-    },
     {
       id: 'general-services',
       label: 'General Services',
       count: ALL_SERVICES.filter((s) => s.category === 'general-services').length
+    },
+    {
+      id: 'company-projects',
+      label: 'Company Projects',
+      count: ALL_SERVICES.filter((s) => s.category === 'company-projects').length
     },
     {
       id: 'idp',
@@ -457,7 +492,12 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({ searchQuery = '' }) 
   // Check whether filtering is actively restricting categories
   const isFiltering = activeCategory !== 'all';
 
-  // Sections to render: if not filtering, show all 7 sections; otherwise show only selected
+  // Favorite services matching current search
+  const favoriteServices = ALL_SERVICES.filter(
+    (s) => currentFavorites.includes(s.id) && matchesSearch(s)
+  );
+
+  // Sections to render: if not filtering, show all 4 sections; otherwise show only selected
   const visibleSections = CATEGORY_SECTIONS.filter((sec) => {
     if (isFiltering && activeCategory !== sec.id) return false;
     // Check if this section has at least one service matching search
@@ -470,6 +510,75 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({ searchQuery = '' }) 
   ).length;
 
   const currentCategoryConfig = categoriesConfig.find((c) => c.id === activeCategory);
+
+  // Reusable Service Card Component with Top-Left Star for Favoriting
+  const renderServiceCard = (service: PortalServiceItem) => {
+    const isFavorite = currentFavorites.includes(service.id);
+
+    return (
+      <div
+        key={service.id}
+        onClick={() => window.open(service.url, '_blank')}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            window.open(service.url, '_blank');
+          }
+        }}
+        title={`${service.englishName} (${service.persianTitle}) - ${service.role}\n${service.description}`}
+        className="portal-service-card group relative aspect-square w-full p-2.5 sm:p-3 flex flex-col items-center justify-between select-none cursor-pointer"
+      >
+        {/* دکمه ستاره در سمت چپ بالای کارت برای افزودن به فیوریت‌ها */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleToggleFav(service.id);
+          }}
+          className={`absolute top-2 left-2 z-20 size-7 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+            isFavorite
+              ? 'text-[#ffb800] bg-[#ffb800]/15 border border-[#ffb800]/30 shadow-sm'
+              : 'text-[#8386a1]/40 hover:text-[#ffb800] hover:bg-black/5 dark:hover:bg-white/10 opacity-70 sm:opacity-0 group-hover:opacity-100'
+          } active:scale-75`}
+          title={isFavorite ? 'حذف از علاقه‌مندی‌ها' : 'افزودن به علاقه‌مندی‌ها'}
+          aria-label={isFavorite ? 'حذف از علاقه‌مندی‌ها' : 'افزودن به علاقه‌مندی‌ها'}
+        >
+          <Star
+            className={`size-3.5 transition-transform duration-200 ${
+              isFavorite ? 'fill-[#ffb800] text-[#ffb800] scale-110' : ''
+            }`}
+          />
+        </button>
+
+        {/* Top 3D Service Icon (متمرکز با ابعاد متناسب درون کارت مربع) */}
+        <div className="w-full flex-1 flex items-center justify-center pt-1 overflow-visible">
+          <div className="transform group-hover:scale-105 transition-transform duration-300 ease-out drop-shadow-[0_8px_16px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_8px_16px_rgba(0,0,0,0.45)]">
+            <Service3DIcon
+              iconName={service.iconName}
+              id={service.id}
+              variant="on-purple"
+              className="size-[70px] sm:size-[78px] md:size-[84px]"
+            />
+          </div>
+        </div>
+
+        {/* Bottom Service Content (عنوان انگلیسی + عنوان نقش) */}
+        <div className="w-full pb-1 px-1 text-center flex flex-col items-center justify-center select-none">
+          <h3 className="font-['Vazirmatn'] font-medium text-[13.5px] sm:text-[15px] md:text-[16px] leading-[22px] sm:leading-[24px] text-[#1e1e2d] dark:text-[#f3f2f7] group-hover:text-[#6768ff] dark:group-hover:text-white transition-colors truncate max-w-full">
+            {service.englishName}
+          </h3>
+          <p
+            className="font-['Vazirmatn'] font-normal text-[10.5px] sm:text-[11px] md:text-[11.5px] leading-[16px] sm:leading-[18px] text-[#62657a] dark:text-[#b0afbd] truncate max-w-full mt-0.5"
+            dir="ltr"
+          >
+            {service.role}
+          </p>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <section aria-label="بخش سرویس‌های سازمانی الگونت" className="space-y-6 pt-2">
@@ -498,8 +607,25 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({ searchQuery = '' }) 
           </p>
         </div>
 
-        {/* دکمه فیلتر دسته‌بندی در گوشه چپ */}
-        <div className="relative shrink-0" ref={filterRef}>
+        {/* دکمه‌های گوشه چپ: جستجو (Ctrl + K) و فیلتر دسته‌بندی */}
+        <div className="flex items-center gap-2 shrink-0">
+          {onOpenSearch && (
+            <button
+              type="button"
+              onClick={onOpenSearch}
+              className="h-9 sm:h-10 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] text-[#1e1e2d] dark:text-[#eaeafb] hover:border-[#666cff] flex items-center gap-2 text-xs sm:text-sm font-['Vazirmatn'] transition-all shadow-sm cursor-pointer select-none"
+              title="جستجو در تمام سامانه‌ها (Ctrl + K)"
+            >
+              <Search className="size-3.5 sm:size-4 text-[#666cff]" />
+              <span className="hidden xs:inline">جستجو</span>
+              <kbd className="hidden sm:inline-flex text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/10 text-[#8386a1] border border-black/5 dark:border-white/10">
+                Ctrl K
+              </kbd>
+            </button>
+          )}
+
+          {/* دکمه فیلتر دسته‌بندی در گوشه چپ */}
+          <div className="relative shrink-0" ref={filterRef}>
           <button
             type="button"
             onClick={() => setIsFilterBoxOpen(!isFilterBoxOpen)}
@@ -581,12 +707,47 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({ searchQuery = '' }) 
               </div>
             </div>
           )}
+          </div>
         </div>
       </div>
 
       {/*
         ===================================================================
-        CATEGORIZED SERVICES SECTIONS (قابلیت باز و بسته شدن هر بخش)
+        FAVORITES SECTION (سرویس‌های برگزیده در بالاتر از همه بخش‌ها)
+        ===================================================================
+      */}
+      {favoriteServices.length > 0 && activeCategory === 'all' && (
+        <div className="space-y-3 pb-2 animate-in fade-in duration-300">
+          {/* Section Header with Golden Star */}
+          <div className="flex items-center gap-3.5 pt-1 select-none">
+            <div className="flex items-center gap-2.5 shrink-0">
+              <span className="size-2 rounded-full bg-[#ffb800] shadow-[0_0_8px_#ffb800]" />
+              <h3 className="font-['Vazirmatn'] font-bold text-sm sm:text-base text-[#1e1e2d] dark:text-[#eaeafb] flex items-center gap-2">
+                <Star className="size-4 fill-[#ffb800] text-[#ffb800]" />
+                <span>سرویس‌های برگزیده من</span>
+                <span className="text-xs font-normal text-[#62657a] dark:text-[#8386a1]">
+                  (Favorites)
+                </span>
+              </h3>
+              <span className="text-[11px] font-['Vazirmatn'] font-semibold tabular-nums text-[#ffb800] bg-[#ffb800]/10 border border-[#ffb800]/25 px-2.5 py-0.5 rounded-full">
+                {toPersianDigits(favoriteServices.length)}
+              </span>
+            </div>
+
+            {/* Horizontal Divider Line */}
+            <div className="h-px flex-1 bg-gradient-to-l from-transparent via-[#ffb800]/30 to-[#ffb800]/10" />
+          </div>
+
+          {/* Grid of Favorite Cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-3.5 sm:gap-4 p-2.5 pb-4 pt-1">
+            {favoriteServices.map((service) => renderServiceCard(service))}
+          </div>
+        </div>
+      )}
+
+      {/*
+        ===================================================================
+        CATEGORIZED SERVICES SECTIONS (سرویس‌های عمومی اول، همراه با اولویت فیوریت‌ها)
         ===================================================================
       */}
       {visibleSections.length === 0 ? (
@@ -596,9 +757,15 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({ searchQuery = '' }) 
       ) : (
         <div className="space-y-8">
           {visibleSections.map((sec) => {
+            // Sort services in each category so favorites appear first
             const secServices = ALL_SERVICES.filter(
               (s) => s.category === sec.id && matchesSearch(s)
-            );
+            ).sort((a, b) => {
+              const aFav = currentFavorites.includes(a.id) ? 1 : 0;
+              const bFav = currentFavorites.includes(b.id) ? 1 : 0;
+              return bFav - aFav;
+            });
+
             const isSectionCollapsed = !!collapsedSections[sec.id];
 
             return (
@@ -661,54 +828,12 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({ searchQuery = '' }) 
                   }`}
                 >
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-3.5 sm:gap-4 p-2.5 pb-8 pt-2">
-                  {secServices.map((service) => {
-                    return (
-                      <div
-                        key={service.id}
-                        onClick={() => window.open(service.url, '_blank')}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            window.open(service.url, '_blank');
-                          }
-                        }}
-                        title={`${service.englishName} (${service.persianTitle}) - ${service.role}\n${service.description}`}
-                        className="portal-service-card group relative aspect-square w-full p-2.5 sm:p-3 flex flex-col items-center justify-between select-none cursor-pointer"
-                      >
-                        {/* Top 3D Service Icon (متمرکز با ابعاد متناسب درون کارت مربع) */}
-                        <div className="w-full flex-1 flex items-center justify-center pt-1 overflow-visible">
-                          <div className="transform group-hover:scale-105 transition-transform duration-300 ease-out drop-shadow-[0_8px_16px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_8px_16px_rgba(0,0,0,0.45)]">
-                            <Service3DIcon
-                              iconName={service.iconName}
-                              id={service.id}
-                              variant="on-purple"
-                              className="size-[70px] sm:size-[78px] md:size-[84px]"
-                            />
-                          </div>
-                        </div>
-
-                        {/* Bottom Service Content (مطابق با نود 75:568 فیگما: عنوان انگلیسی + عنوان نقش) */}
-                        <div className="w-full pb-1 px-1 text-center flex flex-col items-center justify-center select-none">
-                          <h3 className="font-['Vazirmatn'] font-medium text-[13.5px] sm:text-[15px] md:text-[16px] leading-[22px] sm:leading-[24px] text-[#1e1e2d] dark:text-[#f3f2f7] group-hover:text-[#6768ff] dark:group-hover:text-white transition-colors truncate max-w-full">
-                            {service.englishName}
-                          </h3>
-                          <p
-                            className="font-['Vazirmatn'] font-normal text-[10.5px] sm:text-[11px] md:text-[11.5px] leading-[16px] sm:leading-[18px] text-[#62657a] dark:text-[#b0afbd] truncate max-w-full mt-0.5"
-                            dir="ltr"
-                          >
-                            {service.role}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
+                    {secServices.map((service) => renderServiceCard(service))}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
         </div>
       )}
     </section>
