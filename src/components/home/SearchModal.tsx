@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { PortalServiceItem, ALL_SERVICES } from './ServicesGrid';
 import { Service3DIcon } from './Service3DIcon';
 import { toPersianDigits } from '../../utils/formatters';
@@ -134,7 +135,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     }
   }, [selectedIndex]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === 'undefined') return null;
 
   const categories = [
     { id: 'all', label: 'همه سامانه‌ها' },
@@ -144,9 +145,9 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     { id: 'data-ml', label: 'داده و هوش مصنوعی' }
   ];
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-10 sm:pt-20 px-3 sm:px-4 select-none animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-start justify-center pt-10 sm:pt-20 px-3 sm:px-4 select-none animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-label="جستجوی سرویس‌ها"
@@ -348,6 +349,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

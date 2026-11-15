@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Check, MapPin } from 'lucide-react';
 
 interface ChangeLocationModalProps {
@@ -39,16 +40,16 @@ export const ChangeLocationModal: React.FC<ChangeLocationModalProps> = ({
     }
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === 'undefined') return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 select-none animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 select-none animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-label="تغییر موقعیت مکانی"
     >
-      {/* Blurred Backdrop - بلور صفحه اصلی و تاریک‌سازی */}
+      {/* Blurred Backdrop - بلور کل صفحه اصلی، منوی کناری و نوار بالا */}
       <div
         className="fixed inset-0 bg-black/60 dark:bg-black/75 backdrop-blur-md transition-opacity duration-300"
         onClick={onClose}
@@ -58,7 +59,7 @@ export const ChangeLocationModal: React.FC<ChangeLocationModalProps> = ({
       {/* Centered Modal Card */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] sm:rounded-[32px] shadow-[0_24px_70px_rgba(0,0,0,0.35)] p-5 sm:p-7 max-w-lg w-full space-y-5 text-right z-10 popover-morph"
+        className="relative bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] sm:rounded-[32px] shadow-[0_24px_70px_rgba(0,0,0,0.35)] p-5 sm:p-7 max-w-lg w-full space-y-5 text-right z-10 popover-morph my-auto"
       >
         {/* Modal Heading */}
         <div className="flex items-center justify-between pb-3 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
@@ -127,6 +128,7 @@ export const ChangeLocationModal: React.FC<ChangeLocationModalProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { PortalNavId, PortalProject } from '../types';
 import { INITIAL_PROJECTS } from '../data/mockData';
 import { toPersianDigits } from '../utils/formatters';
@@ -697,9 +698,9 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
         5. MODAL: CREATE NEW TASK (Figma Algonet/Modal/Edit request 11:23247)
         ================================================== 
       */}
-      {isNewTaskModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[32px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] p-6 sm:p-8 max-w-lg w-full space-y-6 text-right relative">
+      {isNewTaskModalOpen && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[32px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] p-6 sm:p-8 max-w-lg w-full space-y-6 text-right relative my-auto">
             <div className="flex items-center justify-between pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
               <div className="space-y-1">
                 <h3 className="font-['Vazirmatn'] font-bold text-lg text-[#1e1e2d] dark:text-[#eaeafb]">
@@ -802,7 +803,8 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* 
@@ -810,9 +812,9 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
         6. MODAL: PROJECT DETAIL (Figma Algonet/Modal/Edit request 11:23247)
         ================================================== 
       */}
-      {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[32px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] p-6 sm:p-8 max-w-xl w-full space-y-6 text-right relative">
+      {selectedProject && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[32px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] p-6 sm:p-8 max-w-xl w-full space-y-6 text-right relative my-auto">
             <div className="flex items-start justify-between pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
               <div className="space-y-1">
                 <span className="font-mono text-xs font-bold text-[#666cff] bg-[#666cff]/10 px-2 py-0.5 rounded-md border border-[#666cff]/25 dir-ltr">
@@ -892,7 +894,8 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

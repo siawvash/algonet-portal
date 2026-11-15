@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { PortalNavId } from '../types';
 import { toPersianDigits } from '../utils/formatters';
 import {
@@ -1410,10 +1411,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         MODAL 1: ثبت زمان عدم دسترسی (Unavailability Modal)
         =================================================================== 
       */}
-      {isUnavailableModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
+      {isUnavailableModalOpen && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
           <div
-            className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-lg w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden"
+            className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-lg w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Fixed Header */}
@@ -1537,7 +1538,8 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* 
@@ -1545,10 +1547,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         MODAL 2: جلسه جدید (Purple Button + Fixed overflow)
         =================================================================== 
       */}
-      {isCreateMeetingOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
+      {isCreateMeetingOpen && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
           <div
-            className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-xl w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden"
+            className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-xl w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Fixed Header */}
@@ -1810,7 +1812,8 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* 
@@ -1818,10 +1821,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         MODAL 3: تنظیمات یادآوری من
         =================================================================== 
       */}
-      {isReminderSettingsOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
+      {isReminderSettingsOpen && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
           <div
-            className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-lg w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden"
+            className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-lg w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Fixed Header */}
@@ -2017,7 +2020,8 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* 
@@ -2025,10 +2029,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         MODAL 4: جزئیات جلسه (Meeting Details)
         =================================================================== 
       */}
-      {selectedMeeting && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
+      {selectedMeeting && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
           <div
-            className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-lg w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden"
+            className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-lg w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between p-5 sm:p-6 pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59] shrink-0 bg-white dark:bg-[#30334e]">
@@ -2098,7 +2102,8 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Calendar, Tag, User, Clock, Share2 } from 'lucide-react';
 import { NewsItem } from './NewsSlider';
 
@@ -22,17 +23,17 @@ export const NewsDetailModal: React.FC<NewsDetailModalProps> = ({ news, onClose 
     };
   }, [news, onClose]);
 
-  if (!news) return null;
+  if (!news || typeof document === 'undefined') return null;
 
-  return (
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl max-h-[90vh] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col text-[#1e1e2d] dark:text-[#eaeafb]"
+        className="relative w-full max-w-2xl max-h-[90vh] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col text-[#1e1e2d] dark:text-[#eaeafb] my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Image with close button */}
@@ -120,6 +121,7 @@ export const NewsDetailModal: React.FC<NewsDetailModalProps> = ({ news, onClose 
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

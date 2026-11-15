@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { PortalNavId } from '../types';
 import { INITIAL_PROJECTS, CURRENT_USER } from '../data/mockData';
 import { toPersianDigits } from '../utils/formatters';
@@ -897,9 +898,9 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
         6. PROJECT DETAIL MODAL (Figma Algonet/Modal/Edit request 11:23247)
         ================================================== 
       */}
-      {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[32px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] p-6 sm:p-8 max-w-xl w-full space-y-6 text-right relative">
+      {selectedProject && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[32px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] p-6 sm:p-8 max-w-xl w-full space-y-6 text-right relative my-auto">
             {/* Modal Heading */}
             <div className="flex items-start justify-between pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
               <div className="space-y-1">
@@ -994,7 +995,8 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

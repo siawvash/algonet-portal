@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Upload, Camera, Trash2, Check } from 'lucide-react';
 import { CURRENT_USER } from '../../data/mockData';
 
@@ -35,7 +36,7 @@ export const ChangeAvatarModal: React.FC<ChangeAvatarModalProps> = ({
     }
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === 'undefined') return null;
 
   const handleFileSelect = (file: File) => {
     if (!file) return;
@@ -67,14 +68,14 @@ export const ChangeAvatarModal: React.FC<ChangeAvatarModalProps> = ({
     onClose();
   };
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 select-none animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 select-none animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-label="تغییر تصویر پروفایل"
     >
-      {/* Blurred Backdrop - بلور کل صفحه اصلی */}
+      {/* Blurred Backdrop - بلور کل صفحه اصلی، منوی کناری و نوار بالا */}
       <div
         className="fixed inset-0 bg-black/60 dark:bg-black/75 backdrop-blur-md transition-opacity duration-300"
         onClick={onClose}
@@ -84,7 +85,7 @@ export const ChangeAvatarModal: React.FC<ChangeAvatarModalProps> = ({
       {/* Centered Modal Card */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] sm:rounded-[32px] shadow-[0_24px_70px_rgba(0,0,0,0.35)] p-5 sm:p-7 max-w-md w-full space-y-6 text-right z-10 popover-morph"
+        className="relative bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] sm:rounded-[32px] shadow-[0_24px_70px_rgba(0,0,0,0.35)] p-5 sm:p-7 max-w-md w-full space-y-6 text-right z-10 popover-morph my-auto"
       >
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
@@ -181,6 +182,7 @@ export const ChangeAvatarModal: React.FC<ChangeAvatarModalProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
