@@ -613,7 +613,7 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({
             <button
               type="button"
               onClick={onOpenSearch}
-              className="h-9 sm:h-10 px-3 sm:px-3.5 w-36 sm:w-56 md:w-64 rounded-xl sm:rounded-2xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] text-[#1e1e2d] dark:text-[#eaeafb] hover:border-[#666cff] flex items-center justify-between gap-2 transition-all duration-200 shadow-sm cursor-pointer select-none group"
+              className="h-9 sm:h-10 px-3 sm:px-3.5 w-44 sm:w-56 md:w-64 rounded-xl sm:rounded-2xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] text-[#1e1e2d] dark:text-[#eaeafb] hover:border-[#666cff] flex items-center justify-between gap-2 transition-all duration-200 shadow-sm cursor-pointer select-none group"
               title="جستجو در تمام سامانه‌ها (Ctrl + K)"
             >
               <div className="flex items-center gap-2 min-w-0">
@@ -622,9 +622,12 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({
                   جستجوی سرویس‌ها...
                 </span>
               </div>
-              <kbd className="hidden xs:inline-flex items-center text-[10px] sm:text-[11px] font-mono font-medium px-1.5 sm:px-2 py-0.5 rounded-lg bg-[#f0f1f7] dark:bg-[#25263a] text-[#62657a] dark:text-[#8386a1] border border-[#e0e2ec] dark:border-[#42455f] shadow-inner shrink-0">
-                Ctrl K
-              </kbd>
+              <span
+                dir="ltr"
+                className="inline-flex items-center text-[10px] sm:text-[11px] font-mono font-medium px-1.5 sm:px-2 py-0.5 rounded-md bg-[#f0f1f7] dark:bg-[#25263a] text-[#62657a] dark:text-[#8386a1] border border-[#e0e2ec] dark:border-[#42455f] shadow-inner shrink-0"
+              >
+                Ctrl + K
+              </span>
             </button>
           )}
 
