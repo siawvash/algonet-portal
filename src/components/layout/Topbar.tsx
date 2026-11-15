@@ -7,8 +7,7 @@ import {
   Moon,
   Clock,
   Bell,
-  Menu,
-  Search
+  Menu
 } from 'lucide-react';
 
 interface TopbarProps {
@@ -22,7 +21,6 @@ interface TopbarProps {
   onPresenceChange?: (status: UserPresenceStatus) => void;
   onOpenMobileMenu?: () => void;
   isMobileMenuOpen?: boolean;
-  onOpenSearch?: () => void;
 }
 
 export const Topbar: React.FC<TopbarProps> = ({
@@ -31,8 +29,7 @@ export const Topbar: React.FC<TopbarProps> = ({
   unreadNotificationsCount,
   onNavigate,
   onOpenMobileMenu,
-  isMobileMenuOpen = false,
-  onOpenSearch
+  isMobileMenuOpen = false
 }) => {
   const [currentTime, setCurrentTime] = useState<string>('۱۲:۲۶:۰۰');
   const [persianDate, setPersianDate] = useState<string>('۱۹ آبان ۱۴۰۵');
@@ -157,44 +154,11 @@ export const Topbar: React.FC<TopbarProps> = ({
         </div>
       </div>
 
-      {/* Center Search Trigger Capsule (Desktop: جستجو با میانبر Ctrl+K) */}
-      {onOpenSearch && (
-        <div className="flex-1 max-w-xs mx-2 sm:mx-4 hidden sm:block">
-          <button
-            type="button"
-            onClick={onOpenSearch}
-            className="w-full h-[38px] px-3.5 rounded-2xl bg-[#f4f5fa] dark:bg-[#242638] border border-[#e0e2ec] dark:border-[#3d3f59] flex items-center justify-between text-xs font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-white hover:border-[#666cff]/50 transition-all cursor-pointer shadow-inner group select-none"
-            title="جستجو میان تمام سرویس‌ها (Ctrl + K)"
-          >
-            <div className="flex items-center gap-2">
-              <Search className="size-3.5 text-[#666cff] group-hover:scale-110 transition-transform" />
-              <span className="truncate">جستجوی سرویس‌ها...</span>
-            </div>
-            <kbd className="hidden md:inline-flex items-center gap-0.5 text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded-lg bg-white dark:bg-[#34364d] text-[#62657a] dark:text-[#8386a1] border border-[#e0e2ec] dark:border-[#42455f] shadow-sm">
-              <span>Ctrl</span>
-              <span>K</span>
-            </kbd>
-          </button>
-        </div>
-      )}
-
       {/* ===================================================================
-          LEFT SIDE (in RTL): Search (mobile) + Theme Switcher + Bell
+          LEFT SIDE (in RTL): Theme Switcher + Bell
           (پروفایل طبق درخواست از تاپ‌بار حذف شد و در نوار ناوبری پایین قرار دارد)
           =================================================================== */}
       <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-        {/* Mobile Search Button */}
-        {onOpenSearch && (
-          <button
-            type="button"
-            onClick={onOpenSearch}
-            className="sm:hidden size-9 rounded-full flex items-center justify-center text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] hover:bg-[#f0f1f7] dark:hover:bg-[#383a54]/40 transition-colors cursor-pointer"
-            title="جستجو در سرویس‌ها (Ctrl + K)"
-            aria-label="جستجو در سرویس‌ها"
-          >
-            <Search className="size-4" />
-          </button>
-        )}
         {/* Dark / Light Mode Switcher Capsule */}
         <button
           type="button"

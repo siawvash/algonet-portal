@@ -81,13 +81,29 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     setSelectedIndex(0);
   }, [query, selectedCategory]);
 
-  // Keyboard navigation
+  // Keyboard navigation & global shortcut handling
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      // If Ctrl + K is pressed while modal is already open, toggle it closed
+      if (e.ctrlKey || e.metaKey) {
+        const isK =
+          e.code === 'KeyK' ||
+          e.key === 'k' ||
+          e.key === 'K' ||
+          e.key === 'ن';
+        if (isK) {
+          e.preventDefault();
+          e.stopPropagation();
+          onClose();
+          return;
+        }
+      }
+
       if (e.key === 'Escape') {
         e.preventDefault();
+        e.stopPropagation();
         onClose();
       } else if (e.key === 'ArrowDown') {
         e.preventDefault();
@@ -105,8 +121,8 @@ export const SearchModal: React.FC<SearchModalProps> = ({
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, [isOpen, filteredServices, selectedIndex, onClose]);
 
   // Scroll active item into view

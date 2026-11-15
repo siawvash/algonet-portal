@@ -69,16 +69,28 @@ export const App: React.FC = () => {
   // Search Modal state (Command Palette / Ctrl+K)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
 
-  // Global Ctrl + K / Cmd + K Shortcut Listener
+  // Global Ctrl + K / Cmd + K Shortcut Listener (مقاوم در برابر کیبورد فارسی و با اولویت بالا)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
-        e.preventDefault();
-        setIsSearchModalOpen((prev) => !prev);
+      if (e.ctrlKey || e.metaKey) {
+        // e.code === 'KeyK' برای تشخیص فیزیکی کلید K بدون وابستگی به زبان کیبورد (فارسی/انگلیسی)
+        const isK =
+          e.code === 'KeyK' ||
+          e.key === 'k' ||
+          e.key === 'K' ||
+          e.key === 'ن';
+
+        if (isK) {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsSearchModalOpen((prev) => !prev);
+        }
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    // استفاده از capture: true برای جلوگیری کامل از سرچ پیش‌فرض مرورگر در کروم
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, []);
 
   // Live Search query
@@ -184,7 +196,6 @@ export const App: React.FC = () => {
             onPresenceChange={setPresence}
             onOpenMobileMenu={() => setIsMobileMenuOpen((prev) => !prev)}
             isMobileMenuOpen={isMobileMenuOpen}
-            onOpenSearch={() => setIsSearchModalOpen(true)}
           />
         </div>
       </div>

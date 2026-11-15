@@ -607,18 +607,22 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({
           </p>
         </div>
 
-        {/* دکمه‌های گوشه چپ: جستجو (Ctrl + K) و فیلتر دسته‌بندی */}
-        <div className="flex items-center gap-2 shrink-0">
+        {/* دکمه‌های گوشه چپ: کپسول جستجو (مشابه سرچ بالا هم‌اندازه فیلتر) و فیلتر دسته‌بندی */}
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           {onOpenSearch && (
             <button
               type="button"
               onClick={onOpenSearch}
-              className="h-9 sm:h-10 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] text-[#1e1e2d] dark:text-[#eaeafb] hover:border-[#666cff] flex items-center gap-2 text-xs sm:text-sm font-['Vazirmatn'] transition-all shadow-sm cursor-pointer select-none"
+              className="h-9 sm:h-10 px-3 sm:px-3.5 w-36 sm:w-56 md:w-64 rounded-xl sm:rounded-2xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] text-[#1e1e2d] dark:text-[#eaeafb] hover:border-[#666cff] flex items-center justify-between gap-2 transition-all duration-200 shadow-sm cursor-pointer select-none group"
               title="جستجو در تمام سامانه‌ها (Ctrl + K)"
             >
-              <Search className="size-3.5 sm:size-4 text-[#666cff]" />
-              <span className="hidden xs:inline">جستجو</span>
-              <kbd className="hidden sm:inline-flex text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/10 text-[#8386a1] border border-black/5 dark:border-white/10">
+              <div className="flex items-center gap-2 min-w-0">
+                <Search className="size-3.5 sm:size-4 text-[#666cff] group-hover:scale-110 transition-transform shrink-0" />
+                <span className="text-xs sm:text-sm font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1] group-hover:text-[#1e1e2d] dark:group-hover:text-white transition-colors truncate">
+                  جستجوی سرویس‌ها...
+                </span>
+              </div>
+              <kbd className="hidden xs:inline-flex items-center text-[10px] sm:text-[11px] font-mono font-medium px-1.5 sm:px-2 py-0.5 rounded-lg bg-[#f0f1f7] dark:bg-[#25263a] text-[#62657a] dark:text-[#8386a1] border border-[#e0e2ec] dark:border-[#42455f] shadow-inner shrink-0">
                 Ctrl K
               </kbd>
             </button>
