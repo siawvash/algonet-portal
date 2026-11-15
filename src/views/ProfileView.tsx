@@ -411,7 +411,7 @@ export const ProfileView: React.FC<ProfileViewProps> = () => {
                 onChange={(e) => setBioText(e.target.value)}
                 placeholder="مثلاً: مهندس نرم‌افزار در تیم پلتفرم"
                 rows={3}
-                className="w-full rounded-[16px] bg-[rgba(13,14,20,0.9)] border border-[#42455f] focus:border-2 focus:border-[#666cff] text-sm text-[#eaeafb] placeholder:text-[#585b74] p-3.5 outline-none font-['Vazirmatn'] resize-none transition-all duration-150"
+                className="w-full rounded-[16px] bg-[#282a42] hover:bg-[#25273e] border border-[#3d3f59] focus:border-[#666cff] focus:ring-2 focus:ring-[#666cff]/20 text-sm text-[#eaeafb] placeholder:text-[#8386a1]/60 p-3.5 outline-none font-['Vazirmatn'] resize-none transition-all duration-150"
               />
             </div>
 
@@ -425,7 +425,7 @@ export const ProfileView: React.FC<ProfileViewProps> = () => {
               <button
                 onClick={handleSaveBio}
                 disabled={isBioSaving}
-                className="flex items-center gap-2 bg-[#666cff] hover:bg-[#a682ff] text-[#17111f] font-['Vazirmatn'] font-medium text-xs rounded-[100px] h-[38px] px-5 shadow-[0_2px_12px_rgba(183,154,255,0.25)] transition-all duration-150 cursor-pointer disabled:opacity-50"
+                className="flex items-center gap-2 bg-[#666cff] hover:bg-[#5b60e5] text-white font-['Vazirmatn'] font-semibold text-xs rounded-[100px] h-[38px] px-5 shadow-[0_2px_12px_rgba(102,108,255,0.3)] transition-all duration-150 cursor-pointer disabled:opacity-50"
               >
                 {isBioSaving ? (
                   <RotateCw className="size-3.5 animate-spin" />
@@ -497,14 +497,16 @@ export const ProfileView: React.FC<ProfileViewProps> = () => {
           </p>
         </div>
 
-        {/* Warning Alert Banner (Figma AlgonetAlertError / Banner Tone) */}
-        <div className="rounded-[16px] bg-[rgba(36,18,23,0.9)] border border-[rgba(191,71,92,0.35)] p-4 sm:p-5 flex items-start gap-3.5 text-right shadow-sm">
-          <ShieldAlert className="size-5 text-[#ea5455] shrink-0 mt-0.5" />
+        {/* Warning Alert Banner (Figma AlgonetAlertError / Harmonious Dark Ruby Tone) */}
+        <div className="rounded-[18px] bg-[#ea5455]/10 border border-[#ea5455]/25 p-4 sm:p-5 flex items-start gap-3.5 text-right shadow-sm">
+          <div className="size-10 rounded-xl bg-[#ea5455]/15 border border-[#ea5455]/30 flex items-center justify-center shrink-0 text-[#ff7875] mt-0.5">
+            <ShieldAlert className="size-5 text-[#ff7875]" />
+          </div>
           <div className="space-y-1">
-            <h3 className="font-['Vazirmatn'] font-bold text-xs sm:text-sm text-[#ea5455]">
+            <h3 className="font-['Vazirmatn'] font-bold text-xs sm:text-sm text-[#ff7875]">
               هیچ دستگاه معتبری به نام شما ثبت نشده است.
             </h3>
-            <p className="font-['Vazirmatn'] text-xs text-[#ea5455]/85 leading-relaxed">
+            <p className="font-['Vazirmatn'] text-xs text-[#d8daeb] leading-relaxed">
               هیچ دستگاهی در شبکه با گواهی معتبر به نام شما وجود ندارد. لطفاً هرچه سریع‌تر به واحد فناوری اطلاعات مراجعه کنید.
             </p>
           </div>
