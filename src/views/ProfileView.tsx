@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PortalNavId } from '../types';
 import { toPersianDigits } from '../utils/formatters';
 import { CURRENT_USER } from '../data/mockData';
 import { UserAvatar } from '../components/common/UserAvatar';
+import { ChangeAvatarModal } from '../components/modals/ChangeAvatarModal';
+import { ChangeLocationModal } from '../components/modals/ChangeLocationModal';
 import {
   Lock,
   Image as ImageIcon,
@@ -30,7 +32,13 @@ export const ProfileView: React.FC<ProfileViewProps> = () => {
 
   // Modals state
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
-  const [currentLocation, setCurrentLocation] = useState<string>('موقعیت مکانی برای شما ثبت نشده است.');
+  const [currentLocation, setCurrentLocation] = useState<string>(() => {
+    try {
+      return localStorage.getItem('algonet_user_location') || 'دفتر مرکزی (تهران) · طبقه ۲';
+    } catch {
+      return 'دفتر مرکزی (تهران) · طبقه ۲';
+    }
+  });
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState<boolean>(false);
   const [avatarImage, setAvatarImage] = useState<string | null>(() => {
     try {
@@ -39,6 +47,17 @@ export const ProfileView: React.FC<ProfileViewProps> = () => {
       return null;
     }
   });
+
+  // Sync cross-component location updates
+  useEffect(() => {
+    const handleLocationUpdate = () => {
+      try {
+        setCurrentLocation(localStorage.getItem('algonet_user_location') || 'دفتر مرکزی (تهران) · طبقه ۲');
+      } catch {}
+    };
+    window.addEventListener('user-location-updated', handleLocationUpdate);
+    return () => window.removeEventListener('user-location-updated', handleLocationUpdate);
+  }, []);
 
   const handleUpdateAvatar = (img: string | null) => {
     setAvatarImage(img);
@@ -501,146 +520,29 @@ export const ProfileView: React.FC<ProfileViewProps> = () => {
 
       {/* 
         ==================================================
-        5. MODAL: تغییر موقعیت مکانی (Figma 11:22300)
+        5. MODALS: موقعیت مکانی و تصویر آواتار (مرکز صفحه با پس‌زمینه بلور)
         ================================================== 
       */}
-      {isLocationModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[32px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] p-6 sm:p-8 max-w-lg w-full space-y-6 text-right relative">
-            {/* Modal Heading */}
-            <div className="flex items-center justify-between pb-3 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
-              <div className="space-y-1">
-                <h3 className="font-['Vazirmatn'] font-bold text-lg text-[#1e1e2d] dark:text-[#eaeafb]">
-                  تغییر موقعیت مکانی
-                </h3>
-                <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1]">
-                  موقعیت کاری و استقرار فعلی خود را انتخاب کنید.
-                </p>
-              </div>
+      <ChangeLocationModal
+        isOpen={isLocationModalOpen}
+        onClose={() => setIsLocationModalOpen(false)}
+        currentLocation={currentLocation}
+        locations={locationOptions}
+        onSaveLocation={(newLoc) => {
+          setCurrentLocation(newLoc);
+          try {
+            localStorage.setItem('algonet_user_location', newLoc);
+            window.dispatchEvent(new Event('user-location-updated'));
+          } catch {}
+        }}
+      />
 
-              <button
-                onClick={() => setIsLocationModalOpen(false)}
-                className="size-9 rounded-full bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] hover:bg-[#eceef7] dark:hover:bg-[#383b59] flex items-center justify-center transition-colors cursor-pointer"
-              >
-                <X className="size-4" />
-              </button>
-            </div>
-
-            {/* Options list */}
-            <div className="space-y-2.5 max-h-[260px] overflow-y-auto no-scrollbar">
-              {locationOptions.map((opt, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    setCurrentLocation(opt);
-                    setIsLocationModalOpen(false);
-                  }}
-                  className={`w-full text-right p-3.5 rounded-[16px] border text-xs font-['Vazirmatn'] transition-all flex items-center justify-between cursor-pointer ${
-                    currentLocation === opt
-                      ? 'bg-[#666cff]/10 dark:bg-[#666cff]/20 border-[#666cff] text-[#666cff] dark:text-[#eaeafb] font-bold shadow-sm'
-                      : 'bg-[#f4f5fa] dark:bg-[#34364d] border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/40 text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] hover:bg-[#eceef7] dark:hover:bg-[#383b59]'
-                  }`}
-                >
-                  <span className="font-medium">{opt}</span>
-                  {currentLocation === opt && (
-                    <Check className="size-4 text-[#666cff]" />
-                  )}
-                </button>
-              ))}
-            </div>
-
-            {/* Modal footer */}
-            <div className="flex justify-end gap-3 pt-2 border-t border-[#e0e2ec] dark:border-[#3d3f59]">
-              <button
-                onClick={() => setIsLocationModalOpen(false)}
-                className="bg-[#f4f5fa] dark:bg-[#34364d] hover:bg-[#eceef7] dark:hover:bg-[#383b59] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a] dark:text-[#eaeafb] rounded-[100px] h-[38px] px-5 text-xs font-['Vazirmatn'] font-medium transition-all cursor-pointer"
-              >
-                انصراف
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 
-        ==================================================
-        6. MODAL: تغییر تصویر آواتار (Figma 11:22300)
-        ================================================== 
-      */}
-      {isAvatarModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[32px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] p-6 sm:p-8 max-w-md w-full space-y-6 text-right relative">
-            <div className="flex items-center justify-between pb-3 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
-              <div className="space-y-1">
-                <h3 className="font-['Vazirmatn'] font-bold text-lg text-[#1e1e2d] dark:text-[#eaeafb]">
-                  بارگذاری تصویر پروفایل
-                </h3>
-                <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1]">
-                  تصویر در کادر مربع از مرکز برش می‌خورد.
-                </p>
-              </div>
-
-              <button
-                onClick={() => setIsAvatarModalOpen(false)}
-                className="size-9 rounded-full bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] hover:bg-[#eceef7] dark:hover:bg-[#383b59] flex items-center justify-center transition-colors cursor-pointer"
-              >
-                <X className="size-4" />
-              </button>
-            </div>
-
-            {/* Drop / Select Area */}
-            <label className="rounded-[20px] border-2 border-dashed border-[#d0d2e0] dark:border-[#42455f] hover:border-[#666cff] bg-[#f4f5fa] dark:bg-[#282a42] p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-colors group space-y-3">
-              <input
-                type="file"
-                accept="image/png, image/jpeg, image/webp"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                      handleUpdateAvatar(reader.result as string);
-                      setIsAvatarModalOpen(false);
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                }}
-              />
-              <div className="size-14 rounded-full bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] flex items-center justify-center text-[#666cff] group-hover:scale-110 transition-transform shadow-sm">
-                <Upload className="size-6" />
-              </div>
-              <div className="space-y-1">
-                <p className="font-['Vazirmatn'] text-xs font-semibold text-[#1e1e2d] dark:text-[#eaeafb]">
-                  برای انتخاب فایل کلیک کنید یا آن را به اینجا بکشید
-                </p>
-                <p className="font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1]">
-                  فرمت‌های JPG، PNG یا WebP تا سقف ۵ مگابایت
-                </p>
-              </div>
-            </label>
-
-            <div className="flex items-center justify-between pt-2 border-t border-[#e0e2ec] dark:border-[#3d3f59]">
-              {avatarImage && (
-                <button
-                  onClick={() => {
-                    handleUpdateAvatar(null);
-                    setIsAvatarModalOpen(false);
-                  }}
-                  className="font-['Vazirmatn'] text-xs text-[#ea5455] hover:underline cursor-pointer"
-                >
-                  حذف تصویر فعلی
-                </button>
-              )}
-              <button
-                onClick={() => setIsAvatarModalOpen(false)}
-                className="bg-[#f4f5fa] dark:bg-[#34364d] hover:bg-[#eceef7] dark:hover:bg-[#383b59] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a] dark:text-[#eaeafb] rounded-[100px] h-[38px] px-5 text-xs font-['Vazirmatn'] font-medium transition-all cursor-pointer mr-auto"
-              >
-                بستن
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ChangeAvatarModal
+        isOpen={isAvatarModalOpen}
+        onClose={() => setIsAvatarModalOpen(false)}
+        currentAvatar={avatarImage}
+        onSaveAvatar={(newImg) => handleUpdateAvatar(newImg)}
+      />
     </div>
   );
 };

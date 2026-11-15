@@ -1411,7 +1411,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         =================================================================== 
       */}
       {isUnavailableModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-sm overflow-hidden animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
           <div
             className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-lg w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
@@ -1546,7 +1546,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         =================================================================== 
       */}
       {isCreateMeetingOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-sm overflow-hidden animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
           <div
             className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-xl w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
@@ -1819,7 +1819,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         =================================================================== 
       */}
       {isReminderSettingsOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-sm overflow-hidden animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
           <div
             className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-lg w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
@@ -2026,7 +2026,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         =================================================================== 
       */}
       {selectedMeeting && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-sm overflow-hidden animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md overflow-hidden animate-in fade-in duration-200">
           <div
             className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[28px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] max-w-lg w-full max-h-[90vh] flex flex-col text-right relative font-['Vazirmatn'] overflow-hidden"
             onClick={(e) => e.stopPropagation()}

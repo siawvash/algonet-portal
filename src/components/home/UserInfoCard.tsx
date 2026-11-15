@@ -7,14 +7,23 @@ import {
   Hash,
   MapPin,
   Briefcase,
-  Sparkles
+  Sparkles,
+  Camera
 } from 'lucide-react';
 
 interface UserInfoCardProps {
   onNavigateProfile?: () => void;
+  onOpenAvatarModal?: () => void;
+  onOpenLocationModal?: () => void;
+  currentLocation?: string;
 }
 
-export const UserInfoCard: React.FC<UserInfoCardProps> = ({ onNavigateProfile }) => {
+export const UserInfoCard: React.FC<UserInfoCardProps> = ({
+  onNavigateProfile,
+  onOpenAvatarModal,
+  onOpenLocationModal,
+  currentLocation = 'دفتر مرکزی (تهران) · طبقه ۲'
+}) => {
   return (
     <section
       aria-label="اطلاعات هویتی و پرسنلی کاربر"
@@ -37,13 +46,25 @@ export const UserInfoCard: React.FC<UserInfoCardProps> = ({ onNavigateProfile })
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-5">
           {/* Right Section (in RTL): Avatar + Name + Username */}
           <div className="flex items-center gap-3 sm:gap-4.5">
-            <UserAvatar
-              size="lg"
-              showPresence={true}
-              presenceStatus="present"
-              interactive={!!onNavigateProfile}
-              onClick={onNavigateProfile}
-            />
+            {/* Clickable Avatar with Camera Edit Badge */}
+            <div
+              className="relative group cursor-pointer"
+              onClick={onOpenAvatarModal || onNavigateProfile}
+              title="تغییر تصویر پروفایل"
+            >
+              <UserAvatar
+                size="lg"
+                showPresence={true}
+                presenceStatus="present"
+                interactive={true}
+              />
+              <div
+                className="absolute -bottom-1 -left-1 size-6 sm:size-7 rounded-full bg-[#666cff] text-white flex items-center justify-center shadow-md border-2 border-white dark:border-[#30334e] group-hover:scale-110 active:scale-90 transition-all cursor-pointer"
+                title="تغییر تصویر"
+              >
+                <Camera className="size-3 sm:size-3.5" />
+              </div>
+            </div>
 
             <div className="space-y-1 text-right">
               <h1 className="font-['Vazirmatn'] font-bold text-base sm:text-xl md:text-2xl text-[#19191f] dark:text-[#eaeafb] leading-tight">
@@ -130,17 +151,26 @@ export const UserInfoCard: React.FC<UserInfoCardProps> = ({ onNavigateProfile })
             </div>
           </div>
 
-          {/* 4. Location */}
-          <div className="p-2.5 sm:p-3.5 rounded-[14px] sm:rounded-[18px] bg-[#f7f7fa] dark:bg-[#34364d] border border-[#e0e0e8] dark:border-[#3d3f59] flex items-center gap-2.5 sm:gap-3 hover:border-[#666cff]/30 transition-colors group">
-            <div className="size-8 sm:size-9 rounded-[10px] sm:rounded-[12px] bg-[#f0eaff] dark:bg-[#34364d] border border-[#ddd6fe] dark:border-[#42455f] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <MapPin className="size-3.5 sm:size-4 text-[#666cff]" />
+          {/* 4. Location (Clickable to change location in modal) */}
+          <div
+            onClick={onOpenLocationModal}
+            className="p-2.5 sm:p-3.5 rounded-[14px] sm:rounded-[18px] bg-[#f7f7fa] dark:bg-[#34364d] border border-[#e0e0e8] dark:border-[#3d3f59] flex items-center gap-2.5 sm:gap-3 hover:border-[#666cff] hover:shadow-sm transition-all group cursor-pointer active:scale-[0.98] select-none"
+            title="کلیک برای تغییر موقعیت مکانی"
+          >
+            <div className="size-8 sm:size-9 rounded-[10px] sm:rounded-[12px] bg-[#f0eaff] dark:bg-[#34364d] border border-[#ddd6fe] dark:border-[#42455f] flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#666cff] group-hover:text-white transition-all">
+              <MapPin className="size-3.5 sm:size-4 text-[#666cff] group-hover:text-white transition-colors" />
             </div>
             <div className="space-y-0.5 text-right min-w-0 flex-1">
-              <span className="text-[10px] sm:text-xs text-[#787785] dark:text-[#8386a1] font-['Vazirmatn'] block">
-                موقعیت مکانی
-              </span>
-              <span className="font-['Vazirmatn'] text-[11px] sm:text-xs font-semibold text-[#1e1e2d] dark:text-[#eaeafb] block truncate" title="دفتر مرکزی (تهران) · طبقه ۲">
-                دفتر مرکزی · ط ۲
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] sm:text-xs text-[#787785] dark:text-[#8386a1] font-['Vazirmatn'] block">
+                  موقعیت مکانی
+                </span>
+                <span className="text-[9px] font-['Vazirmatn'] text-[#666cff] dark:text-[#8c90ff] opacity-80 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+                  تغییر
+                </span>
+              </div>
+              <span className="font-['Vazirmatn'] text-[11px] sm:text-xs font-semibold text-[#1e1e2d] dark:text-[#eaeafb] block truncate" title={currentLocation}>
+                {currentLocation}
               </span>
             </div>
           </div>

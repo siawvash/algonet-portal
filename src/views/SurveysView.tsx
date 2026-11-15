@@ -134,7 +134,7 @@ export const SurveysView: React.FC<SurveysViewProps> = ({
 
       {/* Survey Answer Modal */}
       {activeSurvey && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
           <div
             className="w-full max-w-lg rounded-[32px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] p-6 shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] relative text-right font-['Vazirmatn']"
             onClick={(e) => e.stopPropagation()}
