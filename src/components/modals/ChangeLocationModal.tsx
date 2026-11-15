@@ -9,7 +9,7 @@ interface ChangeLocationModalProps {
   locations?: string[];
 }
 
-export const LOCATION_OPTIONS = [
+const DEFAULT_LOCATIONS = [
   'دفتر مرکزی (تهران) · طبقه ۲',
   'دفتر مرکزی (تهران) · طبقه ۳',
   'شعبه پارک فناوری پردیس',
@@ -23,7 +23,7 @@ export const ChangeLocationModal: React.FC<ChangeLocationModalProps> = ({
   onClose,
   currentLocation,
   onSaveLocation,
-  locations = LOCATION_OPTIONS
+  locations = DEFAULT_LOCATIONS
 }) => {
   useEffect(() => {
     if (isOpen) {
