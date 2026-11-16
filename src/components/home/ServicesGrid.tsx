@@ -72,7 +72,7 @@ export const ALL_SERVICES: PortalServiceItem[] = [
     categoryTitle: 'Data & ML Platform',
     description: 'پلتفرم تخصصی جریان‌های یادگیری ماشین و آموزش مدل‌های هوش مصنوعی',
     url: 'https://kubeflow.algonet.ir',
-    iconName: 'general.svg'
+    iconName: 'kubeflow.svg'
   },
   {
     id: 'labelstudio',
@@ -94,7 +94,7 @@ export const ALL_SERVICES: PortalServiceItem[] = [
     categoryTitle: 'Data & ML Platform',
     description: 'مدیریت چرخه حیات مدل‌های هوش مصنوعی، رهگیری آزمایش‌ها و استقرار',
     url: 'https://mlflow.algonet.ir',
-    iconName: 'general.svg'
+    iconName: 'mlflow.svg'
   },
   {
     id: 'nessie',
@@ -105,7 +105,7 @@ export const ALL_SERVICES: PortalServiceItem[] = [
     categoryTitle: 'Data & ML Platform',
     description: 'کاتالوگ تراکنشی و گیت‌مانند برای جداول آیسبرگ و دریاچه‌های داده',
     url: 'https://nessie.algonet.ir',
-    iconName: 'general.svg'
+    iconName: 'nessie.svg'
   },
   {
     id: 'openmetadata',

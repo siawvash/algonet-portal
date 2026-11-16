@@ -30,7 +30,7 @@ export const Service3DIcon: React.FC<Service3DIconProps> = ({
     'word-monitor': 'general',
     'nextcloud': 'nextcloud',
     'spark': 'spark',
-    'kubeflow': 'general',
+    'kubeflow': 'kubeflow',
     'meet': 'jitsi',
     'wiki': 'wikijs',
     'time-sheet': 'time',
@@ -42,8 +42,9 @@ export const Service3DIcon: React.FC<Service3DIconProps> = ({
     'airflow': 'airflow',
     'openmetadata': 'openmetadata',
     'lakefs': 'lakefs',
-    'mlflow': 'general',
-    'nessie': 'general'
+    'mlflow': 'mlflow',
+    'nessie': 'nessie',
+    'iceberg': 'iceberg'
   };
 
   // Determine clean icon filename without extension
@@ -55,31 +56,31 @@ export const Service3DIcon: React.FC<Service3DIconProps> = ({
     <div className={`relative flex items-center justify-center ${className} select-none pointer-events-none`}>
       {/* Light Mode: #6768ff colored icon */}
       <img
-        src={`/icons/light/${rawName}.svg?v=8`}
+        src={`/icons/light/${rawName}.svg?v=9`}
         alt={rawName}
         className="size-full object-contain filter drop-shadow-[0_4px_12px_rgba(103,104,255,0.25)] select-none pointer-events-none transition-transform duration-300 group-hover:scale-105 dark:hidden"
         loading="lazy"
         onError={(e) => {
           const target = e.currentTarget as HTMLImageElement;
           if (!target.src.includes('.png')) {
-            target.src = `/icons/light/${rawName}.png`;
+            target.src = `/icons/light/${rawName}.png?v=9`;
           } else if (!target.src.includes('/assets/icons/services/')) {
-            target.src = `/assets/icons/services/light/${rawName}.svg?v=8`;
+            target.src = `/assets/icons/services/light/${rawName}.svg?v=9`;
           }
         }}
       />
       {/* Dark Mode: Pure White (#ffffff) 3D layered icon */}
       <img
-        src={`/icons/dark/${rawName}.svg?v=8`}
+        src={`/icons/dark/${rawName}.svg?v=9`}
         alt={rawName}
         className="size-full object-contain filter drop-shadow-[0_4px_14px_rgba(0,0,0,0.35)] select-none pointer-events-none transition-transform duration-300 group-hover:scale-105 hidden dark:block"
         loading="lazy"
         onError={(e) => {
           const target = e.currentTarget as HTMLImageElement;
           if (!target.src.includes('.png')) {
-            target.src = `/icons/dark/${rawName}.png`;
+            target.src = `/icons/dark/${rawName}.png?v=9`;
           } else if (!target.src.includes('/assets/icons/services/')) {
-            target.src = `/assets/icons/services/dark/${rawName}.svg?v=8`;
+            target.src = `/assets/icons/services/dark/${rawName}.svg?v=9`;
           }
         }}
       />
