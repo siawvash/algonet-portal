@@ -52,7 +52,7 @@ const SAMPLE_14_DAYS: DailyMetric[] = [
   { id: 14, dayNum: '25', dayName: 'جمعه', fullDate: 'جمعه ۲۵ آبان (تعطیل)', attendance: 0, worklog: 0, isWeekend: true },
 ];
 
-// Sample project share distribution for "سهم پروژه‌ها"
+// Sample project share distribution for "سهم پروژه‌ها" (یکپارچه با ۱۴۲.۵ ساعت کارکرد دوره جاری)
 interface ProjectShare {
   id: string;
   name: string;
@@ -66,8 +66,8 @@ const SAMPLE_PROJECT_SHARES: ProjectShare[] = [
   {
     id: 'elgoteria',
     name: 'الگوتریا',
-    percentage: 42,
-    hours: 36.4,
+    percentage: 40,
+    hours: 57.0,
     color: '#666cff',
     gradientClass: 'from-[#666cff] to-[#8c90ff]'
   },
@@ -75,23 +75,23 @@ const SAMPLE_PROJECT_SHARES: ProjectShare[] = [
     id: 'portal-test',
     name: 'تست پروژه پورتال',
     percentage: 28,
-    hours: 24.2,
+    hours: 39.9,
     color: '#00cfe8',
     gradientClass: 'from-[#00cfe8] to-[#2dd4bf]'
   },
   {
     id: 'sso-auth',
     name: 'سامانه احراز هویت (SSO)',
-    percentage: 18,
-    hours: 15.6,
+    percentage: 17,
+    hours: 24.2,
     color: '#28c76f',
     gradientClass: 'from-[#28c76f] to-[#48da89]'
   },
   {
     id: 'other',
     name: 'سایر و جلسات تیمی',
-    percentage: 12,
-    hours: 10.4,
+    percentage: 15,
+    hours: 21.4,
     color: '#ff9f43',
     gradientClass: 'from-[#ff9f43] to-[#ffb976]'
   }
@@ -150,7 +150,6 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
   // Compute donut chart geometry
   const radius = 62;
   const circumference = 2 * Math.PI * radius; // ~389.55
-  let cumulativePercentage = 0;
 
   return (
     <div className="space-y-6 pb-16 animate-in fade-in duration-200 select-none">
@@ -552,7 +551,7 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
                 </h2>
               </div>
               <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1]">
-                از مجموع Worklog دوره
+                از مجموع Worklog دوره ({toPersianDigits('142.5')} ساعت)
               </p>
             </div>
 
@@ -576,10 +575,10 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
                 />
 
                 {/* Slices */}
-                {SAMPLE_PROJECT_SHARES.map((project) => {
+                {SAMPLE_PROJECT_SHARES.map((project, idx) => {
+                  const prevPercentages = SAMPLE_PROJECT_SHARES.slice(0, idx).reduce((sum, p) => sum + p.percentage, 0);
                   const dashArray = (project.percentage / 100) * circumference;
-                  const dashOffset = -((cumulativePercentage / 100) * circumference);
-                  cumulativePercentage += project.percentage;
+                  const dashOffset = -((prevPercentages / 100) * circumference);
 
                   const isHovered = hoveredProjectId === project.id;
 
@@ -610,12 +609,12 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
                     ? toPersianDigits(
                         SAMPLE_PROJECT_SHARES.find((p) => p.id === hoveredProjectId)?.percentage || 100
                       ) + '٪'
-                    : toPersianDigits('86.6')}
+                    : toPersianDigits('142.5')}
                 </span>
                 <span className="font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1] font-medium">
                   {hoveredProjectId
                     ? SAMPLE_PROJECT_SHARES.find((p) => p.id === hoveredProjectId)?.name
-                    : 'ساعت کارکرد کل'}
+                    : 'ساعت کارکرد کل دوره'}
                 </span>
               </div>
             </div>
@@ -681,10 +680,13 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
         {/* Card 1 (Right): مرخصی */}
         <div className="rounded-[24px] sm:rounded-[28px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.4)] p-6 sm:p-7 flex flex-col justify-between text-right">
-          <div className="pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
+          <div className="pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59] flex items-center justify-between">
             <h2 className="font-['Vazirmatn'] font-bold text-base sm:text-lg text-[#1e1e2d] dark:text-[#eaeafb]">
               مرخصی
             </h2>
+            <span className="text-xs font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1]">
+              دوره جاری
+            </span>
           </div>
 
           <div className="divide-y divide-[#e0e2ec] dark:divide-[#3d3f59] py-2 flex-1 flex flex-col justify-around">
@@ -695,21 +697,26 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
                   استحقاقی استفاده‌شده
                 </span>
                 <span className="font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1] block">
-                  سهمیه مرخصی دوره موجود نیست
+                  باقی‌مانده سهمیه ماه: {toPersianDigits('0.5')} روز ({toPersianDigits('4')} ساعت)
                 </span>
               </div>
-              <span className="font-['Vazirmatn'] font-bold text-xs sm:text-sm text-[#62657a] dark:text-[#8386a1]">
-                نامشخص
+              <span className="font-['Vazirmatn'] font-bold text-xs sm:text-sm text-[#1e1e2d] dark:text-[#eaeafb]">
+                {toPersianDigits('2')} روز ({toPersianDigits('16')} ساعت)
               </span>
             </div>
 
             {/* استعلاجی */}
             <div className="py-3.5 flex items-center justify-between gap-3">
-              <span className="font-['Vazirmatn'] font-medium text-xs sm:text-sm text-[#1e1e2d] dark:text-[#eaeafb]">
-                استعلاجی
-              </span>
-              <span className="font-['Vazirmatn'] font-bold text-xs sm:text-sm text-[#62657a] dark:text-[#8386a1]">
-                نامشخص
+              <div className="space-y-0.5">
+                <span className="font-['Vazirmatn'] font-medium text-xs sm:text-sm text-[#1e1e2d] dark:text-[#eaeafb]">
+                  استعلاجی
+                </span>
+                <span className="font-['Vazirmatn'] text-[11px] text-[#28c76f] block">
+                  بدون غیبت پزشکی در دوره
+                </span>
+              </div>
+              <span className="font-['Vazirmatn'] font-bold text-xs sm:text-sm text-[#28c76f]">
+                {toPersianDigits('0')} روز
               </span>
             </div>
           </div>
@@ -717,10 +724,13 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
 
         {/* Card 2 (Middle): جایگاه من */}
         <div className="rounded-[24px] sm:rounded-[28px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.4)] p-6 sm:p-7 flex flex-col justify-between text-right">
-          <div className="pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
+          <div className="pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59] flex items-center justify-between">
             <h2 className="font-['Vazirmatn'] font-bold text-base sm:text-lg text-[#1e1e2d] dark:text-[#eaeafb]">
               جایگاه من
             </h2>
+            <span className="text-xs font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1]">
+              رتبه‌بندی تیمی
+            </span>
           </div>
 
           <div className="py-2 space-y-3.5 flex-1 flex flex-col justify-around">
@@ -734,8 +744,8 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
                   رتبه حضور
                 </span>
               </div>
-              <span className="font-['Vazirmatn'] font-bold text-base text-[#1e1e2d] dark:text-[#eaeafb]">
-                —
+              <span className="font-['Vazirmatn'] font-bold text-sm text-[#1e1e2d] dark:text-[#eaeafb]">
+                {toPersianDigits('4')} از {toPersianDigits('28')} نفر
               </span>
             </div>
 
@@ -749,8 +759,8 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
                   رتبه Worklog
                 </span>
               </div>
-              <span className="font-['Vazirmatn'] font-bold text-base text-[#1e1e2d] dark:text-[#eaeafb]">
-                —
+              <span className="font-['Vazirmatn'] font-bold text-sm text-[#ffb800]">
+                {toPersianDigits('2')} از {toPersianDigits('28')} نفر
               </span>
             </div>
 
@@ -767,8 +777,8 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
                   تیم اصلی
                 </span>
               </div>
-              <span className="font-['Vazirmatn'] text-xs font-semibold text-[#62657a] dark:text-[#8386a1]">
-                —
+              <span className="font-['Vazirmatn'] text-xs font-semibold text-[#1e1e2d] dark:text-[#eaeafb]">
+                توسعه نرم‌افزار (پلتفرم)
               </span>
             </div>
           </div>
@@ -776,31 +786,17 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
 
         {/* Card 3 (Left): پروژه‌های من */}
         <div className="rounded-[24px] sm:rounded-[28px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.4)] p-6 sm:p-7 flex flex-col justify-between text-right">
-          <div className="pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
+          <div className="pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59] flex items-center justify-between">
             <h2 className="font-['Vazirmatn'] font-bold text-base sm:text-lg text-[#1e1e2d] dark:text-[#eaeafb]">
               پروژه‌های من
             </h2>
+            <span className="text-xs font-['Vazirmatn'] font-medium text-[#62657a] dark:text-[#8386a1]">
+              {toPersianDigits('3')} پروژه فعال
+            </span>
           </div>
 
           <div className="divide-y divide-[#e0e2ec] dark:divide-[#3d3f59] py-1 flex-1 flex flex-col justify-around">
-            {/* Project 1 */}
-            <div className="py-2.5 flex items-center justify-between gap-3 group">
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="size-8 rounded-xl bg-[#666cff]/10 dark:bg-[#666cff]/20 text-[#666cff] dark:text-[#8c90ff] flex items-center justify-center shrink-0 border border-[#666cff]/20 group-hover:scale-105 transition-transform">
-                  <FolderGit2 className="size-4" />
-                </div>
-                <div className="space-y-0.5 truncate">
-                  <span className="font-['Vazirmatn'] font-medium text-xs sm:text-sm text-[#1e1e2d] dark:text-[#eaeafb] block truncate">
-                    تعداد تسک‌های باز: نامشخص
-                  </span>
-                </div>
-              </div>
-              <span className="font-['Vazirmatn'] text-xs font-bold text-[#62657a] dark:text-[#8386a1] shrink-0">
-                نامشخص
-              </span>
-            </div>
-
-            {/* Project 2: الگوتریا */}
+            {/* Project 1: الگوتریا */}
             <div className="py-2.5 flex items-center justify-between gap-3 group">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="size-8 rounded-xl bg-[#666cff]/10 dark:bg-[#666cff]/20 text-[#666cff] dark:text-[#8c90ff] flex items-center justify-center shrink-0 border border-[#666cff]/20 group-hover:scale-105 transition-transform">
@@ -811,19 +807,19 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
                     الگوتریا
                   </span>
                   <span className="font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1] block truncate">
-                    تعداد تسک‌های باز: نامشخص
+                    تعداد تسک‌های باز: {toPersianDigits('5')} تسک
                   </span>
                 </div>
               </div>
-              <span className="font-['Vazirmatn'] text-xs font-bold text-[#62657a] dark:text-[#8386a1] shrink-0">
-                نامشخص
+              <span className="font-['Vazirmatn'] text-xs font-bold text-[#666cff] dark:text-[#8c90ff] shrink-0">
+                {toPersianDigits('57')} ساعت ({toPersianDigits('40')}٪)
               </span>
             </div>
 
-            {/* Project 3: تست پروژه پورتال */}
+            {/* Project 2: تست پروژه پورتال */}
             <div className="py-2.5 flex items-center justify-between gap-3 group">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="size-8 rounded-xl bg-[#666cff]/10 dark:bg-[#666cff]/20 text-[#666cff] dark:text-[#8c90ff] flex items-center justify-center shrink-0 border border-[#666cff]/20 group-hover:scale-105 transition-transform">
+                <div className="size-8 rounded-xl bg-[#00cfe8]/10 dark:bg-[#00cfe8]/20 text-[#00cfe8] border border-[#00cfe8]/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                   <FolderGit2 className="size-4" />
                 </div>
                 <div className="space-y-0.5 truncate">
@@ -831,12 +827,32 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
                     تست پروژه پورتال
                   </span>
                   <span className="font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1] block truncate">
-                    تعداد تسک‌های باز: نامشخص
+                    تعداد تسک‌های باز: {toPersianDigits('3')} تسک
                   </span>
                 </div>
               </div>
-              <span className="font-['Vazirmatn'] text-xs font-bold text-[#62657a] dark:text-[#8386a1] shrink-0">
-                نامشخص
+              <span className="font-['Vazirmatn'] text-xs font-bold text-[#00cfe8] shrink-0">
+                {toPersianDigits('40')} ساعت ({toPersianDigits('28')}٪)
+              </span>
+            </div>
+
+            {/* Project 3: سامانه احراز هویت (SSO) */}
+            <div className="py-2.5 flex items-center justify-between gap-3 group">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="size-8 rounded-xl bg-[#28c76f]/10 dark:bg-[#28c76f]/20 text-[#28c76f] flex items-center justify-center shrink-0 border border-[#28c76f]/20 group-hover:scale-105 transition-transform">
+                  <FolderGit2 className="size-4" />
+                </div>
+                <div className="space-y-0.5 truncate">
+                  <span className="font-['Vazirmatn'] font-semibold text-xs sm:text-sm text-[#1e1e2d] dark:text-[#eaeafb] block truncate">
+                    سامانه احراز هویت (SSO)
+                  </span>
+                  <span className="font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1] block truncate">
+                    تعداد تسک‌های باز: {toPersianDigits('2')} تسک
+                  </span>
+                </div>
+              </div>
+              <span className="font-['Vazirmatn'] text-xs font-bold text-[#28c76f] shrink-0">
+                {toPersianDigits('24')} ساعت ({toPersianDigits('17')}٪)
               </span>
             </div>
           </div>
