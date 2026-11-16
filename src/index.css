@@ -297,6 +297,7 @@ html:not(.dark) .text-\[\#eaeafb\],
 html:not(.dark) .text-\[\#dbdcf5\],
 html:not(.dark) .text-\[\#f3f2f7\],
 html:not(.dark) .text-\[\#f0eef8\],
+html:not(.dark) .text-\[\#d8daeb\],
 html:not(.dark) .text-\[\#ede9ff\] {
   color: #1e1e2d !important;
 }

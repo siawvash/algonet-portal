@@ -497,16 +497,16 @@ export const ProfileView: React.FC<ProfileViewProps> = () => {
           </p>
         </div>
 
-        {/* Warning Alert Banner (Figma AlgonetAlertError / Harmonious Dark Ruby Tone) */}
+        {/* Warning Alert Banner (Harmonious Dual Light/Dark Theme Tone) */}
         <div className="rounded-[18px] bg-[#ea5455]/10 border border-[#ea5455]/25 p-4 sm:p-5 flex items-start gap-3.5 text-right shadow-sm">
-          <div className="size-10 rounded-xl bg-[#ea5455]/15 border border-[#ea5455]/30 flex items-center justify-center shrink-0 text-[#ff7875] mt-0.5">
-            <ShieldAlert className="size-5 text-[#ff7875]" />
+          <div className="size-10 rounded-xl bg-[#ea5455]/15 border border-[#ea5455]/30 flex items-center justify-center shrink-0 text-[#ea5455] dark:text-[#ff7875] mt-0.5">
+            <ShieldAlert className="size-5 text-[#ea5455] dark:text-[#ff7875]" />
           </div>
           <div className="space-y-1">
-            <h3 className="font-['Vazirmatn'] font-bold text-xs sm:text-sm text-[#ff7875]">
+            <h3 className="font-['Vazirmatn'] font-bold text-xs sm:text-sm text-[#b91c1c] dark:text-[#ff7875]">
               هیچ دستگاه معتبری به نام شما ثبت نشده است.
             </h3>
-            <p className="font-['Vazirmatn'] text-xs text-[#d8daeb] leading-relaxed">
+            <p className="font-['Vazirmatn'] text-xs text-[#7f1d1d] dark:text-[#d8daeb] leading-relaxed font-medium">
               هیچ دستگاهی در شبکه با گواهی معتبر به نام شما وجود ندارد. لطفاً هرچه سریع‌تر به واحد فناوری اطلاعات مراجعه کنید.
             </p>
           </div>
