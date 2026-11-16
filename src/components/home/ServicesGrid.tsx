@@ -29,17 +29,131 @@ export interface CategorySectionDef {
   persianSub: string;
 }
 
-// Portal Services Definitions - Algonet (Order: General Services first as requested)
+// Portal Services Definitions - Algonet (Order matches the official portal view)
 export const CATEGORY_SECTIONS: CategorySectionDef[] = [
-  { id: 'general-services', title: 'General Services', persianSub: 'سرویس‌های عمومی' },
+  { id: 'data-ml', title: 'Data & ML Platform', persianSub: 'پلتفرم داده و هوش مصنوعی' },
   { id: 'company-projects', title: 'Company Projects', persianSub: 'پروژه‌های سازمانی' },
-  { id: 'idp', title: 'Internal Development Platform (IDP)', persianSub: 'پلتفرم توسعه داخلی' },
-  { id: 'data-ml', title: 'Data & ML Platform', persianSub: 'پلتفرم داده و هوش مصنوعی' }
+  { id: 'general-services', title: 'General Services', persianSub: 'سرویس‌های عمومی' },
+  { id: 'idp', title: 'Internal Development Platform (IDP)', persianSub: 'پلتفرم توسعه داخلی' }
 ];
 
 export const ALL_SERVICES: PortalServiceItem[] = [
   // =========================================================================
-  // ۱. Company Projects (پروژه‌های سازمانی) - Order in RTL: Algoagent, Annatopia, Arzyab, Asr-Datalake ...
+  // ۱. Data & ML Platform (پلتفرم داده و هوش مصنوعی - ۱۰ سرویس)
+  // =========================================================================
+  {
+    id: 'airflow',
+    englishName: 'Airflow',
+    persianTitle: 'ارکستراسیون ایرفلو',
+    role: 'Data Pipeline Orchestration',
+    category: 'data-ml',
+    categoryTitle: 'Data & ML Platform',
+    description: 'سامانه مدیریت و ارکستراسیون پایپ‌لاین‌های داده و جریان‌های کاری ETL',
+    url: 'https://airflow.algonet.ir',
+    iconName: 'airflow.svg'
+  },
+  {
+    id: 'iceberg',
+    englishName: 'Iceberg',
+    persianTitle: 'کاتالوگ داده آیسبرگ',
+    role: 'Data Lake Table Format',
+    category: 'data-ml',
+    categoryTitle: 'Data & ML Platform',
+    description: 'مدیریت فرمت جداول دریاچه داده (Lakehouse)، متادیتا و ذخیره‌سازی',
+    url: 'https://iceberg.algonet.ir',
+    iconName: 'iceberg.svg'
+  },
+  {
+    id: 'kubeflow',
+    englishName: 'Kubeflow',
+    persianTitle: 'پلتفرم یادگیری ماشین کیوب‌فلو',
+    role: 'ML Workflow & Model Training',
+    category: 'data-ml',
+    categoryTitle: 'Data & ML Platform',
+    description: 'پلتفرم تخصصی جریان‌های یادگیری ماشین و آموزش مدل‌های هوش مصنوعی',
+    url: 'https://kubeflow.algonet.ir',
+    iconName: 'general.svg'
+  },
+  {
+    id: 'labelstudio',
+    englishName: 'Labelstudio',
+    persianTitle: 'برچسب‌گذاری داده',
+    role: 'Data Labeling',
+    category: 'data-ml',
+    categoryTitle: 'Data & ML Platform',
+    description: 'سکوی برچسب‌گذاری داده‌ها و آماده‌سازی برای مدل‌های یادگیری ماشین',
+    url: 'https://labelstudio.algonet.ir',
+    iconName: 'labelstudio.svg'
+  },
+  {
+    id: 'mlflow',
+    englishName: 'Mlflow',
+    persianTitle: 'مدیریت مدل ام‌ال‌فلو',
+    role: 'ML Lifecycle Management',
+    category: 'data-ml',
+    categoryTitle: 'Data & ML Platform',
+    description: 'مدیریت چرخه حیات مدل‌های هوش مصنوعی، رهگیری آزمایش‌ها و استقرار',
+    url: 'https://mlflow.algonet.ir',
+    iconName: 'general.svg'
+  },
+  {
+    id: 'nessie',
+    englishName: 'Nessie',
+    persianTitle: 'کاتالوگ لیک‌هاوس نسی',
+    role: 'Data Lakehouse Catalog',
+    category: 'data-ml',
+    categoryTitle: 'Data & ML Platform',
+    description: 'کاتالوگ تراکنشی و گیت‌مانند برای جداول آیسبرگ و دریاچه‌های داده',
+    url: 'https://nessie.algonet.ir',
+    iconName: 'general.svg'
+  },
+  {
+    id: 'openmetadata',
+    englishName: 'Openmetadata',
+    persianTitle: 'کاتالوگ متادیتا',
+    role: 'Data Catalog & Metadata',
+    category: 'data-ml',
+    categoryTitle: 'Data & ML Platform',
+    description: 'کاتالوگ جامع داده، حاکمیت، تبارشناسی (Lineage) و کشف متادیتا',
+    url: 'https://datahub.algonet.ir',
+    iconName: 'openmetadata.svg'
+  },
+  {
+    id: 'ranger',
+    englishName: 'Ranger',
+    persianTitle: 'امنیت و پالیسی داده',
+    role: 'Data Access Governance',
+    category: 'data-ml',
+    categoryTitle: 'Data & ML Platform',
+    description: 'مدیریت دسترسی‌های امنیتی، کنترل مجوزها و حاکمیت داده سازمانی',
+    url: 'https://ranger.algonet.ir',
+    iconName: 'ranger.svg'
+  },
+  {
+    id: 'spark',
+    englishName: 'Spark',
+    persianTitle: 'پردازش توزیع‌شده اسپارک',
+    role: 'Distributed Data Processing',
+    category: 'data-ml',
+    categoryTitle: 'Data & ML Platform',
+    description: 'موتور محاسباتی مقیاس‌پذیر برای پردازش توزیع‌شده کلان‌داده‌ها',
+    url: 'https://spark.algonet.ir',
+    iconName: 'spark.svg'
+  },
+  {
+    id: 'lakefs',
+    englishName: 'lakeFS',
+    persianTitle: 'کنترل نسخه داده لیک‌اف‌اس',
+    role: 'Data Version Control',
+    category: 'data-ml',
+    categoryTitle: 'Data & ML Platform',
+    description: 'کنترل نسخه به سبک گیت برای دریاچه‌های کلان‌داده و مدیریت تغییرات آبجکت‌ها',
+    url: 'https://lakefs.algonet.ir',
+    iconName: 'lakefs.svg'
+  },
+
+  // =========================================================================
+  // ۲. Company Projects (پروژه‌های سازمانی - ۱۱ سرویس)
   // =========================================================================
   {
     id: 'algoagent',
@@ -54,7 +168,7 @@ export const ALL_SERVICES: PortalServiceItem[] = [
   },
   {
     id: 'annotopia',
-    englishName: 'Annatopia',
+    englishName: 'Annotopia',
     persianTitle: 'آناتوپیا',
     role: 'Annotation service',
     category: 'company-projects',
@@ -164,7 +278,7 @@ export const ALL_SERVICES: PortalServiceItem[] = [
   },
 
   // =========================================================================
-  // ۲. General Services (سرویس‌های عمومی) - Order in RTL: Algoteria, Mail, Nextcloud, Mattermost ...
+  // ۳. General Services (سرویس‌های عمومی - ۹ سرویس)
   // =========================================================================
   {
     id: 'algoteria',
@@ -267,7 +381,7 @@ export const ALL_SERVICES: PortalServiceItem[] = [
   },
 
   // =========================================================================
-  // ۳. Internal Development Platform (IDP) - Order in RTL: Headlamp, Gitlab, Nexus, Devslot
+  // ۴. Internal Development Platform (IDP - ۴ سرویس)
   // =========================================================================
   {
     id: 'headlamp',
@@ -312,65 +426,6 @@ export const ALL_SERVICES: PortalServiceItem[] = [
     description: 'اسلات‌های ابری توسعه‌دهندگان، محیط‌های پیش‌نمایش و تست ابری',
     url: 'https://devslot.algonet.ir',
     iconName: 'devslot.svg'
-  },
-
-  // =========================================================================
-  // ۴. Data & ML Platform (پلتفرم داده و هوش مصنوعی) - Order in RTL: Iceberg, Kubeflow, Labelstudio, Ranger, Spark
-  // =========================================================================
-  {
-    id: 'iceberg',
-    englishName: 'Iceberg',
-    persianTitle: 'کاتالوگ داده',
-    role: 'Data Lake Table Format',
-    category: 'data-ml',
-    categoryTitle: 'Data & ML Platform',
-    description: 'مدیریت فرمت جداول دریاچه داده (Lakehouse)، متادیتا و ذخیره‌سازی',
-    url: 'https://iceberg.algonet.ir',
-    iconName: 'iceberg.svg'
-  },
-  {
-    id: 'kubeflow',
-    englishName: 'Kubeflow',
-    persianTitle: 'پلتفرم یادگیری ماشین کیوب‌فلو',
-    role: 'ML Workflow & Model Training',
-    category: 'data-ml',
-    categoryTitle: 'Data & ML Platform',
-    description: 'پلتفرم تخصصی جریان‌های یادگیری ماشین و آموزش مدل‌های هوش مصنوعی',
-    url: 'https://kubeflow.algonet.ir',
-    iconName: 'general.svg'
-  },
-  {
-    id: 'labelstudio',
-    englishName: 'Labelstudio',
-    persianTitle: 'برچسب‌گذاری داده',
-    role: 'Data Labeling',
-    category: 'data-ml',
-    categoryTitle: 'Data & ML Platform',
-    description: 'سکوی برچسب‌گذاری داده‌ها و آماده‌سازی برای مدل‌های یادگیری ماشین',
-    url: 'https://labelstudio.algonet.ir',
-    iconName: 'labelstudio.svg'
-  },
-  {
-    id: 'ranger',
-    englishName: 'Ranger',
-    persianTitle: 'امنیت و پالیسی داده',
-    role: 'Data Access Governance',
-    category: 'data-ml',
-    categoryTitle: 'Data & ML Platform',
-    description: 'مدیریت دسترسی‌های امنیتی، کنترل مجوزها و حاکمیت داده سازمانی',
-    url: 'https://ranger.algonet.ir',
-    iconName: 'ranger.svg'
-  },
-  {
-    id: 'spark',
-    englishName: 'Spark',
-    persianTitle: 'پردازش توزیع‌شده اسپارک',
-    role: 'Distributed Data Processing',
-    category: 'data-ml',
-    categoryTitle: 'Data & ML Platform',
-    description: 'موتور محاسباتی مقیاس‌پذیر برای پردازش توزیع‌شده کلان‌داده‌ها',
-    url: 'https://spark.algonet.ir',
-    iconName: 'spark.svg'
   }
 ];
 

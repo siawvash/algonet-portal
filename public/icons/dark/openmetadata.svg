@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="om-grad-dark" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <!-- OpenMetadata M-shaped emblem -->
+    <path d="M14,48 L14,20 C14,15.5 17.5,12 22,12 C26.5,12 30,15.5 32,19 C34,15.5 37.5,12 42,12 C46.5,12 50,15.5 50,20 L50,48 C50,50.2 48.2,52 46,52 L42,52 C39.8,52 38,50.2 38,48 L38,26 C38,23.8 36.2,22 34,22 L30,22 C27.8,22 26,23.8 26,26 L26,48 C26,50.2 24.2,52 22,52 L18,52 C15.8,52 14,50.2 14,48 Z" fill="url(#om-grad-dark)" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Central Node Eyes / Data points -->
+    <circle cx="26" cy="34" r="3.5" fill="#ffffff"/>
+    <circle cx="38" cy="34" r="3.5" fill="#ffffff"/>
+  </g>
+</svg>

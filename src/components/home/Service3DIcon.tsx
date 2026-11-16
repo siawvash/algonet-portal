@@ -38,7 +38,12 @@ export const Service3DIcon: React.FC<Service3DIconProps> = ({
     'chat': 'mattermost',
     'git': 'gitlab',
     'timesheet': 'time',
-    'pm': 'openproject'
+    'pm': 'openproject',
+    'airflow': 'airflow',
+    'openmetadata': 'openmetadata',
+    'lakefs': 'lakefs',
+    'mlflow': 'general',
+    'nessie': 'general'
   };
 
   // Determine clean icon filename without extension

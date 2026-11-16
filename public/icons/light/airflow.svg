@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="af-grad-light" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6768ff" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#6768ff" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <!-- Airflow 4 Pinwheel Blades -->
+  <g>
+    <!-- Top Blade -->
+    <path d="M32,32 L32,10 C32,10 44,12 44,24 L32,32 Z" fill="url(#af-grad-light)" stroke="#6768ff" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Right Blade -->
+    <path d="M32,32 L54,32 C54,32 52,44 40,44 L32,32 Z" fill="url(#af-grad-light)" stroke="#6768ff" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Bottom Blade -->
+    <path d="M32,32 L32,54 C32,54 20,52 20,40 L32,32 Z" fill="url(#af-grad-light)" stroke="#6768ff" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Left Blade -->
+    <path d="M32,32 L10,32 C10,32 12,20 24,20 L32,32 Z" fill="url(#af-grad-light)" stroke="#6768ff" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Center Dot -->
+    <circle cx="32" cy="32" r="4.5" fill="#6768ff"/>
+  </g>
+</svg>
