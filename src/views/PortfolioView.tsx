@@ -59,7 +59,10 @@ interface ProjectShare {
   percentage: number;
   hours: number;
   color: string;
-  gradientClass: string;
+  gradientFrom: string;
+  gradientTo: string;
+  badgeBg: string;
+  badgeText: string;
 }
 
 const SAMPLE_PROJECT_SHARES: ProjectShare[] = [
@@ -69,7 +72,10 @@ const SAMPLE_PROJECT_SHARES: ProjectShare[] = [
     percentage: 40,
     hours: 57.0,
     color: '#666cff',
-    gradientClass: 'from-[#666cff] to-[#8c90ff]'
+    gradientFrom: '#8c90ff',
+    gradientTo: '#666cff',
+    badgeBg: 'bg-[#666cff]/10 dark:bg-[#666cff]/20',
+    badgeText: 'text-[#666cff] dark:text-[#8c90ff]'
   },
   {
     id: 'portal-test',
@@ -77,7 +83,10 @@ const SAMPLE_PROJECT_SHARES: ProjectShare[] = [
     percentage: 28,
     hours: 39.9,
     color: '#00cfe8',
-    gradientClass: 'from-[#00cfe8] to-[#2dd4bf]'
+    gradientFrom: '#2dd4bf',
+    gradientTo: '#00cfe8',
+    badgeBg: 'bg-[#00cfe8]/10 dark:bg-[#00cfe8]/20',
+    badgeText: 'text-[#00cfe8]'
   },
   {
     id: 'sso-auth',
@@ -85,7 +94,10 @@ const SAMPLE_PROJECT_SHARES: ProjectShare[] = [
     percentage: 17,
     hours: 24.2,
     color: '#28c76f',
-    gradientClass: 'from-[#28c76f] to-[#48da89]'
+    gradientFrom: '#48da89',
+    gradientTo: '#28c76f',
+    badgeBg: 'bg-[#28c76f]/10 dark:bg-[#28c76f]/20',
+    badgeText: 'text-[#28c76f]'
   },
   {
     id: 'other',
@@ -93,7 +105,10 @@ const SAMPLE_PROJECT_SHARES: ProjectShare[] = [
     percentage: 15,
     hours: 21.4,
     color: '#ff9f43',
-    gradientClass: 'from-[#ff9f43] to-[#ffb976]'
+    gradientFrom: '#ffb976',
+    gradientTo: '#ff9f43',
+    badgeBg: 'bg-[#ff9f43]/10 dark:bg-[#ff9f43]/20',
+    badgeText: 'text-[#ff9f43]'
   }
 ];
 
@@ -148,8 +163,10 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
   }, []);
 
   // Compute donut chart geometry
-  const radius = 62;
-  const circumference = 2 * Math.PI * radius; // ~389.55
+  const radius = 66;
+  const circumference = 2 * Math.PI * radius; // ~414.69
+  const segmentGap = 6; // visual gap in px between arc segments
+  const totalGaps = SAMPLE_PROJECT_SHARES.length * segmentGap; // 24px
 
   return (
     <div className="space-y-6 pb-16 animate-in fade-in duration-200 select-none">
@@ -547,7 +564,9 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
           <div className="pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59] flex items-center justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <PieChart className="size-5 text-[#666cff] dark:text-[#8c90ff]" />
+                <div className="size-8 rounded-xl bg-[#666cff]/10 dark:bg-[#666cff]/20 text-[#666cff] dark:text-[#8c90ff] flex items-center justify-center shrink-0 border border-[#666cff]/20">
+                  <PieChart className="size-4" />
+                </div>
                 <h2 className="font-['Vazirmatn'] font-bold text-base sm:text-lg text-[#1e1e2d] dark:text-[#eaeafb]">
                   سهم پروژه‌ها
                 </h2>
@@ -557,46 +576,88 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
               </p>
             </div>
 
-            <span className="text-xs font-['Vazirmatn'] font-semibold text-[#666cff] dark:text-[#8c90ff] bg-[#666cff]/10 dark:bg-[#666cff]/20 px-2.5 py-1 rounded-full">
+            <span className="text-xs font-['Vazirmatn'] font-semibold text-[#666cff] dark:text-[#8c90ff] bg-[#666cff]/10 dark:bg-[#666cff]/20 px-3 py-1 rounded-full border border-[#666cff]/20 shadow-xs">
               {toPersianDigits('4')} پروژه
             </span>
           </div>
 
           {/* Donut Chart Visual Area */}
-          <div className="py-4 flex flex-col items-center justify-center">
-            <div className="relative size-44 sm:size-48 flex items-center justify-center">
-              <svg className="size-full -rotate-90" viewBox="0 0 160 160">
-                {/* Background Ring */}
+          <div className="py-5 flex flex-col items-center justify-center relative">
+            <div className="relative size-48 sm:size-52 flex items-center justify-center">
+              {/* Subtle ambient colored glow behind donut */}
+              <div
+                className="absolute inset-4 rounded-full blur-2xl transition-all duration-500 pointer-events-none opacity-40 dark:opacity-30"
+                style={{
+                  backgroundColor: hoveredProjectId
+                    ? SAMPLE_PROJECT_SHARES.find((p) => p.id === hoveredProjectId)?.color || '#666cff'
+                    : '#666cff'
+                }}
+              />
+
+              <svg className="size-full -rotate-90 overflow-visible" viewBox="0 0 190 190">
+                <defs>
+                  {/* Gradients for each project slice */}
+                  {SAMPLE_PROJECT_SHARES.map((p) => (
+                    <linearGradient key={`grad-${p.id}`} id={`grad-${p.id}`} x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor={p.gradientFrom} />
+                      <stop offset="100%" stopColor={p.gradientTo} />
+                    </linearGradient>
+                  ))}
+
+                  {/* Soft Drop Glow Filter for active slice */}
+                  <filter id="donutSliceGlow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="3.5" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                </defs>
+
+                {/* Subtle Background Track Ring */}
                 <circle
-                  cx="80"
-                  cy="80"
+                  cx="95"
+                  cy="95"
                   r={radius}
-                  className="stroke-[#f4f5fa] dark:stroke-[#383a54]"
-                  strokeWidth="16"
+                  className="stroke-[#f0f2f8] dark:stroke-[#25273c]"
+                  strokeWidth="14"
                   fill="transparent"
                 />
 
-                {/* Slices */}
-                {SAMPLE_PROJECT_SHARES.map((project, idx) => {
-                  const prevPercentages = SAMPLE_PROJECT_SHARES.slice(0, idx).reduce((sum, p) => sum + p.percentage, 0);
-                  const dashArray = (project.percentage / 100) * circumference;
-                  const dashOffset = -((prevPercentages / 100) * circumference);
+                {/* Inner 3D Disc */}
+                <circle
+                  cx="95"
+                  cy="95"
+                  r="52"
+                  className="fill-white dark:fill-[#25273c] stroke-[#e0e2ec] dark:stroke-[#3d3f59]/60 transition-colors duration-200"
+                  strokeWidth="1.2"
+                />
 
+                {/* Slices with segment gaps and rounded caps */}
+                {SAMPLE_PROJECT_SHARES.map((project, idx) => {
+                  const netCircumference = circumference - totalGaps;
+                  const dashLength = (project.percentage / 100) * netCircumference;
+                  const prevOffset = SAMPLE_PROJECT_SHARES.slice(0, idx).reduce(
+                    (sum, p) => sum + (p.percentage / 100) * netCircumference + segmentGap,
+                    0
+                  );
                   const isHovered = hoveredProjectId === project.id;
+                  const isAnyHovered = hoveredProjectId !== null;
 
                   return (
                     <circle
                       key={project.id}
-                      cx="80"
-                      cy="80"
+                      cx="95"
+                      cy="95"
                       r={radius}
-                      stroke={project.color}
-                      strokeWidth={isHovered ? 20 : 16}
-                      strokeDasharray={`${dashArray} ${circumference}`}
-                      strokeDashoffset={dashOffset}
+                      stroke={`url(#grad-${project.id})`}
+                      strokeWidth={isHovered ? 20 : 15}
+                      strokeDasharray={`${dashLength} ${circumference - dashLength}`}
+                      strokeDashoffset={-prevOffset}
                       strokeLinecap="round"
                       fill="transparent"
-                      className="transition-all duration-300 cursor-pointer"
+                      filter={isHovered ? 'url(#donutSliceGlow)' : undefined}
+                      className={`transition-all duration-300 cursor-pointer ${
+                        isAnyHovered && !isHovered ? 'opacity-35 scale-98' : 'opacity-100'
+                      }`}
+                      style={{ transformOrigin: '95px 95px' }}
                       onMouseEnter={() => setHoveredProjectId(project.id)}
                       onMouseLeave={() => setHoveredProjectId(null)}
                     />
@@ -604,66 +665,101 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
                 })}
               </svg>
 
-              {/* Center Info in Donut */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                <span className="font-['Vazirmatn'] font-bold text-2xl text-[#1e1e2d] dark:text-[#eaeafb]">
-                  {hoveredProjectId
-                    ? toPersianDigits(
-                        SAMPLE_PROJECT_SHARES.find((p) => p.id === hoveredProjectId)?.percentage || 100
-                      ) + '٪'
-                    : toPersianDigits('142.5')}
-                </span>
-                <span className="font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1] font-medium">
-                  {hoveredProjectId
-                    ? SAMPLE_PROJECT_SHARES.find((p) => p.id === hoveredProjectId)?.name
-                    : 'ساعت کارکرد کل دوره'}
-                </span>
+              {/* Center Info in Donut (Layered content) */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-4 select-none">
+                {hoveredProjectId ? (
+                  (() => {
+                    const activeProject = SAMPLE_PROJECT_SHARES.find((p) => p.id === hoveredProjectId);
+                    if (!activeProject) return null;
+                    return (
+                      <div className="flex flex-col items-center animate-in zoom-in-95 duration-150">
+                        <span
+                          className="text-[11px] font-semibold flex items-center gap-1.5 truncate max-w-[110px]"
+                          style={{ color: activeProject.color }}
+                        >
+                          <span
+                            className="size-2 rounded-full shrink-0 shadow-sm"
+                            style={{ backgroundColor: activeProject.color }}
+                          />
+                          {activeProject.name}
+                        </span>
+                        <span
+                          className="font-['Vazirmatn'] font-black text-3xl leading-none tracking-tight my-1"
+                          style={{ color: activeProject.color }}
+                        >
+                          {toPersianDigits(activeProject.percentage)}٪
+                        </span>
+                        <span className="text-[11px] font-medium text-[#62657a] dark:text-[#8386a1] bg-[#f4f5fa] dark:bg-[#34364d] px-2 py-0.5 rounded-full border border-[#e0e2ec] dark:border-[#42455f]">
+                          {toPersianDigits(activeProject.hours)} ساعت
+                        </span>
+                      </div>
+                    );
+                  })()
+                ) : (
+                  <div className="flex flex-col items-center animate-in fade-in duration-200">
+                    <span className="text-[10px] font-semibold text-[#666cff] dark:text-[#8c90ff] bg-[#666cff]/10 dark:bg-[#666cff]/20 px-2 py-0.5 rounded-full border border-[#666cff]/15">
+                      مجموع دوره
+                    </span>
+                    <span className="font-['Vazirmatn'] font-black text-2xl sm:text-3xl text-[#1e1e2d] dark:text-[#eaeafb] tracking-tight leading-none my-1">
+                      {toPersianDigits('142.5')}
+                    </span>
+                    <span className="text-[10.5px] font-medium text-[#62657a] dark:text-[#8386a1]">
+                      ساعت کارکرد
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           {/* Project List Breakdown */}
-          <div className="space-y-2.5 pt-2 border-t border-[#e0e2ec] dark:border-[#3d3f59]">
+          <div className="space-y-2 pt-3 border-t border-[#e0e2ec] dark:border-[#3d3f59]">
             {SAMPLE_PROJECT_SHARES.map((project) => {
               const isHovered = hoveredProjectId === project.id;
               return (
                 <div
                   key={project.id}
-                  className={`p-2 rounded-xl transition-all duration-150 cursor-pointer ${
+                  className={`p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
                     isHovered
-                      ? 'bg-[#f4f5fa] dark:bg-[#383a54]'
-                      : 'hover:bg-[#f8f9fd] dark:hover:bg-[#34364d]'
+                      ? 'bg-[#f4f5fa] dark:bg-[#383a54] border-[#666cff]/40 shadow-sm scale-[1.015]'
+                      : 'bg-transparent hover:bg-[#f8f9fd] dark:hover:bg-[#34364d]/60 border-transparent'
                   }`}
                   onMouseEnter={() => setHoveredProjectId(project.id)}
                   onMouseLeave={() => setHoveredProjectId(null)}
                 >
-                  <div className="flex items-center justify-between text-xs font-['Vazirmatn'] mb-1">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="size-2.5 rounded-full shrink-0 shadow-sm"
-                        style={{ backgroundColor: project.color }}
+                  <div className="flex items-center justify-between text-xs font-['Vazirmatn'] mb-1.5">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div
+                        className="size-3 rounded-md shrink-0 shadow-xs transition-transform duration-200"
+                        style={{
+                          backgroundColor: project.color,
+                          boxShadow: isHovered ? `0 0 8px ${project.color}` : undefined
+                        }}
                       />
-                      <span className="font-medium text-[#1e1e2d] dark:text-[#eaeafb] truncate">
+                      <span className="font-semibold text-xs sm:text-sm text-[#1e1e2d] dark:text-[#eaeafb] truncate">
                         {project.name}
                       </span>
                     </div>
+
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-[#62657a] dark:text-[#8386a1]">
+                      <span className="text-[11.5px] font-medium text-[#62657a] dark:text-[#8386a1]">
                         {toPersianDigits(project.hours)} س
                       </span>
-                      <span className="font-bold text-[#1e1e2d] dark:text-[#eaeafb]">
+                      <span
+                        className={`text-xs font-bold px-2 py-0.5 rounded-md ${project.badgeBg} ${project.badgeText}`}
+                      >
                         {toPersianDigits(project.percentage)}٪
                       </span>
                     </div>
                   </div>
 
                   {/* Micro Progress Bar */}
-                  <div className="h-1.5 w-full bg-[#f0f2f8] dark:bg-[#282a40] rounded-full overflow-hidden">
+                  <div className="h-1.5 w-full bg-[#f0f2f8] dark:bg-[#282a40] rounded-full overflow-hidden p-[1px]">
                     <div
                       className="h-full rounded-full transition-all duration-300"
                       style={{
                         width: `${project.percentage}%`,
-                        backgroundColor: project.color
+                        background: `linear-gradient(to left, ${project.gradientFrom}, ${project.gradientTo})`
                       }}
                     />
                   </div>
