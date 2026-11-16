@@ -29,11 +29,11 @@ export interface CategorySectionDef {
   persianSub: string;
 }
 
-// Portal Services Definitions - Algonet (Order matches the official portal view)
+// Portal Services Definitions - Algonet (Order: General Services first)
 export const CATEGORY_SECTIONS: CategorySectionDef[] = [
+  { id: 'general-services', title: 'General Services', persianSub: 'سرویس‌های عمومی' },
   { id: 'data-ml', title: 'Data & ML Platform', persianSub: 'پلتفرم داده و هوش مصنوعی' },
   { id: 'company-projects', title: 'Company Projects', persianSub: 'پروژه‌های سازمانی' },
-  { id: 'general-services', title: 'General Services', persianSub: 'سرویس‌های عمومی' },
   { id: 'idp', title: 'Internal Development Platform (IDP)', persianSub: 'پلتفرم توسعه داخلی' }
 ];
 
@@ -548,6 +548,11 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({
       count: ALL_SERVICES.filter((s) => s.category === 'general-services').length
     },
     {
+      id: 'data-ml',
+      label: 'Data & ML Platform',
+      count: ALL_SERVICES.filter((s) => s.category === 'data-ml').length
+    },
+    {
       id: 'company-projects',
       label: 'Company Projects',
       count: ALL_SERVICES.filter((s) => s.category === 'company-projects').length
@@ -556,11 +561,6 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({
       id: 'idp',
       label: 'Internal Development Platform (IDP)',
       count: ALL_SERVICES.filter((s) => s.category === 'idp').length
-    },
-    {
-      id: 'data-ml',
-      label: 'Data & ML Platform',
-      count: ALL_SERVICES.filter((s) => s.category === 'data-ml').length
     }
   ];
 
