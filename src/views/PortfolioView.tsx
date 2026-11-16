@@ -177,7 +177,7 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
       <div className="rounded-[24px] sm:rounded-[28px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.4)] p-5 sm:p-7 transition-all">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           {/* Right Section (in RTL): Avatar + Name + Subtitle + Bio */}
-          <div className="flex items-center gap-4.5 w-full lg:w-auto">
+          <div className="flex items-center gap-5 sm:gap-6 w-full lg:w-auto">
             {/* Circular Avatar with Teal/Emerald ring accent */}
             <div className="relative shrink-0">
               <div className="p-1 rounded-full border-2 border-[#20c997] shadow-sm">
@@ -191,14 +191,16 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
               </div>
             </div>
 
-            <div className="space-y-1 text-right">
-              <h2 className="font-['Vazirmatn'] font-bold text-lg sm:text-xl text-[#1e1e2d] dark:text-[#eaeafb]">
+            <div className="space-y-1.5 text-right">
+              <h2 className="font-['Vazirmatn'] font-bold text-lg sm:text-xl text-[#1e1e2d] dark:text-[#eaeafb] leading-tight">
                 {CURRENT_USER.name}
               </h2>
-              <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] dir-ltr text-right font-medium">
-                {CURRENT_USER.englishName} · {CURRENT_USER.username}
-              </p>
-              <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] pt-0.5">
+              <div className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] font-medium flex items-center justify-start gap-1.5">
+                <span>{CURRENT_USER.englishName}</span>
+                <span className="text-[#62657a]/50 dark:text-[#8386a1]/50">·</span>
+                <span className="font-mono text-[11.5px]">{CURRENT_USER.username}</span>
+              </div>
+              <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] leading-relaxed pt-0.5">
                 {userBio}
               </p>
             </div>
