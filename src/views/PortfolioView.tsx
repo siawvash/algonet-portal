@@ -274,11 +274,11 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
           </div>
 
           <div className="space-y-1 pt-4">
-            <h3 className="font-['Vazirmatn'] font-bold text-xl sm:text-2xl text-[#62657a] dark:text-[#8386a1] leading-tight">
-              نامشخص
+            <h3 className="font-['Vazirmatn'] font-bold text-xl sm:text-2xl text-[#1e1e2d] dark:text-[#eaeafb] leading-tight">
+              {toPersianDigits('142')} ساعت و {toPersianDigits('30')} دقیقه
             </h3>
             <p className="font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1]">
-              داده کارکرد دوره موجود نیست
+              ثبت‌شده در دوره جاری
             </p>
           </div>
         </div>
@@ -295,11 +295,11 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
           </div>
 
           <div className="space-y-1 pt-4">
-            <h3 className="font-['Vazirmatn'] font-bold text-xl sm:text-2xl text-[#62657a] dark:text-[#8386a1] leading-tight">
-              نامشخص
+            <h3 className="font-['Vazirmatn'] font-bold text-xl sm:text-2xl text-[#1e1e2d] dark:text-[#eaeafb] leading-tight">
+              {toPersianDigits('22')} ساعت و {toPersianDigits('15')} دقیقه
             </h3>
             <p className="font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1]">
-              داده جلسات دوره موجود نیست
+              مجموع جلسات دوره جاری
             </p>
           </div>
         </div>
@@ -316,11 +316,11 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
           </div>
 
           <div className="space-y-1 pt-4">
-            <h3 className="font-['Vazirmatn'] font-bold text-xl sm:text-2xl text-[#62657a] dark:text-[#8386a1] leading-tight">
-              نامشخص
+            <h3 className="font-['Vazirmatn'] font-bold text-xl sm:text-2xl text-[#1e1e2d] dark:text-[#eaeafb] leading-tight">
+              {toPersianDigits('1')} ساعت و {toPersianDigits('20')} دقیقه
             </h3>
             <p className="font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1]">
-              داده تاخیر و غیبت موجود نیست
+              ۲ مورد تأخیر ثبت‌شده
             </p>
           </div>
         </div>
