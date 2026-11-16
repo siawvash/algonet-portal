@@ -1,894 +1,676 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { PortalNavId, PortalProject } from '../types';
-import { INITIAL_PROJECTS } from '../data/mockData';
+import { PortalNavId } from '../types';
 import { toPersianDigits } from '../utils/formatters';
 import {
   FolderKanban,
-  Kanban,
   LayoutGrid,
-  Plus,
+  Users,
+  Calendar,
   Clock,
   CheckCircle2,
   AlertCircle,
   TrendingUp,
-  GitMerge,
   Search,
-  ExternalLink,
-  ChevronLeft,
-  X,
-  Users,
-  Code2,
-  Sparkles,
-  Calendar,
-  Layers,
+  SlidersHorizontal,
   ArrowUpRight,
-  Check
+  FileSpreadsheet,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+  Brain,
+  Code2,
+  ShieldCheck,
+  Award,
+  Activity,
+  Layers,
+  User,
+  Check,
+  ExternalLink
 } from 'lucide-react';
 
 interface ProjectsViewProps {
   onNavigate?: (navId: PortalNavId) => void;
 }
 
-interface KanbanTask {
+// Project Item Data Model (برگرفته از جدول تصویر ارسالی کاربر)
+export interface ProjectItem {
   id: string;
   code: string;
-  title: string;
-  projectCode: string;
-  projectName: string;
-  priority: 'high' | 'medium' | 'low';
-  priorityLabel: string;
-  hours: number;
-  status: 'todo' | 'in-progress' | 'done';
-  assignee: string;
+  persianName: string; // نام پروژه فارسی
+  englishName: string; // نام پروژه انگلیسی
+  leadName: string; // مسئول اصلی
+  memberCount: number; // تعداد اعضا
+  deadline: string; // Deadline
+  category: string;
+  description: string;
+  logoColor: string;
+  gradientBg: string;
+  accentGlow: string;
+  progress: number;
+  openTasks: number;
+  completedTasks: number;
+  worklogHours: number;
+  status: 'active' | 'in-progress' | 'testing';
+  statusLabel: string;
+  statusBadgeColor: string;
+  iconType: 'brain' | 'sparkles' | 'portal';
+  members: { name: string; initials: string; role: string; avatarColor?: string }[];
+  scorecard: {
+    healthScore: number;
+    qualityRating: string;
+    totalCommits: number;
+    openIssues: number;
+    lastSprintProgress: string;
+    velocity: string;
+    summary: string;
+  };
 }
 
+// Projects Data - Exact 3 projects from user's uploaded image
+export const PROJECTS_LIST: ProjectItem[] = [
+  {
+    id: 'annotopia-dev',
+    code: 'ANNOTOPIA-DEV',
+    persianName: 'Annotopia Dev',
+    englishName: 'Annotopia Dev',
+    leadName: '—', // در جدول عکس: خط تیره
+    memberCount: 4, // در جدول عکس: 4
+    deadline: '—', // در جدول عکس: -
+    category: 'هوش مصنوعی و یادداشت‌گذاری داده',
+    description: 'پلتفرم پردازش و یادداشت‌گذاری هوشمند داده‌ها و متون برای آموزش و بهینه‌سازی مدل‌های زبانی سازمانی',
+    logoColor: '#20c997',
+    gradientBg: 'from-[#20c997] to-[#0ea5e9]',
+    accentGlow: 'rgba(32, 201, 151, 0.35)',
+    progress: 68,
+    openTasks: 4,
+    completedTasks: 16,
+    worklogHours: 24,
+    status: 'in-progress',
+    statusLabel: 'در حال توسعه',
+    statusBadgeColor: '#20c997',
+    iconType: 'brain',
+    members: [
+      { name: 'سیاوش بختیاری', initials: 'سب', role: 'مهندس پلتفرم و معماری', avatarColor: '#666cff' },
+      { name: 'پویا رستگار', initials: 'پر', role: 'توسعه‌دهنده پایپ‌لاین بک‌اند', avatarColor: '#20c997' },
+      { name: 'مونا کاظمی', initials: 'مک', role: 'متخصص یادداشت‌گذاری داده', avatarColor: '#ff9f43' },
+      { name: 'امیرحسین نادری', initials: 'ان', role: 'توسعه‌دهنده رابط کاربری', avatarColor: '#00cfe8' }
+    ],
+    scorecard: {
+      healthScore: 91,
+      qualityRating: 'A',
+      totalCommits: 142,
+      openIssues: 4,
+      lastSprintProgress: '۹۱٪ تحقق اهداف اسپرینت جاری',
+      velocity: '۲۸ استوری‌پوینت در هر اسپرینت',
+      summary: 'پروژه در وضعیت پایدار قرار دارد. ماژول‌های پردازش متن در محیط استیجینگ مستقر شده و آزمون‌های کارایی با موفقیت در جریان است.'
+    }
+  },
+  {
+    id: 'algoteria',
+    code: 'ALG-TERIA',
+    persianName: 'الگوتریا',
+    englishName: 'AlgoTeria',
+    leadName: 'مهدیه ماندنی', // در جدول عکس: مهدیه ماندنی
+    memberCount: 8, // در جدول عکس: 8
+    deadline: '—', // در جدول عکس: -
+    category: 'موتور محاسباتی و معاملات الگوریتمی',
+    description: 'هسته پردازش سفارش‌ها با فرکانس بالا، تحلیل داده‌های بلادرنگ بازار و سرویس‌های معاملاتی الگونت',
+    logoColor: '#666cff',
+    gradientBg: 'from-[#666cff] to-[#8c90ff]',
+    accentGlow: 'rgba(102, 108, 255, 0.4)',
+    progress: 88,
+    openTasks: 5,
+    completedTasks: 42,
+    worklogHours: 57,
+    status: 'active',
+    statusLabel: 'در مسیر پیشرفت',
+    statusBadgeColor: '#666cff',
+    iconType: 'sparkles',
+    members: [
+      { name: 'مهدیه ماندنی', initials: 'مم', role: 'مسئول اصلی و مدیر پروژه', avatarColor: '#ff9f43' },
+      { name: 'سیاوش بختیاری', initials: 'سب', role: 'معمار فنی پلتفرم', avatarColor: '#666cff' },
+      { name: 'کاوه شریفی', initials: 'کش', role: 'مهندس ارشد زیرساخت', avatarColor: '#28c76f' },
+      { name: 'پویا رستگار', initials: 'پر', role: 'توسعه‌دهنده الگوریتم کوانت', avatarColor: '#00cfe8' },
+      { name: 'مونا کاظمی', initials: 'مک', role: 'توسعه‌دهنده بک‌اند', avatarColor: '#ea5455' },
+      { name: 'امیرحسین نادری', initials: 'ان', role: 'متخصص کنترل کیفیت و تست', avatarColor: '#7c82ff' },
+      { name: 'سارا یوسفی', initials: 'سی', role: 'طراح تجربه کاربری', avatarColor: '#ffb976' },
+      { name: 'نیما ابراهیمی', initials: 'نا', role: 'مهندس DevOps و لودبالانس', avatarColor: '#2dd4bf' }
+    ],
+    scorecard: {
+      healthScore: 97,
+      qualityRating: 'A+',
+      totalCommits: 384,
+      openIssues: 5,
+      lastSprintProgress: '۹۶٪ تحقق اهداف اسپرینت جاری',
+      velocity: '۴۲ استوری‌پوینت در هر اسپرینت',
+      summary: 'پروژه پرچم‌دار سازمان با بالاترین رتبه کیفی؛ تست‌های استرس انجین با ثبت ۵۷ ساعت کارکرد با نرخ پایداری ۹۹.۹۸٪ تکمیل گردید.'
+    }
+  },
+  {
+    id: 'test-portal-1',
+    code: 'TEST-PORTAL-1',
+    persianName: 'تست پروژه پورتال',
+    englishName: 'Test Portal 1',
+    leadName: 'مهدیه ماندنی', // در جدول عکس: مهدیه ماندنی
+    memberCount: 5, // در جدول عکس: 5
+    deadline: '—', // در جدول عکس: -
+    category: 'محیط آزمون و استقرار پورتال',
+    description: 'محیط آزمون یکپارچه خدمات سازمانی الگونت، احراز هویت متمرکز SSO، تقویم و ماژول‌های پورتفولیو',
+    logoColor: '#00cfe8',
+    gradientBg: 'from-[#00cfe8] to-[#2dd4bf]',
+    accentGlow: 'rgba(0, 207, 232, 0.35)',
+    progress: 75,
+    openTasks: 3,
+    completedTasks: 26,
+    worklogHours: 40,
+    status: 'testing',
+    statusLabel: 'تست و بازبینی',
+    statusBadgeColor: '#00cfe8',
+    iconType: 'portal',
+    members: [
+      { name: 'مهدیه ماندنی', initials: 'مم', role: 'مسئول اصلی پروژه', avatarColor: '#ff9f43' },
+      { name: 'سیاوش بختیاری', initials: 'سب', role: 'توسعه‌دهنده رابط و پورتفولیو', avatarColor: '#666cff' },
+      { name: 'مونا کاظمی', initials: 'مک', role: 'مهندس تست E2E', avatarColor: '#28c76f' },
+      { name: 'کاوه شریفی', initials: 'کش', role: 'مدیر استقرار و کانفیگ', avatarColor: '#00cfe8' },
+      { name: 'امیرحسین نادری', initials: 'ان', role: 'توسعه‌دهنده فرانت‌اند', avatarColor: '#8c90ff' }
+    ],
+    scorecard: {
+      healthScore: 93,
+      qualityRating: 'A',
+      totalCommits: 218,
+      openIssues: 3,
+      lastSprintProgress: '۸۹٪ تحقق اهداف اسپرینت جاری',
+      velocity: '۳۱ استوری‌پوینت در هر اسپرینت',
+      summary: 'یکپارچه‌سازی سرویس‌های پورتال نسخه ۳ در مرحله آزمون نهایی؛ تست‌های امنیت و دسترسی بدون خطا پشت سر گذاشته شد.'
+    }
+  }
+];
+
 export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
-  // View mode: Cards Grid vs Kanban Board
-  const [viewMode, setViewMode] = useState<'cards' | 'kanban'>('cards');
-
-  // Search query & status filter
+  // Search query & filters
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'on-track' | 'review' | 'at-risk'>('all');
+  const [selectedLead, setSelectedLead] = useState<string>('all');
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState<boolean>(false);
 
-  // Modal states
-  const [selectedProject, setSelectedProject] = useState<PortalProject | null>(null);
-  const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState<boolean>(false);
+  // Scorecard Modal State (کارنامه پروژه)
+  const [selectedScorecardProject, setSelectedScorecardProject] = useState<ProjectItem | null>(null);
 
-  // New task form state
-  const [newTaskTitle, setNewTaskTitle] = useState<string>('');
-  const [newTaskProject, setNewTaskProject] = useState<string>('ALG-PORTAL-V3');
-  const [newTaskPriority, setNewTaskPriority] = useState<'high' | 'medium' | 'low'>('high');
-  const [newTaskHours, setNewTaskHours] = useState<number>(6);
-
-  // Initial Kanban Tasks
-  const [kanbanTasks, setKanbanTasks] = useState<KanbanTask[]>([
-    {
-      id: 't-1',
-      code: 'ALG-427',
-      title: 'بازطراحی رابط کاربری داشبورد پورتال و سیستم طراحی V3',
-      projectCode: 'ALG-PORTAL-V3',
-      projectName: 'پورتال یکپارچه الگونت',
-      priority: 'high',
-      priorityLabel: 'اولویت فوری',
-      hours: 8,
-      status: 'in-progress',
-      assignee: 'سیاوش بختیاری'
-    },
-    {
-      id: 't-2',
-      code: 'ALG-419',
-      title: 'یکپارچه‌سازی پروتکل SSO با اسلات‌های ابری DevSlot',
-      projectCode: 'ALG-DEVSLOT-CLOUD',
-      projectName: 'محیط‌های ابری DevSlot',
-      priority: 'high',
-      priorityLabel: 'اولویت بالا',
-      hours: 12,
-      status: 'in-progress',
-      assignee: 'سیاوش بختیاری'
-    },
-    {
-      id: 't-3',
-      code: 'ALG-431',
-      title: 'افزودن قابلیت پیش‌نمایش فایل‌های چندرسانه‌ای در پیام‌رسان',
-      projectCode: 'ALG-PORTAL-V3',
-      projectName: 'پورتال یکپارچه الگونت',
-      priority: 'medium',
-      priorityLabel: 'متوسط',
-      hours: 6,
-      status: 'todo',
-      assignee: 'مونا کاظمی'
-    },
-    {
-      id: 't-4',
-      code: 'ALG-408',
-      title: 'بهینه‌سازی کوئری‌های گزارش کارکرد و تایم‌شیت سازمانی',
-      projectCode: 'ALG-SSO-CORE',
-      projectName: 'درگاه احراز هویت متمرکز',
-      priority: 'medium',
-      priorityLabel: 'متوسط',
-      hours: 4,
-      status: 'done',
-      assignee: 'سیاوش بختیاری'
-    },
-    {
-      id: 't-5',
-      code: 'ALG-412',
-      title: 'پیاده‌سازی صفحه پورتفولیو و اتصال نویگیشن مشترک',
-      projectCode: 'ALG-PORTAL-V3',
-      projectName: 'پورتال یکپارچه الگونت',
-      priority: 'high',
-      priorityLabel: 'اولویت بالا',
-      hours: 10,
-      status: 'done',
-      assignee: 'سیاوش بختیاری'
-    },
-    {
-      id: 't-6',
-      code: 'ALG-399',
-      title: 'تنظیم لودبالانسر NGINX برای وب‌میل و پروتکل TLS 1.3',
-      projectCode: 'ALG-MAIL-CORE',
-      projectName: 'وب‌میل و تقویم سازمانی',
-      priority: 'medium',
-      priorityLabel: 'متوسط',
-      hours: 5,
-      status: 'done',
-      assignee: 'کاوه شریفی'
-    },
-    {
-      id: 't-7',
-      code: 'ALG-435',
-      title: 'تست رگرسیون پایپ‌لاین‌های CI/CD در محیط استیجینگ',
-      projectCode: 'ALG-DEVSLOT-CLOUD',
-      projectName: 'محیط‌های ابری DevSlot',
-      priority: 'low',
-      priorityLabel: 'اولویت عادی',
-      hours: 3,
-      status: 'todo',
-      assignee: 'امیرحسین نادری'
-    }
-  ]);
-
-  // Extended Projects List
-  const allProjects: PortalProject[] = [
-    ...INITIAL_PROJECTS,
-    {
-      id: 'p-4',
-      code: 'ALG-MAIL-CORE',
-      name: 'سامانه پست الکترونیک و سرویس‌های همگام‌سازی تقویم',
-      role: 'توسعه‌دهنده ارشد سرویس‌های پایه',
-      progress: 100,
-      sprint: 'اسپرینت ۱۱ (شهریور ۱۴۰۴)',
-      openTasks: 0,
-      completedTasks: 22,
-      status: 'on-track',
-      teamMembers: [
-        { name: 'سیاوش بختیاری', initials: 'سب', color: '#666cff' },
-        { name: 'پویا رستگار', initials: 'پر', color: '#28c76f' }
-      ]
-    }
-  ];
-
-  // Filtered projects
-  const filteredProjects = allProjects.filter((p) => {
+  // Filter projects based on search query & lead filter
+  const filteredProjects = PROJECTS_LIST.filter((project) => {
     const matchesSearch =
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.code.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || p.status === statusFilter;
-    return matchesSearch && matchesStatus;
+      project.persianName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.englishName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.leadName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.code.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesLead =
+      selectedLead === 'all' ||
+      (selectedLead === 'mahdieh' && project.leadName.includes('مهدیه')) ||
+      (selectedLead === 'none' && project.leadName === '—');
+
+    return matchesSearch && matchesLead;
   });
 
-  // KPI Metrics (Figma Algonet/Metric/Default 11:23187)
-  const sprintKpis = [
-    {
-      id: 'active-projects',
-      title: 'پروژه‌های فعال من',
-      value: '۴',
-      unit: 'پروژه سازمانی',
-      badge: 'اسپرینت ۱۴',
-      badgeColor: '#666cff',
-      subtitle: '۱ مورد لید معماری · ۳ مورد مشارکت اصلی',
-      icon: FolderKanban
-    },
-    {
-      id: 'tasks-completed',
-      title: 'تسک‌های انجام‌شده',
-      value: '۷۳',
-      unit: 'وظیفه',
-      badge: '+۸ این هفته',
-      badgeColor: '#28c76f',
-      subtitle: '۹۱.۸٪ نرخ موفقیت در کنترل کیفیت و تست',
-      icon: CheckCircle2
-    },
-    {
-      id: 'tasks-in-progress',
-      title: 'وظایف در دست اقدام',
-      value: '۱۰',
-      unit: 'تسک فعال',
-      badge: 'در جریان',
-      badgeColor: '#ff9f43',
-      subtitle: 'تخصیص‌یافته به اسپرینت جاری در OpenProject',
-      icon: Clock
-    },
-    {
-      id: 'code-reviews',
-      title: 'کدهای منتظر بازبینی',
-      value: '۳',
-      unit: 'MR باز',
-      badge: 'Code Review',
-      badgeColor: '#7c82ff',
-      subtitle: 'در انتظار تأیید نهایی جهت استقرار در DevSlot',
-      icon: GitMerge
+  // Render project icon helper
+  const renderProjectIcon = (iconType: string, color: string) => {
+    switch (iconType) {
+      case 'brain':
+        return <Brain className="size-6 text-white" />;
+      case 'sparkles':
+        return <Sparkles className="size-6 text-white" />;
+      case 'portal':
+      default:
+        return <FolderKanban className="size-6 text-white" />;
     }
-  ];
-
-  // Handle task status toggle in Kanban
-  const handleMoveTaskStatus = (taskId: string, newStatus: 'todo' | 'in-progress' | 'done') => {
-    setKanbanTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t))
-    );
-  };
-
-  // Handle new task creation
-  const handleCreateTask = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTaskTitle.trim()) return;
-
-    const newTask: KanbanTask = {
-      id: `t-${Date.now()}`,
-      code: `ALG-${Math.floor(450 + Math.random() * 50)}`,
-      title: newTaskTitle.trim(),
-      projectCode: newTaskProject,
-      projectName:
-        allProjects.find((p) => p.code === newTaskProject)?.name || 'پروژه الگونت',
-      priority: newTaskPriority,
-      priorityLabel:
-        newTaskPriority === 'high'
-          ? 'اولویت بالا'
-          : newTaskPriority === 'medium'
-          ? 'متوسط'
-          : 'اولویت عادی',
-      hours: newTaskHours,
-      status: 'todo',
-      assignee: 'سیاوش بختیاری'
-    };
-
-    setKanbanTasks((prev) => [newTask, ...prev]);
-    setNewTaskTitle('');
-    setIsNewTaskModalOpen(false);
   };
 
   return (
-    <div className="space-y-8 pb-16 animate-in fade-in duration-200 select-none">
+    <div className="space-y-6 pb-16 animate-in fade-in duration-200 select-none text-right">
       {/* 
         ==================================================
-        1. PAGE HEADER & ACTIONS
+        1. PAGE HEADER & FILTER BAR (مشابه هدر عکس ارسالی)
         ================================================== 
       */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="space-y-1 text-right">
-          <div className="flex items-center gap-2">
-            <h1 className="font-['Vazirmatn'] font-bold text-2xl text-[#eaeafb]">
-              پروژه‌های من
+        {/* Title and Count Badge */}
+        <div className="space-y-1">
+          <div className="flex items-center gap-3">
+            <h1 className="font-['Vazirmatn'] font-bold text-2xl sm:text-3xl text-[#1e1e2d] dark:text-[#eaeafb]">
+              فهرست پروژه‌ها
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#666cff]/15 text-[#666cff] border border-[#666cff]/30 text-[11px] font-['Vazirmatn'] font-medium">
-              اسپرینت ۱۴ · آبان ۱۴۰۴
+            <span className="px-3 py-1 rounded-full bg-[#666cff]/10 dark:bg-[#666cff]/20 text-[#666cff] dark:text-[#8c90ff] border border-[#666cff]/20 text-xs font-['Vazirmatn'] font-semibold">
+              {toPersianDigits(PROJECTS_LIST.length)} پروژه
             </span>
           </div>
-          <p className="font-['Vazirmatn'] text-xs text-[#8386a1] leading-relaxed max-w-3xl">
-            پیگیری وظایف، برنامه‌ریزی اسپرینت‌ها، کنترل کیفیت کدهای در حال توسعه و وضعیت تیم در سامانه‌های OpenProject و GitLab
+          <p className="font-['Vazirmatn'] text-xs sm:text-sm text-[#62657a] dark:text-[#8386a1]">
+            مدیریت، رهگیری اعضا و کارنامه جامع پروژه‌های فعال سازمانی
           </p>
         </div>
 
-        {/* Action Button & View Switcher */}
-        <div className="flex items-center gap-3 self-end sm:self-auto shrink-0">
-          {/* Switcher */}
-          <div className="flex items-center bg-[#34364d] border border-[#3d3f59] rounded-[100px] p-1">
-            <button
-              onClick={() => setViewMode('cards')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[100px] text-xs font-['Vazirmatn'] transition-all cursor-pointer ${
-                viewMode === 'cards'
-                  ? 'bg-[#34364d] text-[#eaeafb] border border-[#42455f] font-medium shadow-sm'
-                  : 'text-[#8386a1] hover:text-[#eaeafb]'
-              }`}
-            >
-              <LayoutGrid className="size-3.5" />
-              <span>کارت‌ها</span>
-            </button>
-            <button
-              onClick={() => setViewMode('kanban')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[100px] text-xs font-['Vazirmatn'] transition-all cursor-pointer ${
-                viewMode === 'kanban'
-                  ? 'bg-[#34364d] text-[#eaeafb] border border-[#42455f] font-medium shadow-sm'
-                  : 'text-[#8386a1] hover:text-[#eaeafb]'
-              }`}
-            >
-              <Kanban className="size-3.5" />
-              <span>بورد کانبان</span>
-            </button>
+        {/* Toolbar: Search & Filter Button */}
+        <div className="flex items-center gap-3 w-full sm:w-auto relative">
+          {/* Search Box */}
+          <div className="relative flex-1 sm:w-64">
+            <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#62657a] dark:text-[#8386a1]" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="جست‌وجوی پروژه یا مسئول…"
+              className="w-full h-10 pr-10 pl-4 rounded-xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] focus:border-2 focus:border-[#666cff] text-xs text-[#1e1e2d] dark:text-[#eaeafb] placeholder:text-[#62657a] dark:placeholder:text-[#8386a1] outline-none font-['Vazirmatn'] transition-all shadow-xs"
+            />
           </div>
 
-          {/* New Task Button */}
-          <button
-            onClick={() => setIsNewTaskModalOpen(true)}
-            className="flex items-center gap-2 bg-[#666cff] hover:bg-[#a682ff] text-[#17111f] font-['Vazirmatn'] font-medium text-xs rounded-[100px] h-[38px] px-4 shadow-[0_2px_12px_rgba(183,154,255,0.25)] transition-all duration-150 cursor-pointer shrink-0"
-          >
-            <Plus className="size-4" />
-            <span>ثبت وظیفه جدید</span>
-          </button>
-        </div>
-      </div>
-
-      {/* 
-        ==================================================
-        2. SPRINT KPI METRIC CARDS (Figma Algonet/Metric/Default 11:23187)
-        ================================================== 
-      */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {sprintKpis.map((kpi) => {
-          const Icon = kpi.icon;
-          return (
-            <div
-              key={kpi.id}
-              className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] p-5 shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] relative overflow-hidden group hover:border-[#666cff]/40 transition-all duration-200 text-right flex flex-col justify-between min-h-[148px]"
+          {/* Filters Button */}
+          <div className="relative">
+            <button
+              onClick={() => setIsFilterDropdownOpen((prev) => !prev)}
+              className={`flex items-center gap-2 px-4 h-10 rounded-xl text-xs font-['Vazirmatn'] font-medium transition-all cursor-pointer shadow-xs border ${
+                selectedLead !== 'all' || isFilterDropdownOpen
+                  ? 'bg-[#666cff] text-white border-[#666cff]'
+                  : 'bg-white dark:bg-[#30334e] text-[#1e1e2d] dark:text-[#eaeafb] border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/50'
+              }`}
             >
-              {/* Background glow */}
-              <div
-                className="absolute -top-10 -left-10 w-24 h-24 rounded-full blur-2xl opacity-15 pointer-events-none group-hover:opacity-30 transition-opacity"
-                style={{ backgroundColor: kpi.badgeColor }}
-              />
+              <SlidersHorizontal className="size-4" />
+              <span>فیلترها</span>
+              {selectedLead !== 'all' && (
+                <span className="size-2 rounded-full bg-white animate-pulse" />
+              )}
+            </button>
 
-              {/* Header */}
-              <div className="flex items-center justify-between z-10">
-                <span className="font-['Vazirmatn'] font-medium text-xs text-[#8386a1] flex items-center gap-1.5">
-                  <Icon className="size-3.5" style={{ color: kpi.badgeColor }} />
-                  {kpi.title}
+            {/* Filter Dropdown Popover */}
+            {isFilterDropdownOpen && (
+              <div className="absolute left-0 sm:right-auto sm:left-0 top-12 w-56 rounded-2xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-xl p-3 z-30 space-y-2 animate-in zoom-in-95 duration-150">
+                <span className="font-['Vazirmatn'] text-[11px] font-bold text-[#62657a] dark:text-[#8386a1] block px-2 pb-1 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
+                  فیلتر بر اساس مسئول اصلی:
                 </span>
-
-                <span
-                  className="px-2 py-0.5 rounded-full text-[10px] font-['Vazirmatn'] font-bold border"
-                  style={{
-                    backgroundColor: `${kpi.badgeColor}15`,
-                    color: kpi.badgeColor,
-                    borderColor: `${kpi.badgeColor}35`
+                <button
+                  onClick={() => {
+                    setSelectedLead('all');
+                    setIsFilterDropdownOpen(false);
                   }}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
+                    selectedLead === 'all'
+                      ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
+                      : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                  }`}
                 >
-                  {kpi.badge}
-                </span>
+                  <span>همه مسئولین</span>
+                  {selectedLead === 'all' && <Check className="size-3.5" />}
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedLead('mahdieh');
+                    setIsFilterDropdownOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
+                    selectedLead === 'mahdieh'
+                      ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
+                      : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                  }`}
+                >
+                  <span>مهدیه ماندنی ({toPersianDigits(2)})</span>
+                  {selectedLead === 'mahdieh' && <Check className="size-3.5" />}
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedLead('none');
+                    setIsFilterDropdownOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
+                    selectedLead === 'none'
+                      ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
+                      : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                  }`}
+                >
+                  <span>تعیین‌نشده ({toPersianDigits(1)})</span>
+                  {selectedLead === 'none' && <Check className="size-3.5" />}
+                </button>
               </div>
-
-              {/* Value */}
-              <div className="py-2 z-10 flex items-baseline gap-1.5">
-                <span className="font-['Vazirmatn'] font-bold text-2xl sm:text-3xl text-[#eaeafb] tracking-tight">
-                  {toPersianDigits(kpi.value)}
-                </span>
-                <span className="font-['Vazirmatn'] text-xs text-[#8386a1] font-normal">
-                  {kpi.unit}
-                </span>
-              </div>
-
-              {/* Subtitle */}
-              <div className="z-10 border-t border-[#34364d] pt-2.5">
-                <p className="font-['Vazirmatn'] text-[11px] text-[#8386a1] leading-snug truncate" title={kpi.subtitle}>
-                  {kpi.subtitle}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* 
-        ==================================================
-        3. SEARCH & STATUS FILTER BAR
-        ================================================== 
-      */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-[#30334e] border border-[#3d3f59] rounded-[20px] p-4 text-right">
-        {/* Status Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-          <button
-            onClick={() => setStatusFilter('all')}
-            className={`px-3.5 py-1.5 rounded-[100px] text-xs font-['Vazirmatn'] transition-all cursor-pointer whitespace-nowrap ${
-              statusFilter === 'all'
-                ? 'bg-[#34364d] text-[#eaeafb] border border-[#42455f] font-medium'
-                : 'text-[#8386a1] hover:text-[#eaeafb]'
-            }`}
-          >
-            همه پروژه‌ها ({toPersianDigits(allProjects.length)})
-          </button>
-          <button
-            onClick={() => setStatusFilter('on-track')}
-            className={`px-3.5 py-1.5 rounded-[100px] text-xs font-['Vazirmatn'] transition-all cursor-pointer whitespace-nowrap ${
-              statusFilter === 'on-track'
-                ? 'bg-[#34364d] text-[#eaeafb] border border-[#42455f] font-medium'
-                : 'text-[#8386a1] hover:text-[#eaeafb]'
-            }`}
-          >
-            در مسیر پیشرفت
-          </button>
-          <button
-            onClick={() => setStatusFilter('review')}
-            className={`px-3.5 py-1.5 rounded-[100px] text-xs font-['Vazirmatn'] transition-all cursor-pointer whitespace-nowrap ${
-              statusFilter === 'review'
-                ? 'bg-[#34364d] text-[#eaeafb] border border-[#42455f] font-medium'
-                : 'text-[#8386a1] hover:text-[#eaeafb]'
-            }`}
-          >
-            مرحله بازبینی
-          </button>
-        </div>
-
-        {/* Search Input */}
-        <div className="relative min-w-[240px] sm:w-72">
-          <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#8386a1]" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="جست‌وجوی عنوان یا شناسه…"
-            className="w-full h-10 pr-10 pl-4 rounded-[100px] bg-[rgba(13,14,20,0.9)] border border-[#42455f] focus:border-2 focus:border-[#666cff] text-xs text-[#eaeafb] placeholder:text-[#585b74] outline-none font-['Vazirmatn'] transition-all"
-          />
+            )}
+          </div>
         </div>
       </div>
 
       {/* 
         ==================================================
-        4. MAIN VIEW: CARDS GRID vs KANBAN BOARD
+        2. VERTICAL PROJECTS GRID (کارت‌های عمودی با دیتای داخل عکس)
         ================================================== 
       */}
-      {viewMode === 'cards' ? (
-        /* ================= CARDS GRID ================= */
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredProjects.map((project) => {
-            const isCompleted = project.progress === 100;
-            return (
-              <div
-                key={project.id}
-                onClick={() => setSelectedProject(project)}
-                className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] hover:border-[#666cff]/50 shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] p-6 sm:p-7 flex flex-col justify-between space-y-6 transition-all duration-200 cursor-pointer text-right group"
-              >
-                {/* Top Code & Status */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs font-bold text-[#666cff] bg-[#666cff]/10 px-2.5 py-1 rounded-md border border-[#666cff]/25 dir-ltr">
-                      {project.code}
-                    </span>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredProjects.map((project) => (
+          <div
+            key={project.id}
+            className="rounded-[28px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.4)] p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#666cff]/60 hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300"
+          >
+            {/* Top Ambient Glow (Hover Effect) */}
+            <div
+              className="absolute -top-12 -left-12 size-36 rounded-full blur-3xl opacity-15 group-hover:opacity-35 transition-opacity duration-300 pointer-events-none"
+              style={{ backgroundColor: project.logoColor }}
+            />
 
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-['Vazirmatn'] font-semibold border ${
-                        project.status === 'on-track'
-                          ? 'bg-[#28c76f]/15 text-[#28c76f] border-[#28c76f]/30'
-                          : project.status === 'review'
-                          ? 'bg-[#666cff]/15 text-[#666cff] border-[#666cff]/30'
-                          : 'bg-[#ff9f43]/15 text-[#ff9f43] border-[#ff9f43]/30'
-                      }`}
-                    >
-                      {project.status === 'on-track'
-                        ? 'در مسیر پیشرفت'
-                        : project.status === 'review'
-                        ? 'مرحله بازبینی'
-                        : 'ریسک ددلاین'}
-                    </span>
-                  </div>
-
-                  {/* Title & Role */}
-                  <div>
-                    <h3 className="font-['Vazirmatn'] font-bold text-base sm:text-lg text-[#eaeafb] group-hover:text-[#666cff] transition-colors leading-snug">
-                      {project.name}
-                    </h3>
-                    <p className="font-['Vazirmatn'] text-xs text-[#8386a1] mt-1">
-                      نقش سازمانی: <span className="text-[#8386a1] font-medium">{project.role}</span>
-                    </p>
+            {/* Top Section: Logo & Name & Status */}
+            <div>
+              <div className="flex items-start justify-between gap-3 mb-4">
+                {/* Logo / Brand Emblem */}
+                <div
+                  className={`size-14 rounded-2xl bg-gradient-to-br ${project.gradientBg} p-0.5 shadow-md flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300`}
+                >
+                  <div className="size-full rounded-[14px] bg-black/15 flex items-center justify-center backdrop-blur-xs">
+                    {renderProjectIcon(project.iconType, project.logoColor)}
                   </div>
                 </div>
 
-                {/* Progress Bar with Segmented Feeling */}
-                <div className="space-y-2 bg-[#34364d] p-4 rounded-[16px] border border-[#3d3f59]">
-                  <div className="flex items-center justify-between text-xs font-['Vazirmatn']">
-                    <span className="text-[#8386a1]">{project.sprint}</span>
-                    <span className="font-mono font-bold text-[#eaeafb]">
-                      {toPersianDigits(project.progress)}٪
-                    </span>
-                  </div>
-
-                  <div className="h-2 w-full bg-[#34364d] rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-300"
-                      style={{
-                        width: `${project.progress}%`,
-                        backgroundColor: isCompleted ? '#666cff' : '#28c76f'
-                      }}
-                    />
-                  </div>
-
-                  {/* Task counts */}
-                  <div className="flex items-center justify-between text-[11px] font-['Vazirmatn'] text-[#8386a1] pt-1">
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="size-3 text-[#ff9f43]" />
-                      {toPersianDigits(project.openTasks)} وظیفه باز
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <CheckCircle2 className="size-3 text-[#28c76f]" />
-                      {toPersianDigits(project.completedTasks)} وظیفه تکمیل‌شده
-                    </span>
-                  </div>
-                </div>
-
-                {/* Footer: Team Avatars & Action */}
-                <div className="flex items-center justify-between pt-2 border-t border-[#3d3f59]">
-                  {/* Team Members */}
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center -space-x-2 space-x-reverse">
-                      {project.teamMembers.map((m, idx) => (
-                        <div
-                          key={idx}
-                          title={m.name}
-                          className="size-7 rounded-full bg-[#34364d] border-2 border-[#30334e] flex items-center justify-center text-[10px] font-['Vazirmatn'] font-bold text-[#eaeafb] shadow-sm"
-                        >
-                          {m.initials}
-                        </div>
-                      ))}
-                    </div>
-                    <span className="font-['Vazirmatn'] text-[11px] text-[#8386a1] hidden sm:inline">
-                      تیم همکار
-                    </span>
-                  </div>
-
-                  {/* Detail Action */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedProject(project);
-                      }}
-                      className="flex items-center gap-1.5 bg-[#34364d] hover:bg-[#666cff] text-[#eaeafb] hover:text-[#17111f] border border-[#42455f] hover:border-[#666cff] text-xs font-['Vazirmatn'] font-medium rounded-[100px] h-[34px] px-3.5 transition-all duration-150 cursor-pointer"
-                    >
-                      <span>جزئیات پروژه</span>
-                      <ChevronLeft className="size-3.5" />
-                    </button>
-                  </div>
+                {/* Status Badge & Code */}
+                <div className="flex flex-col items-end gap-1.5">
+                  <span
+                    className="px-2.5 py-1 rounded-full text-[11px] font-['Vazirmatn'] font-semibold border shadow-xs"
+                    style={{
+                      backgroundColor: `${project.statusBadgeColor}15`,
+                      color: project.statusBadgeColor,
+                      borderColor: `${project.statusBadgeColor}35`
+                    }}
+                  >
+                    {project.statusLabel}
+                  </span>
+                  <span className="font-mono text-[11px] font-semibold text-[#62657a] dark:text-[#8386a1] bg-[#f4f5fa] dark:bg-[#34364d] px-2 py-0.5 rounded-md border border-[#e0e2ec] dark:border-[#42455f] dir-ltr">
+                    {project.code}
+                  </span>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      ) : (
-        /* ================= KANBAN BOARD ================= */
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Column 1: To Do */}
-          <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] p-5 space-y-4 text-right">
-            <div className="flex items-center justify-between border-b border-[#3d3f59] pb-3">
-              <span className="font-['Vazirmatn'] font-bold text-sm text-[#eaeafb] flex items-center gap-2">
-                <span className="size-2 rounded-full bg-[#8386a1]" />
-                برای انجام (To Do)
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-[#34364d] text-[11px] font-mono text-[#8386a1]">
-                {toPersianDigits(kanbanTasks.filter((t) => t.status === 'todo').length)}
-              </span>
-            </div>
 
-            <div className="space-y-3 min-h-[380px]">
-              {kanbanTasks
-                .filter((t) => t.status === 'todo')
-                .map((task) => (
-                  <div
-                    key={task.id}
-                    className="p-4 rounded-[16px] bg-[#34364d] border border-[#3d3f59] hover:border-[#42455f] transition-all space-y-3"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[11px] font-bold text-[#666cff]">
-                        {task.code}
-                      </span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-['Vazirmatn'] bg-[#34364d] text-[#8386a1]">
-                        {task.priorityLabel}
-                      </span>
-                    </div>
-
-                    <h4 className="font-['Vazirmatn'] font-semibold text-xs text-[#eaeafb] leading-snug">
-                      {task.title}
-                    </h4>
-
-                    <div className="flex items-center justify-between pt-2 border-t border-[#34364d] text-[11px] text-[#8386a1]">
-                      <span>{task.projectName}</span>
-                      <button
-                        onClick={() => handleMoveTaskStatus(task.id, 'in-progress')}
-                        className="text-xs text-[#666cff] hover:underline cursor-pointer"
-                      >
-                        شروع کار ←
-                      </button>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          {/* Column 2: In Progress */}
-          <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] p-5 space-y-4 text-right">
-            <div className="flex items-center justify-between border-b border-[#3d3f59] pb-3">
-              <span className="font-['Vazirmatn'] font-bold text-sm text-[#eaeafb] flex items-center gap-2">
-                <span className="size-2 rounded-full bg-[#ff9f43]" />
-                در حال اقدام (In Progress)
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-[#34364d] text-[11px] font-mono text-[#ff9f43]">
-                {toPersianDigits(kanbanTasks.filter((t) => t.status === 'in-progress').length)}
-              </span>
-            </div>
-
-            <div className="space-y-3 min-h-[380px]">
-              {kanbanTasks
-                .filter((t) => t.status === 'in-progress')
-                .map((task) => (
-                  <div
-                    key={task.id}
-                    className="p-4 rounded-[16px] bg-[#34364d] border border-[#666cff]/30 hover:border-[#666cff] transition-all space-y-3 shadow-sm"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[11px] font-bold text-[#666cff]">
-                        {task.code}
-                      </span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-['Vazirmatn'] bg-[#666cff]/15 text-[#666cff]">
-                        {task.priorityLabel}
-                      </span>
-                    </div>
-
-                    <h4 className="font-['Vazirmatn'] font-semibold text-xs text-[#eaeafb] leading-snug">
-                      {task.title}
-                    </h4>
-
-                    <div className="flex items-center justify-between pt-2 border-t border-[#34364d] text-[11px] text-[#8386a1]">
-                      <span className="font-mono">{toPersianDigits(task.hours)} ساعت تخمینی</span>
-                      <button
-                        onClick={() => handleMoveTaskStatus(task.id, 'done')}
-                        className="text-xs text-[#28c76f] font-semibold hover:underline cursor-pointer"
-                      >
-                        تکمیل شد ✓
-                      </button>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          {/* Column 3: Done */}
-          <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] p-5 space-y-4 text-right">
-            <div className="flex items-center justify-between border-b border-[#3d3f59] pb-3">
-              <span className="font-['Vazirmatn'] font-bold text-sm text-[#eaeafb] flex items-center gap-2">
-                <span className="size-2 rounded-full bg-[#28c76f]" />
-                انجام‌شده (Done)
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-[#34364d] text-[11px] font-mono text-[#28c76f]">
-                {toPersianDigits(kanbanTasks.filter((t) => t.status === 'done').length)}
-              </span>
-            </div>
-
-            <div className="space-y-3 min-h-[380px]">
-              {kanbanTasks
-                .filter((t) => t.status === 'done')
-                .map((task) => (
-                  <div
-                    key={task.id}
-                    className="p-4 rounded-[16px] bg-[#34364d]/70 border border-[#3d3f59] hover:border-[#28c76f]/40 transition-all space-y-3 opacity-90"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[11px] font-bold text-[#28c76f] line-through">
-                        {task.code}
-                      </span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-['Vazirmatn'] bg-[#28c76f]/15 text-[#28c76f]">
-                        انجام شد
-                      </span>
-                    </div>
-
-                    <h4 className="font-['Vazirmatn'] font-normal text-xs text-[#8386a1] leading-snug line-through">
-                      {task.title}
-                    </h4>
-
-                    <div className="flex items-center justify-between pt-2 border-t border-[#34364d] text-[11px] text-[#8386a1]">
-                      <span>{task.projectName}</span>
-                      <Check className="size-3.5 text-[#28c76f]" />
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 
-        ==================================================
-        5. MODAL: CREATE NEW TASK (Figma Algonet/Modal/Edit request 11:23247)
-        ================================================== 
-      */}
-      {isNewTaskModalOpen && typeof document !== 'undefined' && createPortal(
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[32px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] p-6 sm:p-8 max-w-lg w-full space-y-6 text-right relative my-auto">
-            <div className="flex items-center justify-between pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
+              {/* Project Title (فارسی و انگلیسی) */}
               <div className="space-y-1">
-                <h3 className="font-['Vazirmatn'] font-bold text-lg text-[#1e1e2d] dark:text-[#eaeafb]">
-                  ثبت وظیفه جدید در اسپرینت
-                </h3>
-                <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1]">
-                  وظیفه پس از ثبت به بورد OpenProject و بک‌لاگ اسپرینت ۱۴ متصل می‌گردد.
+                <h2 className="font-['Vazirmatn'] font-bold text-lg sm:text-xl text-[#1e1e2d] dark:text-[#eaeafb] group-hover:text-[#666cff] dark:group-hover:text-[#8c90ff] transition-colors leading-snug">
+                  {project.persianName}
+                </h2>
+                <p className="font-mono text-xs text-[#62657a] dark:text-[#8386a1] dir-ltr text-right font-medium">
+                  {project.englishName}
+                </p>
+                <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] line-clamp-2 pt-1.5 leading-relaxed">
+                  {project.description}
                 </p>
               </div>
-
-              <button
-                onClick={() => setIsNewTaskModalOpen(false)}
-                className="size-9 rounded-full bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] hover:bg-[#eceef7] dark:hover:bg-[#383b59] flex items-center justify-center transition-colors cursor-pointer"
-              >
-                <X className="size-4" />
-              </button>
             </div>
 
-            <form onSubmit={handleCreateTask} className="space-y-4">
-              {/* Task Title */}
-              <div className="space-y-1.5">
-                <label className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] font-medium block">
-                  عنوان وظیفه:
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={newTaskTitle}
-                  onChange={(e) => setNewTaskTitle(e.target.value)}
-                  placeholder="مثلاً: بهینه‌سازی کدهای بخش احراز هویت"
-                  className="w-full h-11 rounded-[16px] bg-[#f4f5fa] dark:bg-[#282a42] border border-[#e0e2ec] dark:border-[#42455f] focus:border-2 focus:border-[#666cff] text-xs text-[#1e1e2d] dark:text-[#eaeafb] placeholder:text-[#a0a2b1] dark:placeholder-[#585b74] px-4 outline-none font-['Vazirmatn'] transition-all"
-                />
+            {/* Middle Section: سایر اطلاعات جدول ارسالی */}
+            <div className="my-5 pt-4 border-t border-[#e0e2ec] dark:border-[#3d3f59] space-y-3">
+              {/* Row 1: مسئول اصلی */}
+              <div className="flex items-center justify-between text-xs font-['Vazirmatn']">
+                <span className="text-[#62657a] dark:text-[#8386a1] flex items-center gap-1.5">
+                  <User className="size-3.5" />
+                  <span>مسئول اصلی:</span>
+                </span>
+                {project.leadName !== '—' ? (
+                  <span className="font-semibold text-[#1e1e2d] dark:text-[#eaeafb] bg-[#f4f5fa] dark:bg-[#34364d] px-2.5 py-1 rounded-lg border border-[#e0e2ec] dark:border-[#42455f]">
+                    {project.leadName}
+                  </span>
+                ) : (
+                  <span className="font-bold text-[#62657a] dark:text-[#8386a1] px-2 py-0.5">
+                    —
+                  </span>
+                )}
               </div>
 
-              {/* Project Selection */}
-              <div className="space-y-1.5">
-                <label className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] font-medium block">
-                  انتخاب پروژه:
-                </label>
-                <select
-                  value={newTaskProject}
-                  onChange={(e) => setNewTaskProject(e.target.value)}
-                  className="w-full h-11 rounded-[16px] bg-[#f4f5fa] dark:bg-[#282a42] border border-[#e0e2ec] dark:border-[#42455f] focus:border-2 focus:border-[#666cff] text-xs text-[#1e1e2d] dark:text-[#eaeafb] px-3 outline-none font-['Vazirmatn'] transition-all"
-                >
-                  {allProjects.map((p) => (
-                    <option key={p.id} value={p.code} className="bg-white dark:bg-[#30334e] text-[#1e1e2d] dark:text-[#eaeafb]">
-                      {p.name} ({p.code})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Priority & Estimated Hours */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] font-medium block">
-                    اولویت:
-                  </label>
-                  <select
-                    value={newTaskPriority}
-                    onChange={(e) => setNewTaskPriority(e.target.value as any)}
-                    className="w-full h-11 rounded-[16px] bg-[#f4f5fa] dark:bg-[#282a42] border border-[#e0e2ec] dark:border-[#42455f] focus:border-2 focus:border-[#666cff] text-xs text-[#1e1e2d] dark:text-[#eaeafb] px-3 outline-none font-['Vazirmatn'] transition-all"
-                  >
-                    <option value="high" className="bg-white dark:bg-[#30334e] text-[#1e1e2d] dark:text-[#eaeafb]">اولویت فوری / بالا</option>
-                    <option value="medium" className="bg-white dark:bg-[#30334e] text-[#1e1e2d] dark:text-[#eaeafb]">اولویت متوسط</option>
-                    <option value="low" className="bg-white dark:bg-[#30334e] text-[#1e1e2d] dark:text-[#eaeafb]">اولویت عادی</option>
-                  </select>
+              {/* Row 2: تعداد اعضا */}
+              <div className="flex items-center justify-between text-xs font-['Vazirmatn']">
+                <span className="text-[#62657a] dark:text-[#8386a1] flex items-center gap-1.5">
+                  <Users className="size-3.5" />
+                  <span>تعداد اعضا:</span>
+                </span>
+                <div className="flex items-center gap-2">
+                  {/* Overlapping mini avatars */}
+                  <div className="flex items-center -space-x-1.5 space-x-reverse">
+                    {project.members.slice(0, 3).map((m, idx) => (
+                      <div
+                        key={idx}
+                        title={m.name}
+                        className="size-5 rounded-full border border-white dark:border-[#30334e] text-[9px] font-bold text-white flex items-center justify-center shadow-xs"
+                        style={{ backgroundColor: m.avatarColor || '#666cff' }}
+                      >
+                        {m.initials}
+                      </div>
+                    ))}
+                    {project.memberCount > 3 && (
+                      <div className="size-5 rounded-full bg-[#f4f5fa] dark:bg-[#34364d] border border-white dark:border-[#30334e] text-[9px] font-bold text-[#62657a] dark:text-[#8386a1] flex items-center justify-center">
+                        +{toPersianDigits(project.memberCount - 3)}
+                      </div>
+                    )}
+                  </div>
+                  <span className="font-bold text-[#1e1e2d] dark:text-[#eaeafb]">
+                    {toPersianDigits(project.memberCount)} نفر
+                  </span>
                 </div>
+              </div>
 
-                <div className="space-y-1.5">
-                  <label className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] font-medium block">
-                    برآورد ساعت (Hours):
-                  </label>
-                  <input
-                    type="number"
-                    min={1}
-                    max={80}
-                    value={newTaskHours}
-                    onChange={(e) => setNewTaskHours(Number(e.target.value))}
-                    className="w-full h-11 rounded-[16px] bg-[#f4f5fa] dark:bg-[#282a42] border border-[#e0e2ec] dark:border-[#42455f] focus:border-2 focus:border-[#666cff] text-xs text-[#1e1e2d] dark:text-[#eaeafb] px-4 outline-none font-['Vazirmatn'] transition-all"
+              {/* Row 3: Deadline */}
+              <div className="flex items-center justify-between text-xs font-['Vazirmatn']">
+                <span className="text-[#62657a] dark:text-[#8386a1] flex items-center gap-1.5">
+                  <Calendar className="size-3.5" />
+                  <span>Deadline:</span>
+                </span>
+                <span className="font-bold text-[#62657a] dark:text-[#8386a1] px-2 py-0.5">
+                  {project.deadline}
+                </span>
+              </div>
+
+              {/* Progress Track */}
+              <div className="pt-2 space-y-1.5">
+                <div className="flex items-center justify-between text-[11px] font-['Vazirmatn']">
+                  <span className="text-[#62657a] dark:text-[#8386a1]">پیشرفت اسپرینت:</span>
+                  <span className="font-mono font-bold text-[#1e1e2d] dark:text-[#eaeafb]">
+                    {toPersianDigits(project.progress)}٪
+                  </span>
+                </div>
+                <div className="h-1.5 w-full bg-[#f0f2f8] dark:bg-[#282a40] rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-300"
+                    style={{
+                      width: `${project.progress}%`,
+                      backgroundColor: project.logoColor
+                    }}
                   />
                 </div>
               </div>
+            </div>
 
-              {/* Submit / Cancel Buttons */}
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#e0e2ec] dark:border-[#3d3f59]">
-                <button
-                  type="button"
-                  onClick={() => setIsNewTaskModalOpen(false)}
-                  className="bg-[#f4f5fa] dark:bg-[#34364d] hover:bg-[#eceef7] dark:hover:bg-[#383b59] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a] dark:text-[#eaeafb] rounded-[100px] h-[38px] px-5 text-xs font-['Vazirmatn'] font-medium transition-all cursor-pointer"
-                >
-                  انصراف
-                </button>
-                <button
-                  type="submit"
-                  className="bg-[#666cff] hover:bg-[#575ce6] text-white rounded-[100px] h-[38px] px-6 text-xs font-['Vazirmatn'] font-semibold transition-all cursor-pointer shadow-md"
-                >
-                  ثبت وظیفه
-                </button>
-              </div>
-            </form>
+            {/* 
+              Bottom Section: دکمه کارنامه پروژه در هاور
+              (Hover reveal / animation as requested by user) 
+            */}
+            <div className="pt-3 border-t border-[#e0e2ec] dark:border-[#3d3f59]">
+              <button
+                onClick={() => setSelectedScorecardProject(project)}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#f4f5fa] dark:bg-[#34364d] text-[#62657a] dark:text-[#eaeafb] border border-[#e0e2ec] dark:border-[#42455f] group-hover:bg-[#666cff] group-hover:border-[#666cff] group-hover:text-white group-hover:shadow-[0_4px_16px_rgba(102,108,255,0.4)] text-xs font-['Vazirmatn'] font-semibold transition-all duration-200 cursor-pointer active:scale-98"
+              >
+                <FileSpreadsheet className="size-4" />
+                <span>کارنامه پروژه</span>
+                <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </button>
+            </div>
           </div>
-        </div>,
-        document.body
-      )}
+        ))}
+      </div>
 
       {/* 
         ==================================================
-        6. MODAL: PROJECT DETAIL (Figma Algonet/Modal/Edit request 11:23247)
+        3. FOOTER PAGINATION BAR (مشابه فوتر عکس ارسالی)
         ================================================== 
       */}
-      {selectedProject && typeof document !== 'undefined' && createPortal(
+      <div className="rounded-[20px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-['Vazirmatn'] shadow-xs">
+        {/* Right: Items per page */}
+        <div className="flex items-center gap-2 text-[#62657a] dark:text-[#8386a1]">
+          <span>تعداد در صفحه:</span>
+          <div className="px-3 py-1 rounded-lg bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] font-mono font-semibold text-[#1e1e2d] dark:text-[#eaeafb] flex items-center gap-1.5">
+            <span>۱۰</span>
+            <ChevronLeft className="size-3.5 -rotate-90 opacity-60" />
+          </div>
+        </div>
+
+        {/* Center: Page Info */}
+        <div className="text-[#62657a] dark:text-[#8386a1] font-medium">
+          صفحه {toPersianDigits(1)} از {toPersianDigits(1)}
+        </div>
+
+        {/* Left: Previous & Next Buttons */}
+        <div className="flex items-center gap-2">
+          <button
+            disabled
+            className="px-4 py-1.5 rounded-xl bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a]/50 dark:text-[#8386a1]/50 cursor-not-allowed font-medium"
+          >
+            قبلی
+          </button>
+          <button
+            disabled
+            className="px-4 py-1.5 rounded-xl bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a]/50 dark:text-[#8386a1]/50 cursor-not-allowed font-medium"
+          >
+            بعدی
+          </button>
+        </div>
+      </div>
+
+      {/* 
+        ==================================================
+        4. MODAL: کارنامه پروژه (Project Scorecard Modal)
+        ================================================== 
+      */}
+      {selectedScorecardProject && typeof document !== 'undefined' && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 dark:bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[32px] shadow-[0_20px_60px_-15px_rgba(50,50,93,0.15)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] p-6 sm:p-8 max-w-xl w-full space-y-6 text-right relative my-auto">
+          <div className="bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] p-6 sm:p-8 max-w-2xl w-full space-y-6 text-right relative my-auto max-h-[90vh] overflow-y-auto no-scrollbar">
+            {/* Modal Header */}
             <div className="flex items-start justify-between pb-4 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
-              <div className="space-y-1">
-                <span className="font-mono text-xs font-bold text-[#666cff] bg-[#666cff]/10 px-2 py-0.5 rounded-md border border-[#666cff]/25 dir-ltr">
-                  {selectedProject.code}
-                </span>
-                <h3 className="font-['Vazirmatn'] font-bold text-lg text-[#1e1e2d] dark:text-[#eaeafb] pt-1">
-                  {selectedProject.name}
-                </h3>
-                <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1]">
-                  اسپرینت: {selectedProject.sprint}
-                </p>
+              <div className="flex items-center gap-3.5">
+                <div
+                  className={`size-12 rounded-2xl bg-gradient-to-br ${selectedScorecardProject.gradientBg} flex items-center justify-center shadow-md shrink-0`}
+                >
+                  {renderProjectIcon(selectedScorecardProject.iconType, selectedScorecardProject.logoColor)}
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-['Vazirmatn'] font-bold text-lg sm:text-xl text-[#1e1e2d] dark:text-[#eaeafb]">
+                      کارنامه پروژه {selectedScorecardProject.persianName}
+                    </h3>
+                  </div>
+                  <p className="font-mono text-xs text-[#62657a] dark:text-[#8386a1] dir-ltr text-right">
+                    {selectedScorecardProject.englishName} · {selectedScorecardProject.code}
+                  </p>
+                </div>
               </div>
 
               <button
-                onClick={() => setSelectedProject(null)}
+                onClick={() => setSelectedScorecardProject(null)}
                 className="size-9 rounded-full bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] hover:bg-[#eceef7] dark:hover:bg-[#383b59] flex items-center justify-center transition-colors cursor-pointer shrink-0"
               >
                 <X className="size-4" />
               </button>
             </div>
 
-            {/* Content Details */}
-            <div className="space-y-4">
-              <div className="rounded-[16px] bg-[#f4f5fa] dark:bg-[#282a42] p-4 border border-[#e0e2ec] dark:border-[#3d3f59] space-y-2">
-                <div className="flex items-center justify-between text-xs font-['Vazirmatn']">
-                  <span className="text-[#62657a] dark:text-[#8386a1]">پیشرفت اسپرینت جاری</span>
-                  <span className="font-mono font-bold text-[#666cff]">
-                    {toPersianDigits(selectedProject.progress)}٪
-                  </span>
-                </div>
-                <div className="h-2 w-full bg-[#e0e2ec] dark:bg-[#34364d] rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-[#666cff]"
-                    style={{ width: `${selectedProject.progress}%` }}
-                  />
+            {/* Scorecard KPI Badges */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-3 rounded-2xl bg-[#f8f9fd] dark:bg-[#282a40] border border-[#e0e2ec] dark:border-[#3d3f59] text-center space-y-1">
+                <span className="text-[11px] font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1]">
+                  نمره سلامت پروژه
+                </span>
+                <div className="font-['Vazirmatn'] font-black text-xl text-[#28c76f]">
+                  {toPersianDigits(selectedScorecardProject.scorecard.healthScore)} / {toPersianDigits(100)}
                 </div>
               </div>
 
-              {/* Roles & Team */}
-              <div className="space-y-2">
-                <span className="font-['Vazirmatn'] text-xs font-bold text-[#62657a] dark:text-[#8386a1] block">
-                  اعضای تیم پروژه:
+              <div className="p-3 rounded-2xl bg-[#f8f9fd] dark:bg-[#282a40] border border-[#e0e2ec] dark:border-[#3d3f59] text-center space-y-1">
+                <span className="text-[11px] font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1]">
+                  رتبه کیفی کد
                 </span>
-                <div className="grid grid-cols-2 gap-2">
-                  {selectedProject.teamMembers.map((m, idx) => (
-                    <div
-                      key={idx}
-                      className="p-2.5 rounded-[12px] bg-[#f4f5fa] dark:bg-[#282a42] border border-[#e0e2ec] dark:border-[#3d3f59] flex items-center gap-2"
-                    >
-                      <div className="size-6 rounded-full bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[10px] font-bold text-[#666cff] dark:text-[#eaeafb] flex items-center justify-center shadow-xs">
-                        {m.initials}
-                      </div>
-                      <span className="font-['Vazirmatn'] text-xs text-[#1e1e2d] dark:text-[#eaeafb]">{m.name}</span>
-                    </div>
-                  ))}
+                <div className="font-mono font-black text-xl text-[#666cff] dark:text-[#8c90ff]">
+                  {selectedScorecardProject.scorecard.qualityRating}
+                </div>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-[#f8f9fd] dark:bg-[#282a40] border border-[#e0e2ec] dark:border-[#3d3f59] text-center space-y-1">
+                <span className="text-[11px] font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1]">
+                  پیشرفت اسپرینت
+                </span>
+                <div className="font-['Vazirmatn'] font-black text-xl text-[#00cfe8]">
+                  {toPersianDigits(selectedScorecardProject.progress)}٪
+                </div>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-[#f8f9fd] dark:bg-[#282a40] border border-[#e0e2ec] dark:border-[#3d3f59] text-center space-y-1">
+                <span className="text-[11px] font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1]">
+                  ساعت کارکرد دوره
+                </span>
+                <div className="font-['Vazirmatn'] font-black text-xl text-[#ff9f43]">
+                  {toPersianDigits(selectedScorecardProject.worklogHours)} س
                 </div>
               </div>
             </div>
 
+            {/* Performance Summary Box */}
+            <div className="p-4 rounded-2xl bg-[#f8f9fd] dark:bg-[#282a40] border border-[#e0e2ec] dark:border-[#3d3f59] space-y-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#1e1e2d] dark:text-[#eaeafb]">
+                <Activity className="size-4 text-[#666cff]" />
+                <span>خلاصه ارزیابی و گزارش عملکرد فنی:</span>
+              </div>
+              <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] leading-relaxed">
+                {selectedScorecardProject.scorecard.summary}
+              </p>
+              <div className="flex items-center justify-between flex-wrap gap-2 pt-2 border-t border-[#e0e2ec] dark:border-[#3d3f59] text-[11px] font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1]">
+                <span>تعداد کامیت‌ها: <strong className="text-[#1e1e2d] dark:text-[#eaeafb]">{toPersianDigits(selectedScorecardProject.scorecard.totalCommits)}</strong></span>
+                <span>تسک‌های باز: <strong className="text-[#ff9f43]">{toPersianDigits(selectedScorecardProject.openTasks)}</strong></span>
+                <span>سرعت تیم: <strong className="text-[#28c76f]">{selectedScorecardProject.scorecard.velocity}</strong></span>
+              </div>
+            </div>
+
+            {/* Team Members List */}
+            <div className="space-y-2.5">
+              <span className="font-['Vazirmatn'] text-xs font-bold text-[#1e1e2d] dark:text-[#eaeafb] flex items-center gap-2">
+                <Users className="size-4 text-[#666cff]" />
+                <span>اعضای فعال پروژه ({toPersianDigits(selectedScorecardProject.memberCount)} نفر):</span>
+              </span>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {selectedScorecardProject.members.map((member, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3 rounded-xl bg-[#f8f9fd] dark:bg-[#282a40] border border-[#e0e2ec] dark:border-[#3d3f59] flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div
+                        className="size-8 rounded-full text-xs font-bold text-white flex items-center justify-center shrink-0 shadow-xs"
+                        style={{ backgroundColor: member.avatarColor || '#666cff' }}
+                      >
+                        {member.initials}
+                      </div>
+                      <div>
+                        <span className="font-['Vazirmatn'] font-semibold text-xs text-[#1e1e2d] dark:text-[#eaeafb] block">
+                          {member.name}
+                        </span>
+                        <span className="font-['Vazirmatn'] text-[10.5px] text-[#62657a] dark:text-[#8386a1] block">
+                          {member.role}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Modal Actions */}
-            <div className="flex items-center justify-between pt-3 border-t border-[#e0e2ec] dark:border-[#3d3f59]">
+            <div className="flex items-center justify-between pt-4 border-t border-[#e0e2ec] dark:border-[#3d3f59]">
               <a
                 href="https://pm.algonet.ir"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-1.5 text-xs text-[#666cff] hover:underline"
+                className="flex items-center gap-1.5 text-xs text-[#666cff] hover:underline font-['Vazirmatn'] font-medium"
               >
-                <span>باز کردن بورد در OpenProject</span>
-                <ArrowUpRight className="size-3.5" />
+                <span>مشاهده بورد کامل پروژه در OpenProject</span>
+                <ExternalLink className="size-3.5" />
               </a>
 
               <button
-                onClick={() => setSelectedProject(null)}
-                className="bg-[#f4f5fa] dark:bg-[#34364d] hover:bg-[#eceef7] dark:hover:bg-[#383b59] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a] dark:text-[#eaeafb] rounded-[100px] h-[38px] px-5 text-xs font-['Vazirmatn'] font-medium transition-all cursor-pointer"
+                onClick={() => setSelectedScorecardProject(null)}
+                className="bg-[#f4f5fa] dark:bg-[#34364d] hover:bg-[#eceef7] dark:hover:bg-[#383b59] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a] dark:text-[#eaeafb] rounded-xl h-9 px-5 text-xs font-['Vazirmatn'] font-medium transition-all cursor-pointer"
               >
                 بستن
               </button>
