@@ -379,160 +379,157 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          {/* Interactive Dual Bar SVG Chart Area */}
-          <div className="pt-5 pb-2 relative">
-            {/* Tooltip Card for hovered day */}
-            {hoveredDayIndex !== null && (
-              <div className="mb-3 p-2.5 px-4 rounded-xl bg-[#f8f9fd] dark:bg-[#282a40] border border-[#e0e2ec] dark:border-[#3d3f59] flex items-center justify-between flex-wrap gap-2 text-xs font-['Vazirmatn'] animate-in fade-in duration-150">
-                <span className="font-semibold text-[#1e1e2d] dark:text-[#eaeafb]">
-                  {SAMPLE_14_DAYS[hoveredDayIndex].fullDate}
+          {/* Active / Hovered Day Tooltip Bar - Pinned right below the header line */}
+          {hoveredDayIndex !== null && (
+            <div className="mt-3.5 mb-2 p-2.5 px-4 rounded-xl bg-[#f8f9fd] dark:bg-[#282a40] border border-[#e0e2ec] dark:border-[#3d3f59] flex items-center justify-between flex-wrap gap-2 text-xs font-['Vazirmatn'] animate-in fade-in duration-150 shadow-xs">
+              <span className="font-semibold text-[#1e1e2d] dark:text-[#eaeafb]">
+                {SAMPLE_14_DAYS[hoveredDayIndex].fullDate}
+              </span>
+              <div className="flex items-center gap-3">
+                <span className="text-[#666cff] dark:text-[#8c90ff] font-medium">
+                  حضور: {toPersianDigits(SAMPLE_14_DAYS[hoveredDayIndex].attendance)} ساعت
                 </span>
-                <div className="flex items-center gap-3">
-                  <span className="text-[#666cff] dark:text-[#8c90ff] font-medium">
-                    حضور: {toPersianDigits(SAMPLE_14_DAYS[hoveredDayIndex].attendance)} ساعت
-                  </span>
-                  <span className="text-[#00cfe8] font-medium">
-                    Worklog: {toPersianDigits(SAMPLE_14_DAYS[hoveredDayIndex].worklog)} ساعت
-                  </span>
-                </div>
+                <span className="text-[#00cfe8] font-medium">
+                  Worklog: {toPersianDigits(SAMPLE_14_DAYS[hoveredDayIndex].worklog)} ساعت
+                </span>
               </div>
-            )}
-
-            {/* SVG Chart */}
-            <div className="w-full overflow-x-auto">
-              <svg
-                viewBox="0 0 620 180"
-                className="w-full h-[180px] overflow-visible select-none"
-                style={{ direction: 'rtl' }}
-              >
-                <defs>
-                  <linearGradient id="purpleBarGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#8c90ff" />
-                    <stop offset="100%" stopColor="#666cff" />
-                  </linearGradient>
-                  <linearGradient id="cyanBarGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#2dd4bf" />
-                    <stop offset="100%" stopColor="#00cfe8" />
-                  </linearGradient>
-                </defs>
-
-                {/* Horizontal reference grid lines (0h, 2.5h, 5h, 7.5h, 10h) */}
-                {[0, 2.5, 5, 7.5, 10].map((val) => {
-                  const y = 145 - (val / 10) * 125;
-                  return (
-                    <g key={val}>
-                      <line
-                        x1="35"
-                        y1={y}
-                        x2="605"
-                        y2={y}
-                        stroke="currentColor"
-                        strokeDasharray={val === 0 ? 'none' : '4 4'}
-                        className="text-[#e0e2ec] dark:text-[#3d3f59]"
-                        strokeWidth="1"
-                      />
-                      <text
-                        x="15"
-                        y={y + 3.5}
-                        textAnchor="middle"
-                        className="text-[10px] font-['Vazirmatn'] fill-[#62657a] dark:fill-[#8386a1]"
-                      >
-                        {toPersianDigits(val)}
-                      </text>
-                    </g>
-                  );
-                })}
-
-                {/* 14 Days Dual Bars */}
-                {SAMPLE_14_DAYS.map((item, idx) => {
-                  const colWidth = 38;
-                  const startX = 45;
-                  const xCenter = startX + idx * colWidth + colWidth / 2;
-                  const maxH = 125;
-                  const zeroY = 145;
-
-                  const attH = (item.attendance / 10) * maxH;
-                  const attY = zeroY - attH;
-
-                  const wlH = (item.worklog / 10) * maxH;
-                  const wlY = zeroY - wlH;
-
-                  const isHovered = hoveredDayIndex === idx;
-
-                  return (
-                    <g
-                      key={item.id}
-                      className="cursor-pointer group"
-                      onMouseEnter={() => setHoveredDayIndex(idx)}
-                    >
-                      {/* Column hover background highlight */}
-                      <rect
-                        x={startX + idx * colWidth}
-                        y={15}
-                        width={colWidth}
-                        height={135}
-                        rx="8"
-                        className={`transition-all duration-150 ${
-                          isHovered
-                            ? 'fill-[#666cff]/10 dark:fill-[#666cff]/20'
-                            : 'fill-transparent hover:fill-[#666cff]/5'
-                        }`}
-                      />
-
-                      {/* Attendance Bar (Purple) */}
-                      {item.attendance > 0 ? (
-                        <rect
-                          x={xCenter - 11}
-                          y={attY}
-                          width="9"
-                          height={attH}
-                          rx="4"
-                          fill="url(#purpleBarGrad)"
-                          className={`transition-all duration-200 ${
-                            isHovered ? 'filter drop-shadow-[0_2px_6px_rgba(102,108,255,0.4)]' : ''
-                          }`}
-                        />
-                      ) : (
-                        <circle cx={xCenter - 6.5} cy={zeroY - 3} r="1.5" className="fill-[#62657a]/40" />
-                      )}
-
-                      {/* Worklog Bar (Cyan) */}
-                      {item.worklog > 0 ? (
-                        <rect
-                          x={xCenter + 2}
-                          y={wlY}
-                          width="9"
-                          height={wlH}
-                          rx="4"
-                          fill="url(#cyanBarGrad)"
-                          className={`transition-all duration-200 ${
-                            isHovered ? 'filter drop-shadow-[0_2px_6px_rgba(0,207,232,0.4)]' : ''
-                          }`}
-                        />
-                      ) : (
-                        <circle cx={xCenter + 6.5} cy={zeroY - 3} r="1.5" className="fill-[#62657a]/40" />
-                      )}
-
-                      {/* Day Label at bottom */}
-                      <text
-                        x={xCenter}
-                        y="164"
-                        textAnchor="middle"
-                        className={`text-[11px] font-['Vazirmatn'] transition-colors ${
-                          isHovered
-                            ? 'fill-[#666cff] dark:fill-[#8c90ff] font-bold'
-                            : item.isWeekend
-                            ? 'fill-[#ea5455] dark:fill-[#ea5455]'
-                            : 'fill-[#62657a] dark:fill-[#8386a1]'
-                        }`}
-                      >
-                        {toPersianDigits(item.dayNum)}
-                      </text>
-                    </g>
-                  );
-                })}
-              </svg>
             </div>
+          )}
+
+          {/* Interactive Dual Bar SVG Chart Area - Expanded to fill the remaining space */}
+          <div className="flex-1 flex flex-col justify-center py-2 w-full overflow-x-auto min-h-[250px] sm:min-h-[280px]">
+            <svg
+              viewBox="0 0 650 250"
+              className="w-full h-[250px] sm:h-[280px] overflow-visible select-none"
+              style={{ direction: 'rtl' }}
+            >
+              <defs>
+                <linearGradient id="purpleBarGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#8c90ff" />
+                  <stop offset="100%" stopColor="#666cff" />
+                </linearGradient>
+                <linearGradient id="cyanBarGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#2dd4bf" />
+                  <stop offset="100%" stopColor="#00cfe8" />
+                </linearGradient>
+              </defs>
+
+              {/* Horizontal reference grid lines (0h, 2.5h, 5h, 7.5h, 10h) */}
+              {[0, 2.5, 5, 7.5, 10].map((val) => {
+                const y = 215 - (val / 10) * 185;
+                return (
+                  <g key={val}>
+                    <line
+                      x1="32"
+                      y1={y}
+                      x2="628"
+                      y2={y}
+                      stroke="currentColor"
+                      strokeDasharray={val === 0 ? 'none' : '4 4'}
+                      className="text-[#e0e2ec] dark:text-[#3d3f59]"
+                      strokeWidth="1"
+                    />
+                    <text
+                      x="15"
+                      y={y + 3.5}
+                      textAnchor="middle"
+                      className="text-[10px] font-['Vazirmatn'] fill-[#62657a] dark:fill-[#8386a1]"
+                    >
+                      {toPersianDigits(val)}
+                    </text>
+                  </g>
+                );
+              })}
+
+              {/* 14 Days Dual Bars */}
+              {SAMPLE_14_DAYS.map((item, idx) => {
+                const colWidth = 40;
+                const startX = 45;
+                const xCenter = startX + idx * colWidth + colWidth / 2;
+                const maxH = 185;
+                const zeroY = 215;
+
+                const attH = (item.attendance / 10) * maxH;
+                const attY = zeroY - attH;
+
+                const wlH = (item.worklog / 10) * maxH;
+                const wlY = zeroY - wlH;
+
+                const isHovered = hoveredDayIndex === idx;
+
+                return (
+                  <g
+                    key={item.id}
+                    className="cursor-pointer group"
+                    onMouseEnter={() => setHoveredDayIndex(idx)}
+                  >
+                    {/* Column hover background highlight */}
+                    <rect
+                      x={startX + idx * colWidth}
+                      y={15}
+                      width={colWidth}
+                      height={205}
+                      rx="8"
+                      className={`transition-all duration-150 ${
+                        isHovered
+                          ? 'fill-[#666cff]/10 dark:fill-[#666cff]/20'
+                          : 'fill-transparent hover:fill-[#666cff]/5'
+                      }`}
+                    />
+
+                    {/* Attendance Bar (Purple) */}
+                    {item.attendance > 0 ? (
+                      <rect
+                        x={xCenter - 13}
+                        y={attY}
+                        width="11"
+                        height={attH}
+                        rx="5"
+                        fill="url(#purpleBarGrad)"
+                        className={`transition-all duration-200 ${
+                          isHovered ? 'filter drop-shadow-[0_2px_8px_rgba(102,108,255,0.45)]' : ''
+                        }`}
+                      />
+                    ) : (
+                      <circle cx={xCenter - 7.5} cy={zeroY - 4} r="2" className="fill-[#62657a]/40" />
+                    )}
+
+                    {/* Worklog Bar (Cyan) */}
+                    {item.worklog > 0 ? (
+                      <rect
+                        x={xCenter + 2}
+                        y={wlY}
+                        width="11"
+                        height={wlH}
+                        rx="5"
+                        fill="url(#cyanBarGrad)"
+                        className={`transition-all duration-200 ${
+                          isHovered ? 'filter drop-shadow-[0_2px_8px_rgba(0,207,232,0.45)]' : ''
+                        }`}
+                      />
+                    ) : (
+                      <circle cx={xCenter + 7.5} cy={zeroY - 4} r="2" className="fill-[#62657a]/40" />
+                    )}
+
+                    {/* Day Label at bottom */}
+                    <text
+                      x={xCenter}
+                      y="236"
+                      textAnchor="middle"
+                      className={`text-[11px] font-['Vazirmatn'] transition-colors ${
+                        isHovered
+                          ? 'fill-[#666cff] dark:fill-[#8c90ff] font-bold'
+                          : item.isWeekend
+                          ? 'fill-[#ea5455] dark:fill-[#ea5455]'
+                          : 'fill-[#62657a] dark:fill-[#8386a1]'
+                      }`}
+                    >
+                      {toPersianDigits(item.dayNum)}
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
           </div>
 
           {/* Bottom Summary Indicators */}
