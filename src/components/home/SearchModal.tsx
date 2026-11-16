@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import confetti from 'canvas-confetti';
 import { PortalServiceItem, ALL_SERVICES } from './ServicesGrid';
 import { Service3DIcon } from './Service3DIcon';
 import { toPersianDigits } from '../../utils/formatters';
@@ -21,8 +22,36 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [animatingFavId, setAnimatingFavId] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+
+  const handleToggleFavWithAnimation = (serviceId: string, e: React.MouseEvent) => {
+    const isAdding = !favorites.includes(serviceId);
+    if (isAdding) {
+      setAnimatingFavId(serviceId);
+      setTimeout(() => {
+        setAnimatingFavId((curr) => (curr === serviceId ? null : curr));
+      }, 1000);
+      try {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = (rect.left + rect.width / 2) / window.innerWidth;
+        const y = (rect.top + rect.height / 2) / window.innerHeight;
+        confetti({
+          particleCount: 16,
+          spread: 55,
+          startVelocity: 15,
+          ticks: 50,
+          origin: { x, y },
+          colors: ['#ffb800', '#ffd043', '#ffe082', '#ff9f43', '#666cff'],
+          shapes: ['star', 'circle'],
+          scalar: 0.75,
+          disableForReducedMotion: true
+        });
+      } catch {}
+    }
+    onToggleFavorite(serviceId);
+  };
 
   // Auto-focus input when modal opens
   useEffect(() => {
@@ -283,19 +312,22 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        onToggleFavorite(service.id);
+                        handleToggleFavWithAnimation(service.id, e);
                       }}
-                      className={`size-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                      className={`relative size-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
                         isFavorite
                           ? 'text-[#ffb800] bg-[#ffb800]/15 border border-[#ffb800]/30 shadow-sm'
                           : 'text-[#8386a1]/50 hover:text-[#ffb800] hover:bg-black/5 dark:hover:bg-white/10'
-                      }`}
+                      } ${animatingFavId === service.id ? 'scale-110 shadow-[0_0_14px_#ffb800]' : 'active:scale-75'}`}
                       title={isFavorite ? 'حذف از علاقه‌مندی‌ها' : 'افزودن به علاقه‌مندی‌ها'}
                     >
+                      {animatingFavId === service.id && (
+                        <span className="absolute inset-0 rounded-xl border-2 border-[#ffb800] animate-star-ring pointer-events-none" />
+                      )}
                       <Star
-                        className={`size-4 ${
+                        className={`size-4 transition-transform duration-200 ${
                           isFavorite ? 'fill-[#ffb800] text-[#ffb800]' : ''
-                        }`}
+                        } ${animatingFavId === service.id ? 'animate-star-pop' : ''}`}
                       />
                     </button>
 

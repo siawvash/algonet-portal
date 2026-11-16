@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 import { toPersianDigits } from '../../utils/formatters';
 import { Service3DIcon } from './Service3DIcon';
 import { Layers, X, ChevronDown, ChevronUp, Filter, Star, Search } from 'lucide-react';
@@ -397,7 +398,39 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({
 
   const currentFavorites = propFavorites ?? internalFavorites;
 
-  const handleToggleFav = (id: string) => {
+  // Track which service was just added to favorites for spring & confetti animation
+  const [animatingFavId, setAnimatingFavId] = useState<string | null>(null);
+
+  const handleToggleFav = (id: string, e?: React.MouseEvent) => {
+    const isAdding = !currentFavorites.includes(id);
+
+    if (isAdding) {
+      setAnimatingFavId(id);
+      setTimeout(() => {
+        setAnimatingFavId((curr) => (curr === id ? null : curr));
+      }, 1200);
+
+      // Micro celebratory confetti star burst from the star button position
+      if (e) {
+        try {
+          const rect = e.currentTarget.getBoundingClientRect();
+          const x = (rect.left + rect.width / 2) / window.innerWidth;
+          const y = (rect.top + rect.height / 2) / window.innerHeight;
+          confetti({
+            particleCount: 16,
+            spread: 55,
+            startVelocity: 15,
+            ticks: 50,
+            origin: { x, y },
+            colors: ['#ffb800', '#ffd043', '#ffe082', '#ff9f43', '#666cff'],
+            shapes: ['star', 'circle'],
+            scalar: 0.75,
+            disableForReducedMotion: true
+          });
+        } catch {}
+      }
+    }
+
     if (propToggleFavorite) {
       propToggleFavorite(id);
     } else {
@@ -512,12 +545,13 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({
   const currentCategoryConfig = categoriesConfig.find((c) => c.id === activeCategory);
 
   // Reusable Service Card Component with Top-Left Star for Favoriting
-  const renderServiceCard = (service: PortalServiceItem) => {
+  const renderServiceCard = (service: PortalServiceItem, isFromFavoritesSection = false) => {
     const isFavorite = currentFavorites.includes(service.id);
+    const isJustAdded = animatingFavId === service.id;
 
     return (
       <div
-        key={service.id}
+        key={`${isFromFavoritesSection ? 'fav-' : 'cat-'}${service.id}`}
         onClick={() => window.open(service.url, '_blank')}
         role="button"
         tabIndex={0}
@@ -528,27 +562,34 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({
           }
         }}
         title={`${service.englishName} (${service.persianTitle}) - ${service.role}\n${service.description}`}
-        className="portal-service-card group relative aspect-square w-full p-2.5 sm:p-3 flex flex-col items-center justify-between select-none cursor-pointer"
+        className={`portal-service-card group relative aspect-square w-full p-2.5 sm:p-3 flex flex-col items-center justify-between select-none cursor-pointer ${
+          isJustAdded && isFromFavoritesSection ? 'favorite-card-new' : ''
+        } ${isJustAdded && !isFromFavoritesSection ? 'ring-2 ring-[#ffb800]/50 shadow-[0_0_24px_rgba(255,184,0,0.3)] transition-all' : ''}`}
       >
-        {/* دکمه ستاره در سمت چپ بالای کارت برای افزودن به فیوریت‌ها */}
+        {/* دکمه ستاره در سمت چپ بالای کارت برای افزودن به فیوریت‌ها همراه با انیمیشن */}
         <button
           type="button"
           onClick={(e) => {
             e.stopPropagation();
-            handleToggleFav(service.id);
+            handleToggleFav(service.id, e);
           }}
           className={`absolute top-2 left-2 z-20 size-7 rounded-full flex items-center justify-center transition-all cursor-pointer ${
             isFavorite
               ? 'text-[#ffb800] bg-[#ffb800]/15 border border-[#ffb800]/30 shadow-sm'
               : 'text-[#8386a1]/40 hover:text-[#ffb800] hover:bg-black/5 dark:hover:bg-white/10 opacity-70 sm:opacity-0 group-hover:opacity-100'
-          } active:scale-75`}
+          } ${isJustAdded ? 'scale-110 shadow-[0_0_14px_#ffb800]' : 'active:scale-75'}`}
           title={isFavorite ? 'حذف از علاقه‌مندی‌ها' : 'افزودن به علاقه‌مندی‌ها'}
           aria-label={isFavorite ? 'حذف از علاقه‌مندی‌ها' : 'افزودن به علاقه‌مندی‌ها'}
         >
+          {/* Expanding golden ring ripple when favorited */}
+          {isJustAdded && (
+            <span className="absolute inset-0 rounded-full border-2 border-[#ffb800] animate-star-ring pointer-events-none" />
+          )}
+
           <Star
             className={`size-3.5 transition-transform duration-200 ${
               isFavorite ? 'fill-[#ffb800] text-[#ffb800] scale-110' : ''
-            }`}
+            } ${isJustAdded ? 'animate-star-pop' : ''}`}
           />
         </button>
 
@@ -748,7 +789,7 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({
 
           {/* Grid of Favorite Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-3.5 sm:gap-4 p-2.5 pb-4 pt-1">
-            {favoriteServices.map((service) => renderServiceCard(service))}
+            {favoriteServices.map((service) => renderServiceCard(service, true))}
           </div>
         </div>
       )}
