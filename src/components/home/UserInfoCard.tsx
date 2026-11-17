@@ -7,8 +7,7 @@ import {
   Hash,
   MapPin,
   Briefcase,
-  Sparkles,
-  Camera
+  Sparkles
 } from 'lucide-react';
 
 interface UserInfoCardProps {
@@ -46,11 +45,11 @@ export const UserInfoCard: React.FC<UserInfoCardProps> = ({
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-5">
           {/* Right Section (in RTL): Avatar + Name + Username */}
           <div className="flex items-center gap-3 sm:gap-4.5">
-            {/* Clickable Avatar with Camera Edit Badge */}
+            {/* Clickable Avatar */}
             <div
               className="relative group cursor-pointer"
               onClick={onOpenAvatarModal || onNavigateProfile}
-              title="تغییر تصویر پروفایل"
+              title="پروفایل کاربری"
             >
               <UserAvatar
                 size="lg"
@@ -58,12 +57,6 @@ export const UserInfoCard: React.FC<UserInfoCardProps> = ({
                 presenceStatus="present"
                 interactive={true}
               />
-              <div
-                className="absolute -bottom-1 -left-1 size-6 sm:size-7 rounded-full bg-[#666cff] text-white flex items-center justify-center shadow-md border-2 border-white dark:border-[#30334e] group-hover:scale-110 active:scale-90 transition-all cursor-pointer"
-                title="تغییر تصویر"
-              >
-                <Camera className="size-3 sm:size-3.5" />
-              </div>
             </div>
 
             <div className="space-y-1 text-right">
