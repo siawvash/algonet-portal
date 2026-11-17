@@ -1,4 +1,6 @@
 import React from 'react';
+import logoWhite from '../../assets/icons/algonet-logo-white.png';
+import logoDark from '../../assets/icons/algonet-logo-dark.png';
 
 export interface AlgonetLogoProps {
   variant?: 'persian' | 'latin' | 'symbol';
@@ -21,7 +23,7 @@ export const AlgonetLogo: React.FC<AlgonetLogoProps> = ({
   className = '',
   theme = 'auto',
   showBadge = true,
-  renderMode = 'image',
+  renderMode = 'svg',
 }) => {
   const textColor = theme === 'dark' ? '#FFFFFF' : theme === 'light' ? '#30334e' : 'currentColor';
 
@@ -50,14 +52,14 @@ export const AlgonetLogo: React.FC<AlgonetLogoProps> = ({
         </svg>
       ) : theme === 'dark' ? (
         <img
-          src="/assets/algonet-logo-white.png"
+          src={logoWhite}
           alt="لوگو الگونت"
           className="w-full h-full object-contain select-none pointer-events-none drop-shadow-sm"
           draggable={false}
         />
       ) : theme === 'light' ? (
         <img
-          src="/assets/algonet-logo-dark.png"
+          src={logoDark}
           alt="لوگو الگونت"
           className="w-full h-full object-contain select-none pointer-events-none"
           draggable={false}
@@ -65,13 +67,13 @@ export const AlgonetLogo: React.FC<AlgonetLogoProps> = ({
       ) : (
         <>
           <img
-            src="/assets/algonet-logo-white.png"
+            src={logoWhite}
             alt="لوگو الگونت"
             className="w-full h-full object-contain select-none pointer-events-none hidden dark:block drop-shadow-sm"
             draggable={false}
           />
           <img
-            src="/assets/algonet-logo-dark.png"
+            src={logoDark}
             alt="لوگو الگونت"
             className="w-full h-full object-contain select-none pointer-events-none block dark:hidden"
             draggable={false}

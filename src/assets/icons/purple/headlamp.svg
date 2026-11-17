@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>headlamp</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="44" y1="46" x2="28" y2="26"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><circle cx="35" cy="34" r="10"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M25 6H39V13L49 17V43L53 51L32 57L11 51L15 43V17L25 13Z"/><circle cx="32" cy="31" r="10"/></g>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>openproject</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="56" y1="56" x2="26" y2="26"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><rect x="28" y="12" width="28" height="28" rx="10"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="24" width="28" height="28" rx="10"/><path d="M34 24V22a10 10 0 0 1 10-10h2a10 10 0 0 1 10 10v8a10 10 0 0 1-10 10H40"/></g>
+</svg>

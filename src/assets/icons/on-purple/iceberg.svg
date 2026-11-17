@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="linear-gradient-1" x1="-36.551" y1="56.245" x2="-36.551" y2="6.485" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6768ff" stop-opacity="0.38"/>
+      <stop offset="0.1653" stop-color="#6768ff" stop-opacity="0.54" data-vc-midpoint="0.2453"/>
+      <stop offset="0.674" stop-color="#6768ff" stop-opacity="0.08"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="29.37" y1="57.378" x2="29.37" y2="25.026" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6768ff" stop-opacity="0.38"/>
+      <stop offset="0.8252" stop-color="#6768ff" stop-opacity="0.08"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="-34.89" y1="22.732" x2="-34.89" y2="22.732" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6768ff" stop-opacity="0.38"/>
+      <stop offset="0.1653" stop-color="#6768ff" stop-opacity="0.54" data-vc-midpoint="0.2453"/>
+      <stop offset="0.674" stop-color="#6768ff" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <title>iceberg.svg</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <g>
+      <polyline points="-25.264,79.777 -12.264,61.75 -5.264,79.777" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="-33.299" y1="79.777" x2="7.339" y2="79.777" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="-29.264,79.777 -19.264,101.777 -11.264,107.777 0.736,93.777 4.736,79.777" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <g>
+      <g>
+        <path d="M47.321 13.929 C37.96 12.35 28.253 12.237 18.202 13.59 C19.421 13.052 21.339 10.349 22.604 9.872 C29.011 8.136 36.993 8.598 45.71 10.334 C46.694 10.879 46.499 13.232 47.321 13.929 Z" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M47.321 13.929 C46.116 14.268 44.649 14.381 42.92 14.268 C42.92 14.945 42.92 15.622 42.92 16.299 C39.195 16.299 35.471 16.299 31.746 16.299 C26.554 16.299 21.788 16.067 16.597 16.067 C16.784 14.787 17.035 14.117 18.202 13.59" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M42.92 16.638 C42.92 19.798 42.92 22.958 42.92 26.118 C39.589 27.758 36.203 29.338 32.762 30.859 C32.536 30.859 32.423 30.971 32.423 31.197 C32.31 31.197 32.197 31.197 32.085 31.197 C32.085 31.084 32.085 30.971 32.085 30.859 C32.085 29.391 32.085 27.924 32.085 26.457 C32.085 23.184 32.085 19.911 32.085 16.638 C35.696 16.638 39.308 16.638 42.92 16.638 Z" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M47.321 13.929 C47.998 15.622 50.368 20.362 51.046 22.055 C50.923 22.287 50.81 22.512 50.707 22.732 C48.07 23.769 45.474 24.897 42.92 26.118 C42.92 22.958 42.92 19.798 42.92 16.638 C42.92 16.525 42.92 16.412 42.92 16.299" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M31.746 16.299 C35.471 16.299 39.195 16.299 42.92 16.299 C42.92 16.412 42.92 16.525 42.92 16.638 C39.308 16.638 35.696 16.638 32.085 16.638 C32.085 19.911 32.085 23.184 32.085 26.457 C31.748 23.132 31.635 19.746 31.746 16.299 Z" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M16.34 16.299 C19.728 16.243 27.497 16.23 30.88 16.4 C26.541 18.288 17.361 20.67 13.124 22.732 C19.286 25.531 25.493 28.24 31.746 30.859 C31.625 31.492 31.286 32 30.73 32.382 C27.859 34.409 25.151 36.609 22.604 38.985 C20.358 36.307 18.27 33.485 16.34 30.52 C14.735 27.841 13.606 25.02 12.954 22.055 C13.805 20.353 16.114 16.371 16.956 14.688" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M50.707 22.732 C48.563 25.215 46.418 27.698 44.274 30.181 C40.655 30.445 37.043 30.784 33.439 31.197 C33.129 31.183 32.903 31.07 32.762 30.859 C36.203 29.338 39.589 27.758 42.92 26.118 C45.474 24.897 48.07 23.769 50.707 22.732 Z" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M44.274 30.181 C44.33 33.231 44.274 36.278 44.105 39.323 C42.511 40.749 40.874 42.104 39.195 43.386 C39.082 43.161 38.969 42.935 38.856 42.709 C36.53 38.957 34.385 35.12 32.423 31.197 C32.423 30.971 32.536 30.859 32.762 30.859 C32.903 31.07 33.129 31.183 33.439 31.197 C37.043 30.784 40.655 30.445 44.274 30.181 Z" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M31.746 30.859 C31.859 30.859 31.972 30.859 32.085 30.859 C32.085 30.971 32.085 31.084 32.085 31.197 C32.085 33.906 32.085 36.615 32.085 39.323 C31.972 39.323 31.859 39.323 31.746 39.323 C28.699 39.194 25.652 39.082 22.604 38.985 C25.151 36.609 27.859 34.409 30.73 32.382 C31.286 32 31.625 31.492 31.746 30.859 Z" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M32.085 31.197 C32.197 31.197 32.31 31.197 32.423 31.197 C34.385 35.12 36.53 38.957 38.856 42.709 C36.471 41.768 34.214 40.64 32.085 39.323 C32.085 36.615 32.085 33.906 32.085 31.197 Z" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M22.604 38.985 C25.652 39.082 28.699 39.194 31.746 39.323 C31.746 41.806 31.746 44.289 31.746 46.772 C29.249 46.488 26.766 46.093 24.297 45.587 C23.78 45.238 23.329 44.843 22.943 44.402 C22.74 42.603 22.627 40.797 22.604 38.985 Z" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M31.746 39.323 C31.859 39.323 31.972 39.323 32.085 39.323 C34.214 40.64 36.471 41.768 38.856 42.709 C38.969 42.935 39.082 43.161 39.195 43.386 C36.904 44.362 34.647 45.434 32.423 46.603 C32.1 47.752 31.987 48.937 32.085 50.158 C31.753 49.1 31.64 47.972 31.746 46.772 C31.746 44.289 31.746 41.806 31.746 39.323 Z" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M39.195 43.386 C36.942 47.214 34.684 51.052 32.423 54.898 C32.167 55.329 31.941 55.329 31.746 54.898 C32.08 53.385 32.193 51.805 32.085 50.158 C31.987 48.937 32.1 47.752 32.423 46.603 C34.647 45.434 36.904 44.362 39.195 43.386 Z" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+        <path d="M22.943 44.402 C23.329 44.843 23.78 45.238 24.297 45.587 C26.766 46.093 29.249 46.488 31.746 46.772 C31.64 47.972 31.753 49.1 32.085 50.158 C32.193 51.805 32.08 53.385 31.746 54.898 C28.938 51.694 26.06 48.534 23.112 45.418 C22.948 45.097 22.892 44.758 22.943 44.402 Z" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+      </g>
+    </g>
+    <path d="M-92.137 6.829 C-92.788 7.123 -93.154 7.462 -93.383 7.926" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+    <path d="M-63.018 7.168 C-62.341 8.861 -59.971 13.601 -59.294 15.294 C-59.416 15.525 -59.529 15.751 -59.632 15.971" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+    <path d="M-93.383 7.926 C-94.225 9.61 -96.534 13.592 -97.385 15.294 C-96.733 18.258 -95.604 21.08 -93.999 23.759 C-92.069 26.724 -89.981 29.546 -87.735 32.224" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+    <path d="M-93.999 9.538 C-90.611 9.482 -82.843 9.469 -79.459 9.638 C-83.799 11.526 -92.978 13.909 -97.216 15.971 C-91.054 18.77 -84.846 21.478 -78.593 24.097" fill="none" fill-rule="evenodd" stroke="#6768ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"/>
+    <path d="M-43.706 7.578 C-37.299 5.842 -29.316 6.305 -20.6 8.04 C-19.616 8.585 -19.81 10.939 -18.989 11.635 C-18.312 13.328 -15.941 18.069 -15.264 19.761 C-15.387 19.993 -15.5 20.219 -15.603 20.439 C-16.263 21.203 -16.923 21.968 -17.584 22.732 L-52.526 22.732 C-52.858 21.759 -53.134 20.768 -53.356 19.761 C-52.505 18.06 -50.196 14.078 -49.354 12.394 C-49.125 11.929 -48.759 11.59 -48.107 11.297 C-46.889 10.758 -44.971 8.056 -43.706 7.578 Z" fill="url(#linear-gradient-1)"/>
+    <path d="M16.511 30.52 C15.451 28.751 14.599 26.92 13.954 25.026 L32.423 31.197 L48.897 25.026 C47.413 26.745 45.929 28.463 44.444 30.181 C44.501 33.231 44.444 36.278 44.275 39.323 C42.681 40.749 41.045 42.104 39.366 43.386 C37.112 47.214 34.855 51.052 32.594 54.898 C32.338 55.329 32.112 55.329 31.917 54.898 C29.109 51.694 26.231 48.534 23.283 45.418 C23.119 45.097 23.063 44.758 23.113 44.402 C22.911 42.603 22.798 40.797 22.775 38.985 C20.529 36.307 18.441 33.485 16.511 30.52 Z" fill="url(#linear-gradient-2)"/>
+    <line x1="-62.506" y1="22.732" x2="-7.273" y2="22.732" fill="url(#linear-gradient-3)"/>
+  </g>
+</svg>

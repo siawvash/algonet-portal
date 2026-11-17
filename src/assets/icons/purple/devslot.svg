@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>devslot</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="56" y1="56" x2="24" y2="22"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><path d="M12 12H28A20 20 0 0 1 28 52H12Z" transform="translate(5 4)"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12H28A20 20 0 0 1 28 52H12Z"/><path d="M27 25L19 32L27 39"/><path d="M35 25L43 32L35 39"/></g>
+</svg>

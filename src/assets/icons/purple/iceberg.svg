@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+<title>iceberg</title>
+<defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="36" y1="58" x2="36" y2="28"><stop offset="0" stop-color="#666cff"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
+
+<g fill="url(#g)" stroke="none"><path d="M21 28L31 50L39 56L51 42L55 28Z"/></g>
+<g fill="none" stroke="#666cff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 28L31 9L40 28"/><path d="M6 28H58"/><path d="M16 28L26 50L34 56L46 42L50 28"/></g>
+</svg>

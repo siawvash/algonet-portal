@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="linear-gradient-1" x1="58" y1="52" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <title>mail.svg</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <path d="M20 22 L52 22 C55.314 22 58 24.686 58 28 L58 48 C58 51.314 55.314 54 52 54 L20 54 C16.686 54 14 51.314 14 48 L14 28 C14 24.686 16.686 22 20 22 Z" fill="url(#linear-gradient-1)"/>
+    <g>
+      <path d="M13 14 L45 14 C48.314 14 51 16.686 51 20 L51 40 C51 43.314 48.314 46 45 46 L13 46 C9.686 46 7 43.314 7 40 L7 20 C7 16.686 9.686 14 13 14 Z" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="10,19 29,33 48,19" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

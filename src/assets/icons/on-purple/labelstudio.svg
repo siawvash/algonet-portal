@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="linear-gradient-1" x1="48" y1="48" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6768ff" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#6768ff" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <title>labelstudio.svg</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <path d="M28 24 L44 24 C46.209 24 48 25.791 48 28 L48 44 C48 46.209 46.209 48 44 48 L28 48 C25.791 48 24 46.209 24 44 L24 28 C24 25.791 25.791 24 28 24 Z" fill="url(#linear-gradient-1)"/>
+    <g>
+      <path d="M8 20 L8 14 C8 10.686 10.686 8 14 8 L20 8" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M44 8 L50 8 C53.314 8 56 10.686 56 14 L56 20" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M56 44 L56 50 C56 53.314 53.314 56 50 56 L44 56" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M20 56 L14 56 C10.686 56 8 53.314 8 50 L8 44" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M23 19 L39 19 C41.209 19 43 20.791 43 23 L43 39 C43 41.209 41.209 43 39 43 L23 43 C20.791 43 19 41.209 19 39 L19 23 C19 20.791 20.791 19 23 19 Z" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

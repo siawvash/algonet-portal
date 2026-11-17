@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="linear-gradient-1" x1="9.558" y1="7.553" x2="26.529" y2="24.524" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6768ff" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#6768ff" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <title>wikijs.svg</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <path d="M27.943 25.938 C35.014 18.867 38.55 9.674 33.6 4.725 C27.943 -0.932 20.165 9.674 23.7 21.695 C11.679 18.16 1.073 25.938 6.73 31.595 C11.679 36.544 20.872 33.009 27.943 25.938 Z" fill="url(#linear-gradient-1)"/>
+    <g>
+      <path d="M34.307 32.302 C47.742 42.908 63.298 33.009 57.641 24.524 C53.399 18.867 42.085 23.109 34.307 32.302 C25.114 40.08 20.872 51.394 26.529 55.636 C35.014 61.293 44.913 45.737 34.307 32.302 Z" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M30.771 28.766 C37.842 21.695 41.378 12.503 36.428 7.553 C30.771 1.896 22.993 12.503 26.529 24.524 C14.508 20.988 3.901 28.766 9.558 34.423 C14.508 39.373 23.7 35.837 30.771 28.766 Z" fill="none" stroke="#6768ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>
