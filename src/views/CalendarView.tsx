@@ -963,15 +963,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                                 <div
                                   key={meet.id}
                                   onClick={() => setSelectedMeeting(meet)}
-                                  className="rounded-[20px] bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/60 dark:hover:border-[#42455f] p-4.5 sm:p-5 transition-all cursor-pointer shadow-xs dark:shadow-sm relative overflow-hidden group/card hover:shadow-md space-y-3"
+                                  style={{ '--meet-color': meet.color } as React.CSSProperties}
+                                  className="meeting-day-card rounded-[20px] bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/50 dark:hover:border-[#42455f] p-4.5 sm:p-5 cursor-pointer relative overflow-hidden group/card space-y-3"
                                 >
-                                  {/* Right vertical color accent line */}
-                                  <div
-                                    style={{ backgroundColor: meet.color }}
-                                    className="absolute right-0 top-0 bottom-0 w-1.5"
-                                  />
-
-                                  <div className="flex items-center justify-between flex-wrap gap-2 pr-2">
+                                  <div className="flex items-center justify-between flex-wrap gap-2">
                                     {/* Explicit Meeting Badge with distinct color per type */}
                                     <div className="flex items-center gap-2">
                                       <span
@@ -992,13 +987,13 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                                     </span>
                                   </div>
 
-                                  <div className="pr-2">
+                                  <div>
                                     <h4 className="font-bold text-base text-[#1e1e2d] dark:text-[#eaeafb] group-hover/card:text-[#666cff] dark:group-hover/card:text-white transition-colors">
                                       {meet.title}
                                     </h4>
                                   </div>
 
-                                  <div className="flex items-center justify-between text-xs text-[#62657a] dark:text-[#8386a1] pt-2 border-t border-[#e0e2ec] dark:border-[#3d3f59]/60 pr-2 flex-wrap gap-2 font-medium">
+                                  <div className="flex items-center justify-between text-xs text-[#62657a] dark:text-[#8386a1] pt-2 border-t border-[#e0e2ec] dark:border-[#3d3f59]/60 flex-wrap gap-2 font-medium">
                                     <div className="flex items-center gap-4 flex-wrap">
                                       <span className="flex items-center gap-1.5 text-[#1e1e2d] dark:text-[#eaeafb]">
                                         <Video className="size-3.5 text-[#666cff]" />

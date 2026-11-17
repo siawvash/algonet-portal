@@ -1059,5 +1059,29 @@ button:not(.project-card-btn)[class*="bg-[#666cff]"] * {
   color: #ffffff !important;
 }
 
+/* Calendar day view meeting cards: subtle faint colored ambient shadow */
+.meeting-day-card {
+  box-shadow: 0 4px 18px 0 color-mix(in srgb, var(--meet-color, #666cff) 12%, transparent),
+              0 1px 4px 0 color-mix(in srgb, var(--meet-color, #666cff) 6%, transparent);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.meeting-day-card:hover {
+  box-shadow: 0 8px 26px 0 color-mix(in srgb, var(--meet-color, #666cff) 20%, transparent),
+              0 2px 8px 0 color-mix(in srgb, var(--meet-color, #666cff) 10%, transparent);
+  transform: translateY(-1.5px);
+}
+
+.dark .meeting-day-card {
+  box-shadow: 0 4px 20px 0 color-mix(in srgb, var(--meet-color, #666cff) 18%, transparent),
+              0 1px 5px 0 color-mix(in srgb, var(--meet-color, #666cff) 8%, transparent);
+}
+
+.dark .meeting-day-card:hover {
+  box-shadow: 0 8px 28px 0 color-mix(in srgb, var(--meet-color, #666cff) 26%, transparent),
+              0 2px 8px 0 color-mix(in srgb, var(--meet-color, #666cff) 12%, transparent);
+}
+
+
 
 
