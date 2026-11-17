@@ -4,7 +4,7 @@ import confetti from 'canvas-confetti';
 import { PortalServiceItem, ALL_SERVICES } from './ServicesGrid';
 import { Service3DIcon } from './Service3DIcon';
 import { toPersianDigits } from '../../utils/formatters';
-import { Search, X, ExternalLink, Star, CornerDownLeft, Sparkles } from 'lucide-react';
+import { Search, X, Star, CornerDownLeft, Sparkles } from 'lucide-react';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -224,8 +224,8 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           )}
         </div>
 
-        {/* Category Filter Chips */}
-        <div className="flex items-center gap-1.5 px-4 sm:px-6 py-2.5 overflow-x-auto border-b border-[#e0e2ec]/60 dark:border-[#3d3f59]/60 bg-[#f7f8fc] dark:bg-[#282a3f] scrollbar-none">
+        {/* Category Filter Chips - Clean & Minimalist */}
+        <div className="flex items-center gap-1.5 px-4 sm:px-6 py-2 overflow-x-auto border-b border-[#e0e2ec]/50 dark:border-[#3d3f59]/50 bg-[#f8f9fd] dark:bg-[#282a3f] scrollbar-none">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
             return (
@@ -235,8 +235,8 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`text-xs font-['Vazirmatn'] px-3 py-1 rounded-full whitespace-nowrap transition-all duration-150 cursor-pointer ${
                   isActive
-                    ? 'bg-[#666cff] text-white font-bold shadow-sm'
-                    : 'bg-white dark:bg-[#34364d] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-white border border-[#e0e2ec] dark:border-[#42455f]'
+                    ? 'bg-[#666cff] text-white font-semibold shadow-xs'
+                    : 'text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                 }`}
               >
                 {cat.label}
@@ -248,7 +248,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         {/* Results List */}
         <div
           ref={listRef}
-          className="flex-1 overflow-y-auto p-2 sm:p-3 space-y-1.5 max-h-[50vh]"
+          className="flex-1 overflow-y-auto p-2 sm:p-2.5 space-y-1 max-h-[52vh]"
         >
           {filteredServices.length === 0 ? (
             <div className="py-12 text-center text-[#62657a] dark:text-[#8386a1] space-y-3 font-['Vazirmatn']">
@@ -289,82 +289,71 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                     onClose();
                   }}
                   onMouseEnter={() => setSelectedIndex(index)}
-                  className={`group flex items-center justify-between p-2.5 sm:p-3 rounded-2xl transition-all cursor-pointer select-none ${
+                  className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all cursor-pointer select-none ${
                     isSelected
-                      ? 'bg-[#666cff]/10 dark:bg-[#666cff]/20 border border-[#666cff]/40 shadow-sm'
-                      : 'hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]/60 border border-transparent'
+                      ? 'bg-[#666cff]/10 dark:bg-[#666cff]/20 text-[#666cff] dark:text-white'
+                      : 'hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]/50 text-[#1e1e2d] dark:text-[#eaeafb]'
                   }`}
                 >
-                  {/* Right side: 3D Icon + Titles */}
-                  <div className="flex items-center gap-3 sm:gap-3.5 min-w-0 flex-1">
-                    <div className="size-11 sm:size-12 rounded-xl bg-[#f0f1f7] dark:bg-[#25263a] flex items-center justify-center shrink-0 border border-[#e0e2ec] dark:border-[#3d3f59]">
+                  {/* Right side: Clean Icon + Compact Titles */}
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <div className="size-9 rounded-xl bg-[#f0f1f7] dark:bg-[#25263a] flex items-center justify-center shrink-0 border border-[#e0e2ec]/60 dark:border-[#3d3f59]/60">
                       <Service3DIcon
                         iconName={service.iconName}
                         id={service.id}
                         variant="on-purple"
-                        className="size-8 sm:size-9"
+                        className="size-6"
                       />
                     </div>
 
-                    <div className="min-w-0 flex-1 text-right">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-['Vazirmatn'] font-bold text-sm sm:text-base text-[#1e1e2d] dark:text-[#eaeafb]">
-                          {service.englishName}
-                        </span>
-                        <span className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1]">
-                          ({service.persianTitle})
-                        </span>
-                        <span className="text-[10px] font-['Vazirmatn'] px-2 py-0.5 rounded-md bg-[#666cff]/10 text-[#666cff] dark:text-[#8c90ff] font-medium">
-                          {service.categoryTitle}
-                        </span>
-                      </div>
-                      <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] truncate mt-0.5">
-                        {service.description}
-                      </p>
+                    <div className="min-w-0 flex-1 text-right flex items-center gap-2">
+                      <span className="font-['Vazirmatn'] font-bold text-sm text-[#1e1e2d] dark:text-[#eaeafb] shrink-0">
+                        {service.englishName}
+                      </span>
+                      <span className="font-['Vazirmatn'] text-xs text-[#8386a1] truncate">
+                        {service.persianTitle}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Left side: Favorite Star + Open Button */}
-                  <div className="flex items-center gap-1 sm:gap-2 shrink-0 mr-2">
-                    {/* Star Button */}
+                  {/* Left side: Category label + Favorite Star + Enter shortcut */}
+                  <div className="flex items-center gap-2 shrink-0 mr-2">
+                    {/* Category Label (clean text, no heavy badge) */}
+                    <span className="text-[11px] font-['Vazirmatn'] text-[#8386a1] hidden sm:inline-block">
+                      {service.categoryTitle}
+                    </span>
+
+                    {/* Star Button: visible if favorite, or revealed on row hover */}
                     <button
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleToggleFavWithAnimation(service.id, e);
                       }}
-                      className={`relative size-9 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                      className={`size-7 rounded-lg flex items-center justify-center transition-all cursor-pointer ${
                         isFavorite
-                          ? 'text-[#ffb800] bg-[#ffb800]/15 border border-[#ffb800]/30 shadow-sm'
-                          : 'text-[#8386a1]/50 hover:text-[#ffb800] hover:bg-black/5 dark:hover:bg-white/10'
-                      } ${animatingFavId === service.id ? 'scale-110 shadow-[0_0_14px_#ffb800]' : 'active:scale-75'}`}
+                          ? 'text-[#ffb800] opacity-100'
+                          : 'text-[#8386a1] opacity-0 group-hover:opacity-100 hover:text-[#ffb800] hover:bg-black/5 dark:hover:bg-white/10'
+                      } ${animatingFavId === service.id ? 'scale-110 shadow-[0_0_12px_#ffb800]' : 'active:scale-75'}`}
                       title={isFavorite ? 'حذف از علاقه‌مندی‌ها' : 'افزودن به علاقه‌مندی‌ها'}
                     >
                       {animatingFavId === service.id && (
-                        <span className="absolute inset-0 rounded-xl border-2 border-[#ffb800] animate-star-ring pointer-events-none" />
+                        <span className="absolute inset-0 rounded-lg border-2 border-[#ffb800] animate-star-ring pointer-events-none" />
                       )}
                       <Star
-                        className={`size-4 transition-transform duration-200 ${
+                        className={`size-3.5 transition-transform duration-200 ${
                           isFavorite ? 'fill-[#ffb800] text-[#ffb800]' : ''
                         } ${animatingFavId === service.id ? 'animate-star-pop' : ''}`}
                       />
                     </button>
 
-                    {/* Open External Link Arrow */}
-                    <div
-                      className={`size-9 rounded-xl flex items-center justify-center transition-all ${
-                        isSelected
-                          ? 'bg-[#666cff] text-white shadow-md'
-                          : 'text-[#8386a1] group-hover:text-[#666cff]'
-                      }`}
-                      title="ورود به سامانه"
-                    >
-                      {isSelected ? (
-                        <CornerDownLeft className="size-4" />
-                      ) : (
-                        <ExternalLink className="size-4" />
-                      )}
-                    </div>
+                    {/* Selected Enter Badge */}
+                    {isSelected && (
+                      <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#666cff] text-white text-[10px] font-mono font-medium shadow-xs">
+                        <span>Enter</span>
+                        <CornerDownLeft className="size-2.5" />
+                      </kbd>
+                    )}
                   </div>
                 </div>
               );
