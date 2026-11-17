@@ -17,6 +17,9 @@ import { HandoffDockButton } from './components/common/HandoffDockButton';
 import { INITIAL_NOTIFICATIONS, INITIAL_SURVEYS, INITIAL_POLICIES } from './data/mockData';
 
 export const App: React.FC = () => {
+  // Flag to toggle Handoff visibility in UI (فعلاً غیرفعال به درخواست کاربر)
+  const SHOW_HANDOFF = false;
+
   // Theme state (Dark by default, as per Figma Component Theme, persisted in localStorage)
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     try {
@@ -265,7 +268,7 @@ export const App: React.FC = () => {
                   )
                 }
               />
-            ) : activeNav === 'handoff' ? (
+            ) : activeNav === 'handoff' && SHOW_HANDOFF ? (
               <HandoffView onNavigate={navigateWithTransition} />
             ) : (
               <div className="flex flex-col items-center justify-center min-h-[400px] text-center space-y-4 rounded-2xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] p-8 sm:p-12 shadow-sm">
@@ -314,12 +317,14 @@ export const App: React.FC = () => {
 
       {/* 
         Figma Handoff Docked Left Button (Hover to slide out)
-        دکمه دسترسی سریع هندآف فیگما چسبیده به دیواره سمت چپ
+        دکمه دسترسی سریع هندآف فیگما چسبیده به دیواره سمت چپ (فعلاً غیرفعال به درخواست کاربر)
       */}
-      <HandoffDockButton
-        isActive={activeNav === 'handoff'}
-        onToggle={() => navigateWithTransition(activeNav === 'handoff' ? 'home' : 'handoff')}
-      />
+      {SHOW_HANDOFF && (
+        <HandoffDockButton
+          isActive={activeNav === 'handoff'}
+          onToggle={() => navigateWithTransition(activeNav === 'handoff' ? 'home' : 'handoff')}
+        />
+      )}
     </div>
   );
 };
