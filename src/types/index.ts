@@ -8,7 +8,8 @@ export type PortalNavId =
   | 'calendar'
   | 'notifications'
   | 'surveys'
-  | 'policies';
+  | 'policies'
+  | 'handoff';
 
 export type UserPresenceStatus = 'present' | 'meeting' | 'remote' | 'leave';
 

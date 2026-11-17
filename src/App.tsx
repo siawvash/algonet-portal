@@ -12,6 +12,8 @@ import { CalendarView } from './views/CalendarView';
 import { NotificationsView } from './views/NotificationsView';
 import { SurveysView } from './views/SurveysView';
 import { PoliciesView } from './views/PoliciesView';
+import { HandoffView } from './views/HandoffView';
+import { HandoffDockButton } from './components/common/HandoffDockButton';
 import { INITIAL_NOTIFICATIONS, INITIAL_SURVEYS, INITIAL_POLICIES } from './data/mockData';
 
 export const App: React.FC = () => {
@@ -263,6 +265,8 @@ export const App: React.FC = () => {
                   )
                 }
               />
+            ) : activeNav === 'handoff' ? (
+              <HandoffView onNavigate={navigateWithTransition} />
             ) : (
               <div className="flex flex-col items-center justify-center min-h-[400px] text-center space-y-4 rounded-2xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] p-8 sm:p-12 shadow-sm">
                 <div className="size-16 rounded-2xl bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] flex items-center justify-center text-[#666cff]">
@@ -306,6 +310,15 @@ export const App: React.FC = () => {
         onClose={() => setIsSearchModalOpen(false)}
         favorites={favorites}
         onToggleFavorite={toggleFavorite}
+      />
+
+      {/* 
+        Figma Handoff Docked Left Button (Hover to slide out)
+        دکمه دسترسی سریع هندآف فیگما چسبیده به دیواره سمت چپ
+      */}
+      <HandoffDockButton
+        isActive={activeNav === 'handoff'}
+        onToggle={() => navigateWithTransition(activeNav === 'handoff' ? 'home' : 'handoff')}
       />
     </div>
   );
