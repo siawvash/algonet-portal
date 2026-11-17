@@ -1028,24 +1028,36 @@ html.dark ::-webkit-scrollbar-thumb:hover {
   }
 }
 
-/* Ensure project card button strictly renders white text & icons on hover across light & dark */
+/* Project card scorecard button:
+   - Non-hover: Black (#121217) text and icons in light mode, soft white (#eaeafb) in dark mode
+   - Hover (on card or button): Pure white text and icons on purple background
+*/
+.project-card-btn,
+.project-card-btn * {
+  color: #121217 !important;
+  stroke: currentColor !important;
+}
+
+.dark .project-card-btn,
+.dark .project-card-btn * {
+  color: #eaeafb !important;
+  stroke: currentColor !important;
+}
+
 .group:hover .project-card-btn,
 .group:hover .project-card-btn *,
 .project-card-btn:hover,
 .project-card-btn:hover * {
   color: #ffffff !important;
-  fill: #ffffff !important;
+  fill: none !important;
   stroke: #ffffff !important;
 }
 
-/* Ensure all buttons with blue/purple background or active blue outline strictly have pure white text */
-button[class*="bg-[#666cff]"],
-button[class*="bg-[#666cff]"] *,
-button[class*="group-hover:bg-[#666cff]"]:hover,
-button[class*="group-hover:bg-[#666cff]"]:hover *,
-.group:hover button[class*="group-hover:bg-[#666cff]"],
-.group:hover button[class*="group-hover:bg-[#666cff]"] * {
+/* Ensure buttons with solid blue/purple background (excluding project-card-btn in normal state) have white text */
+button:not(.project-card-btn)[class*="bg-[#666cff]"],
+button:not(.project-card-btn)[class*="bg-[#666cff]"] * {
   color: #ffffff !important;
 }
+
 
 
