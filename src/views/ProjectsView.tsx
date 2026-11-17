@@ -576,7 +576,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
 
               {/* Project Title (فارسی و انگلیسی) */}
               <div className="space-y-1">
-                <h2 className="font-['Vazirmatn'] font-bold text-lg sm:text-xl text-[#1e1e2d] dark:text-[#eaeafb] group-hover:text-[#666cff] dark:group-hover:text-[#8c90ff] transition-colors leading-snug">
+                <h2 className="font-['Vazirmatn'] font-bold text-lg sm:text-xl text-[#1e1e2d] dark:text-[#eaeafb] group-hover:text-[#666cff] dark:group-hover:text-white transition-colors leading-snug">
                   {project.persianName}
                 </h2>
                 <p className="font-mono text-xs text-[#62657a] dark:text-[#8386a1] dir-ltr text-right font-medium">
@@ -676,11 +676,11 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
             <div className="pt-3 border-t border-[#e0e2ec] dark:border-[#3d3f59]">
               <button
                 onClick={() => setSelectedScorecardProject(project)}
-                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#f4f5fa] dark:bg-[#34364d] text-[#62657a] dark:text-[#eaeafb] border border-[#e0e2ec] dark:border-[#42455f] group-hover:bg-[#666cff] group-hover:border-[#666cff] group-hover:!text-white hover:!bg-[#555ae6] hover:!text-white group-hover:shadow-[0_4px_16px_rgba(102,108,255,0.4)] text-xs font-['Vazirmatn'] font-semibold transition-all duration-200 cursor-pointer active:scale-98"
+                className="project-card-btn w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#f4f5fa] dark:bg-[#34364d] text-[#62657a] dark:text-[#eaeafb] border border-[#e0e2ec] dark:border-[#42455f] group-hover:bg-[#666cff] group-hover:border-[#666cff] group-hover:!text-white hover:!bg-[#555ae6] hover:!text-white group-hover:shadow-[0_4px_16px_rgba(102,108,255,0.4)] text-xs font-['Vazirmatn'] font-semibold transition-all duration-200 cursor-pointer active:scale-98"
               >
-                <FileSpreadsheet className="size-4 transition-colors group-hover:text-white" />
-                <span className="transition-colors group-hover:text-white">کارنامه پروژه</span>
-                <ArrowUpRight className="size-4 transition-transform group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <FileSpreadsheet className="size-4 transition-colors group-hover:!text-white" />
+                <span className="transition-colors group-hover:!text-white">کارنامه پروژه</span>
+                <ArrowUpRight className="size-4 transition-transform group-hover:!text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </button>
             </div>
           </div>

@@ -48,22 +48,22 @@ export const SurveysView: React.FC<SurveysViewProps> = ({
   return (
     <div className="space-y-6 pb-12 animate-in fade-in duration-200">
       {/* Header */}
-      <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.35)]">
+      <div className="rounded-[24px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs dark:shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.35)]">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[100px] bg-[#666cff]/15 border border-[#666cff]/30 text-[#666cff] text-xs font-['Vazirmatn'] font-bold">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[100px] bg-[#666cff]/10 dark:bg-[#666cff]/20 border border-[#666cff]/20 text-[#666cff] dark:text-[#8c90ff] text-xs font-['Vazirmatn'] font-bold">
             <Sparkles className="w-3.5 h-3.5" />
             <span>صدای همکاران و سنجش کیفیت فرآیندها</span>
           </div>
-          <h2 className="font-['Vazirmatn'] font-bold text-xl text-[#eaeafb] mt-2">
+          <h2 className="font-['Vazirmatn'] font-bold text-xl text-[#1e1e2d] dark:text-[#eaeafb] mt-2">
             پرسشنامه‌ها و نظرسنجی‌های سازمانی
           </h2>
-          <p className="font-['Vazirmatn'] text-xs text-[#8386a1] mt-1">
+          <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] mt-1">
             مشارکت در ارتقای کیفیت محیط کار، رفاه پرسنل و ابزارهای توسعه الگونت
           </p>
         </div>
 
         <div className="text-left sm:text-right">
-          <span className="text-xs px-3 py-1 rounded-[100px] bg-[#34364d] border border-[#3d3f59] text-[#8386a1] font-['Vazirmatn']">
+          <span className="text-xs px-3.5 py-1.5 rounded-[100px] bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] text-[#62657a] dark:text-[#8386a1] font-['Vazirmatn'] font-medium">
             {pendingCount === 0
               ? 'تمامی پرسشنامه‌ها تکمیل شده‌اند'
               : `${toPersianDigits(pendingCount)} پرسشنامه نیازمند تکمیل`}
@@ -81,51 +81,54 @@ export const SurveysView: React.FC<SurveysViewProps> = ({
               key={survey.id}
               className={`p-6 rounded-[24px] border transition-all duration-200 flex flex-col justify-between space-y-4 ${
                 isDone
-                  ? 'bg-[#30334e]/60 border-[#3d3f59] opacity-75'
-                  : 'bg-[#30334e] border-[#3d3f59] hover:border-[#42455f] shadow-[0px_8px_24px_-4px_rgba(0,0,0,0.3)]'
+                  ? 'bg-[#f8f9fd] dark:bg-[#282a40] border-[#e0e2ec] dark:border-[#3d3f59] shadow-xs'
+                  : 'bg-white dark:bg-[#30334e] border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/50 shadow-xs dark:shadow-[0px_8px_24px_-4px_rgba(0,0,0,0.3)]'
               }`}
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] px-2.5 py-0.5 rounded-[100px] bg-[#34364d] border border-[#42455f] text-[#8386a1] font-['Vazirmatn']">
+                  <span className="text-[11px] px-2.5 py-0.5 rounded-[100px] bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a] dark:text-[#8386a1] font-['Vazirmatn'] font-medium">
                     {survey.department}
                   </span>
                   {isDone ? (
-                    <span className="flex items-center gap-1 text-xs text-[#28c76f] font-['Vazirmatn'] font-bold">
-                      <CheckCircle2 className="w-4 h-4" />
-                      تکمیل شده
+                    <span className="flex items-center gap-1.5 px-3 py-1 rounded-[100px] bg-[#28c76f]/15 border border-[#28c76f]/30 text-xs text-[#16a34a] dark:text-[#28c76f] font-['Vazirmatn'] font-bold shadow-xs">
+                      <CheckCircle2 className="w-4 h-4 text-[#16a34a] dark:text-[#28c76f]" />
+                      <span>تکمیل شده</span>
                     </span>
                   ) : (
-                    <span className="flex items-center gap-1 text-xs text-[#ff9f43] font-['Vazirmatn']">
-                      <Clock className="w-3.5 h-3.5" />
-                      در انتظار تکمیل
+                    <span className="flex items-center gap-1.5 px-3 py-1 rounded-[100px] bg-[#ff9f43]/15 border border-[#ff9f43]/30 text-xs text-[#d97706] dark:text-[#ff9f43] font-['Vazirmatn'] font-semibold">
+                      <Clock className="w-3.5 h-3.5 text-[#d97706] dark:text-[#ff9f43]" />
+                      <span>در انتظار تکمیل</span>
                     </span>
                   )}
                 </div>
 
-                <h3 className="font-['Vazirmatn'] font-bold text-base text-[#eaeafb]">
+                <h3 className="font-['Vazirmatn'] font-bold text-base text-[#1e1e2d] dark:text-[#eaeafb]">
                   {survey.title}
                 </h3>
-                <p className="font-['Vazirmatn'] text-xs text-[#8386a1] leading-relaxed">
+                <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] leading-relaxed">
                   تعداد سوالات: {toPersianDigits(survey.questionsCount)} سوال · زمان تقریبی: {toPersianDigits(survey.estimatedMinutes)} دقیقه
                 </p>
               </div>
 
-              <div className="pt-2 flex items-center justify-between border-t border-[#3d3f59]">
-                <span className="text-[11px] text-[#585b74] font-['Vazirmatn']">
+              <div className="pt-3 flex items-center justify-between border-t border-[#e0e2ec] dark:border-[#3d3f59]">
+                <span className="text-[11px] text-[#62657a] dark:text-[#8386a1] font-['Vazirmatn'] font-medium">
                   مهلت: {survey.deadline}
                 </span>
 
                 {!isDone ? (
                   <button
                     onClick={() => handleStartSurvey(survey)}
-                    className="px-4 py-2 rounded-[100px] bg-[#666cff] hover:bg-[#7c82ff] text-[#282a42] font-['Vazirmatn'] font-bold text-xs transition-colors flex items-center gap-1 cursor-pointer shadow-md"
+                    className="px-4 py-2 rounded-[100px] bg-[#666cff] hover:bg-[#555ae6] text-white font-['Vazirmatn'] font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer shadow-md active:scale-98"
                   >
-                    <span>پاسخ به سوالات</span>
-                    <ChevronLeft className="w-3.5 h-3.5" />
+                    <span className="text-white">پاسخ به سوالات</span>
+                    <ChevronLeft className="w-3.5 h-3.5 text-white" />
                   </button>
                 ) : (
-                  <span className="text-xs text-[#585b74] font-['Vazirmatn']">ثبت شده در سامانه</span>
+                  <span className="text-xs text-[#16a34a] dark:text-[#28c76f] font-['Vazirmatn'] font-semibold flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>ثبت شده در سامانه</span>
+                  </span>
                 )}
               </div>
             </div>

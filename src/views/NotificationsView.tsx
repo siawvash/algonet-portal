@@ -25,18 +25,18 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
   return (
     <div className="space-y-6 pb-12 animate-in fade-in duration-200">
       {/* Header Card */}
-      <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.35)]">
+      <div className="rounded-[24px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs dark:shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.35)]">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs px-2.5 py-0.5 rounded-[100px] bg-[#666cff] text-[#282a42] font-['Vazirmatn'] font-bold">
+            <span className="text-xs px-2.5 py-0.5 rounded-[100px] bg-[#666cff] text-white font-['Vazirmatn'] font-bold shadow-xs">
               {unreadCount} اعلان جدید
             </span>
-            <span className="text-xs text-[#8386a1] font-['Vazirmatn']">تجمیع هشدارهای زنده سامانه‌ها</span>
+            <span className="text-xs text-[#62657a] dark:text-[#8386a1] font-['Vazirmatn']">تجمیع هشدارهای زنده سامانه‌ها</span>
           </div>
-          <h2 className="font-['Vazirmatn'] font-bold text-xl text-[#eaeafb] mt-2">
+          <h2 className="font-['Vazirmatn'] font-bold text-xl text-[#1e1e2d] dark:text-[#eaeafb] mt-2">
             مرکز اعلانات و پیام‌های سازمانی
           </h2>
-          <p className="font-['Vazirmatn'] text-xs text-[#8386a1] mt-1">
+          <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] mt-1">
             هشدارهای امنیتی، بازبینی‌های GitLab، رویدادهای تایم‌شیت و تیکت‌های میز خدمت
           </p>
         </div>
@@ -44,7 +44,7 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
         {unreadCount > 0 && (
           <button
             onClick={onMarkAllAsRead}
-            className="h-10 px-5 rounded-[100px] border border-[#42455f] bg-[#34364d] hover:bg-[#20212b] text-xs text-[#eaeafb] font-['Vazirmatn'] font-medium flex items-center gap-2 transition-all self-start sm:self-auto cursor-pointer"
+            className="h-10 px-5 rounded-[100px] border border-[#e0e2ec] dark:border-[#42455f] bg-white dark:bg-[#34364d] hover:bg-[#f4f5fa] dark:hover:bg-[#20212b] text-xs text-[#1e1e2d] dark:text-[#eaeafb] font-['Vazirmatn'] font-medium flex items-center gap-2 transition-all self-start sm:self-auto cursor-pointer shadow-xs"
           >
             <CheckCheck className="w-4 h-4 text-[#28c76f]" />
             <span>علامت‌گذاری همه به عنوان خوانده‌شده</span>
@@ -58,8 +58,8 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
           onClick={() => setFilter('all')}
           className={`py-1.5 px-4 rounded-[100px] text-xs font-medium transition-all cursor-pointer ${
             filter === 'all'
-              ? 'bg-[#666cff] text-[#282a42] font-bold shadow-sm'
-              : 'bg-[#34364d] border border-[#3d3f59] text-[#8386a1] hover:text-[#eaeafb]'
+              ? 'bg-[#666cff] text-white font-bold shadow-sm'
+              : 'bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb]'
           }`}
         >
           همه اعلانات ({notifications.length})
@@ -68,8 +68,8 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
           onClick={() => setFilter('unread')}
           className={`py-1.5 px-4 rounded-[100px] text-xs font-medium transition-all cursor-pointer ${
             filter === 'unread'
-              ? 'bg-[#666cff] text-[#282a42] font-bold shadow-sm'
-              : 'bg-[#34364d] border border-[#3d3f59] text-[#8386a1] hover:text-[#eaeafb]'
+              ? 'bg-[#666cff] text-white font-bold shadow-sm'
+              : 'bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb]'
           }`}
         >
           خوانده‌نشده ({unreadCount})
@@ -79,7 +79,7 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
       {/* Notification Rows */}
       <div className="space-y-3">
         {filteredNotifs.length === 0 ? (
-          <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] p-12 text-center text-sm font-['Vazirmatn'] text-[#8386a1]">
+          <div className="rounded-[24px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] p-12 text-center text-sm font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1]">
             هیچ اعلانی در این بخش وجود ندارد.
           </div>
         ) : (
@@ -92,8 +92,8 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
                 onClick={() => onToggleRead(n.id)}
                 className={`p-5 rounded-[20px] border transition-all duration-200 cursor-pointer ${
                   !n.read
-                    ? 'bg-[#34364d] border-[#666cff]/40 shadow-[0_4px_20px_-2px_rgba(183,154,255,0.06)]'
-                    : 'bg-[#30334e] border-[#3d3f59] opacity-80 hover:opacity-100 hover:border-[#3a3b45]'
+                    ? 'bg-white dark:bg-[#34364d] border-[#666cff]/50 shadow-xs'
+                    : 'bg-[#f8f9fd] dark:bg-[#30334e] border-[#e0e2ec] dark:border-[#3d3f59] opacity-80 hover:opacity-100'
                 }`}
               >
                 <div className="flex items-start justify-between gap-4">
@@ -109,12 +109,12 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
                       <div className="flex flex-wrap items-center gap-2">
                         <h4
                           className={`text-sm font-['Vazirmatn'] ${
-                            !n.read ? 'font-bold text-[#eaeafb]' : 'font-medium text-[#8386a1]'
+                            !n.read ? 'font-bold text-[#1e1e2d] dark:text-[#eaeafb]' : 'font-medium text-[#62657a] dark:text-[#8386a1]'
                           }`}
                         >
                           {n.title}
                         </h4>
-                        <span className="text-[10px] px-2 py-0.5 rounded-[100px] bg-[#34364d] border border-[#42455f] text-[#8386a1] font-mono">
+                        <span className="text-[10px] px-2 py-0.5 rounded-[100px] bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a] dark:text-[#8386a1] font-mono">
                           {n.serviceName}
                         </span>
                         {isHigh && (
@@ -124,14 +124,14 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
                         )}
                       </div>
 
-                      <p className="font-['Vazirmatn'] text-xs text-[#8386a1] leading-relaxed">
+                      <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] leading-relaxed">
                         {n.description}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className="text-[11px] text-[#8386a1] font-mono dir-ltr flex items-center gap-1">
+                    <span className="text-[11px] text-[#62657a] dark:text-[#8386a1] font-mono dir-ltr flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       {n.timeAgo}
                     </span>
@@ -140,7 +140,7 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
                         e.stopPropagation();
                         onToggleRead(n.id);
                       }}
-                      className="w-7 h-7 rounded-full border border-[#3d3f59] bg-[#34364d] hover:bg-[#20212b] flex items-center justify-center text-[#8386a1] hover:text-[#eaeafb] transition-colors cursor-pointer"
+                      className="w-7 h-7 rounded-full border border-[#e0e2ec] dark:border-[#3d3f59] bg-white dark:bg-[#34364d] hover:bg-[#f4f5fa] dark:hover:bg-[#20212b] flex items-center justify-center text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] transition-colors cursor-pointer shadow-xs"
                       title={n.read ? 'علامت‌گذاری به عنوان خوانده‌نشده' : 'علامت‌گذاری به عنوان خوانده‌شده'}
                     >
                       <Check className="w-3.5 h-3.5" />
