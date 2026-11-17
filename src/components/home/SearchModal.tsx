@@ -169,9 +169,9 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   const categories = [
     { id: 'all', label: 'همه سامانه‌ها' },
     { id: 'general-services', label: 'سرویس‌های عمومی' },
+    { id: 'data-ml', label: 'داده و هوش مصنوعی' },
     { id: 'company-projects', label: 'پروژه‌های سازمانی' },
-    { id: 'idp', label: 'IDP' },
-    { id: 'data-ml', label: 'داده و هوش مصنوعی' }
+    { id: 'idp', label: 'IDP' }
   ];
 
   return createPortal(
@@ -251,10 +251,29 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           className="flex-1 overflow-y-auto p-2 sm:p-3 space-y-1.5 max-h-[50vh]"
         >
           {filteredServices.length === 0 ? (
-            <div className="py-12 text-center text-[#62657a] dark:text-[#8386a1] space-y-2 font-['Vazirmatn']">
+            <div className="py-12 text-center text-[#62657a] dark:text-[#8386a1] space-y-3 font-['Vazirmatn']">
               <Sparkles className="size-8 mx-auto text-[#8386a1]/50" />
-              <p className="text-sm font-medium">سرویسی با عنوان «{query}» یافت نشد</p>
-              <p className="text-xs text-[#8386a1]">می‌توانید نام انگلیسی، فارسی یا نقش سرویس را جستجو کنید</p>
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-[#1e1e2d] dark:text-[#eaeafb]">
+                  سرویسی با عنوان «{query}» یافت نشد
+                </p>
+                <p className="text-xs text-[#8386a1]">
+                  می‌توانید نام انگلیسی، فارسی یا نقش سرویس را جستجو کنید
+                </p>
+              </div>
+              {(query || selectedCategory !== 'all') && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery('');
+                    setSelectedCategory('all');
+                    inputRef.current?.focus();
+                  }}
+                  className="px-4 py-1.5 rounded-xl bg-[#666cff]/10 text-[#666cff] dark:text-[#8c90ff] hover:bg-[#666cff]/20 text-xs font-semibold transition-colors cursor-pointer"
+                >
+                  پاک کردن جستجو و نمایش همه
+                </button>
+              )}
             </div>
           ) : (
             filteredServices.map((service, index) => {

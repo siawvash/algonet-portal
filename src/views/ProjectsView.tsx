@@ -192,26 +192,70 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
   // Search query & filters
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedLead, setSelectedLead] = useState<string>('all');
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState<boolean>(false);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
 
   // Scorecard Modal State (کارنامه پروژه)
   const [selectedScorecardProject, setSelectedScorecardProject] = useState<ProjectItem | null>(null);
 
-  // Filter projects based on search query & lead filter
+  // Filter projects based on search query, lead filter, and status filter
   const filteredProjects = PROJECTS_LIST.filter((project) => {
+    const q = searchQuery.trim().toLowerCase();
     const matchesSearch =
-      project.persianName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.englishName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.leadName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.code.toLowerCase().includes(searchQuery.toLowerCase());
+      !q ||
+      project.persianName.toLowerCase().includes(q) ||
+      project.englishName.toLowerCase().includes(q) ||
+      project.leadName.toLowerCase().includes(q) ||
+      project.code.toLowerCase().includes(q) ||
+      project.description.toLowerCase().includes(q) ||
+      project.members.some((m) => m.name.toLowerCase().includes(q));
 
     const matchesLead =
       selectedLead === 'all' ||
       (selectedLead === 'mahdieh' && project.leadName.includes('مهدیه')) ||
       (selectedLead === 'none' && project.leadName === '—');
 
-    return matchesSearch && matchesLead;
+    const matchesStatus =
+      selectedStatus === 'all' || project.status === selectedStatus;
+
+    return matchesSearch && matchesLead && matchesStatus;
   });
+
+  // Reset pagination to page 1 on filter/search change
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val);
+    setCurrentPage(1);
+  };
+
+  const handleLeadChange = (val: string) => {
+    setSelectedLead(val);
+    setCurrentPage(1);
+  };
+
+  const handleStatusChange = (val: string) => {
+    setSelectedStatus(val);
+    setCurrentPage(1);
+  };
+
+  const handleResetFilters = () => {
+    setSearchQuery('');
+    setSelectedLead('all');
+    setSelectedStatus('all');
+    setCurrentPage(1);
+  };
+
+  // Paginated items
+  const totalPages = Math.max(1, Math.ceil(filteredProjects.length / pageSize));
+  const paginatedProjects = filteredProjects.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const hasActiveFilters = searchQuery.trim() !== '' || selectedLead !== 'all' || selectedStatus !== 'all';
 
   // Render project icon helper
   const renderProjectIcon = (iconType: string, color: string) => {
@@ -257,10 +301,20 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="جست‌وجوی پروژه یا مسئول…"
-              className="w-full h-10 pr-10 pl-4 rounded-xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] focus:border-2 focus:border-[#666cff] text-xs text-[#1e1e2d] dark:text-[#eaeafb] placeholder:text-[#62657a] dark:placeholder:text-[#8386a1] outline-none font-['Vazirmatn'] transition-all shadow-xs"
+              onChange={(e) => handleSearchChange(e.target.value)}
+              placeholder="جست‌وجوی پروژه، مسئول، کد…"
+              className="w-full h-10 pr-10 pl-9 rounded-xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] focus:border-2 focus:border-[#666cff] text-xs text-[#1e1e2d] dark:text-[#eaeafb] placeholder:text-[#62657a] dark:placeholder:text-[#8386a1] outline-none font-['Vazirmatn'] transition-all shadow-xs"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => handleSearchChange('')}
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 size-6 rounded-full flex items-center justify-center text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-white transition-colors"
+                title="پاک کردن جستجو"
+              >
+                <X className="size-3.5" />
+              </button>
+            )}
           </div>
 
           {/* Filters Button */}
@@ -268,79 +322,218 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
             <button
               onClick={() => setIsFilterDropdownOpen((prev) => !prev)}
               className={`flex items-center gap-2 px-4 h-10 rounded-xl text-xs font-['Vazirmatn'] font-medium transition-all cursor-pointer shadow-xs border ${
-                selectedLead !== 'all' || isFilterDropdownOpen
+                selectedLead !== 'all' || selectedStatus !== 'all' || isFilterDropdownOpen
                   ? 'bg-[#666cff] text-white border-[#666cff]'
                   : 'bg-white dark:bg-[#30334e] text-[#1e1e2d] dark:text-[#eaeafb] border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/50'
               }`}
             >
               <SlidersHorizontal className="size-4" />
               <span>فیلترها</span>
-              {selectedLead !== 'all' && (
+              {(selectedLead !== 'all' || selectedStatus !== 'all') && (
                 <span className="size-2 rounded-full bg-white animate-pulse" />
               )}
             </button>
 
             {/* Filter Dropdown Popover */}
             {isFilterDropdownOpen && (
-              <div className="absolute left-0 sm:right-auto sm:left-0 top-12 w-56 rounded-2xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-xl p-3 z-30 space-y-2 animate-in zoom-in-95 duration-150">
-                <span className="font-['Vazirmatn'] text-[11px] font-bold text-[#62657a] dark:text-[#8386a1] block px-2 pb-1 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
-                  فیلتر بر اساس مسئول اصلی:
-                </span>
-                <button
-                  onClick={() => {
-                    setSelectedLead('all');
-                    setIsFilterDropdownOpen(false);
-                  }}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
-                    selectedLead === 'all'
-                      ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
-                      : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
-                  }`}
-                >
-                  <span>همه مسئولین</span>
-                  {selectedLead === 'all' && <Check className="size-3.5" />}
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedLead('mahdieh');
-                    setIsFilterDropdownOpen(false);
-                  }}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
-                    selectedLead === 'mahdieh'
-                      ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
-                      : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
-                  }`}
-                >
-                  <span>مهدیه ماندنی ({toPersianDigits(2)})</span>
-                  {selectedLead === 'mahdieh' && <Check className="size-3.5" />}
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedLead('none');
-                    setIsFilterDropdownOpen(false);
-                  }}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
-                    selectedLead === 'none'
-                      ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
-                      : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
-                  }`}
-                >
-                  <span>تعیین‌نشده ({toPersianDigits(1)})</span>
-                  {selectedLead === 'none' && <Check className="size-3.5" />}
-                </button>
+              <div className="absolute left-0 sm:right-auto sm:left-0 top-12 w-64 rounded-2xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-xl p-3 z-30 space-y-3 animate-in zoom-in-95 duration-150">
+                {/* Filter by Lead */}
+                <div className="space-y-1.5">
+                  <span className="font-['Vazirmatn'] text-[11px] font-bold text-[#62657a] dark:text-[#8386a1] block px-2 pb-1 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
+                    مسئول اصلی:
+                  </span>
+                  <button
+                    onClick={() => {
+                      handleLeadChange('all');
+                      setIsFilterDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
+                      selectedLead === 'all'
+                        ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
+                        : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                    }`}
+                  >
+                    <span>همه مسئولین</span>
+                    {selectedLead === 'all' && <Check className="size-3.5" />}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleLeadChange('mahdieh');
+                      setIsFilterDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
+                      selectedLead === 'mahdieh'
+                        ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
+                        : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                    }`}
+                  >
+                    <span>مهدیه ماندنی ({toPersianDigits(2)})</span>
+                    {selectedLead === 'mahdieh' && <Check className="size-3.5" />}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleLeadChange('none');
+                      setIsFilterDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
+                      selectedLead === 'none'
+                        ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
+                        : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                    }`}
+                  >
+                    <span>تعیین‌نشده ({toPersianDigits(1)})</span>
+                    {selectedLead === 'none' && <Check className="size-3.5" />}
+                  </button>
+                </div>
+
+                {/* Filter by Status */}
+                <div className="space-y-1.5 pt-2 border-t border-[#e0e2ec] dark:border-[#3d3f59]">
+                  <span className="font-['Vazirmatn'] text-[11px] font-bold text-[#62657a] dark:text-[#8386a1] block px-2 pb-1 border-b border-[#e0e2ec] dark:border-[#3d3f59]">
+                    وضعیت پروژه:
+                  </span>
+                  <button
+                    onClick={() => {
+                      handleStatusChange('all');
+                      setIsFilterDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
+                      selectedStatus === 'all'
+                        ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
+                        : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                    }`}
+                  >
+                    <span>همه وضعیت‌ها</span>
+                    {selectedStatus === 'all' && <Check className="size-3.5" />}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleStatusChange('active');
+                      setIsFilterDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
+                      selectedStatus === 'active'
+                        ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
+                        : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                    }`}
+                  >
+                    <span>در مسیر پیشرفت</span>
+                    {selectedStatus === 'active' && <Check className="size-3.5" />}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleStatusChange('in-progress');
+                      setIsFilterDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
+                      selectedStatus === 'in-progress'
+                        ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
+                        : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                    }`}
+                  >
+                    <span>در حال توسعه</span>
+                    {selectedStatus === 'in-progress' && <Check className="size-3.5" />}
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleStatusChange('testing');
+                      setIsFilterDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-['Vazirmatn'] transition-colors ${
+                      selectedStatus === 'testing'
+                        ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
+                        : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                    }`}
+                  >
+                    <span>تست و بازبینی</span>
+                    {selectedStatus === 'testing' && <Check className="size-3.5" />}
+                  </button>
+                </div>
               </div>
             )}
           </div>
         </div>
       </div>
 
+      {/* Active Filter Chips Bar */}
+      {hasActiveFilters && (
+        <div className="flex flex-wrap items-center gap-2 pt-1 pb-2">
+          <span className="text-xs font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1]">
+            فیلترهای فعال:
+          </span>
+          {searchQuery && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#666cff]/10 text-[#666cff] dark:text-[#8c90ff] text-xs font-['Vazirmatn']">
+              جستجو: {searchQuery}
+              <button
+                type="button"
+                onClick={() => handleSearchChange('')}
+                className="hover:opacity-75"
+              >
+                <X className="size-3" />
+              </button>
+            </span>
+          )}
+          {selectedLead !== 'all' && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#666cff]/10 text-[#666cff] dark:text-[#8c90ff] text-xs font-['Vazirmatn']">
+              مسئول: {selectedLead === 'mahdieh' ? 'مهدیه ماندنی' : 'تعیین‌نشده'}
+              <button
+                type="button"
+                onClick={() => handleLeadChange('all')}
+                className="hover:opacity-75"
+              >
+                <X className="size-3" />
+              </button>
+            </span>
+          )}
+          {selectedStatus !== 'all' && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#666cff]/10 text-[#666cff] dark:text-[#8c90ff] text-xs font-['Vazirmatn']">
+              وضعیت: {selectedStatus === 'active' ? 'در مسیر پیشرفت' : selectedStatus === 'in-progress' ? 'در حال توسعه' : 'تست و بازبینی'}
+              <button
+                type="button"
+                onClick={() => handleStatusChange('all')}
+                className="hover:opacity-75"
+              >
+                <X className="size-3" />
+              </button>
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={handleResetFilters}
+            className="text-xs font-['Vazirmatn'] text-[#ea5455] hover:underline mr-1"
+          >
+            پاک کردن همه
+          </button>
+        </div>
+      )}
+
       {/* 
         ==================================================
         2. VERTICAL PROJECTS GRID (کارت‌های عمودی با دیتای داخل عکس)
         ================================================== 
       */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredProjects.map((project) => (
+      {filteredProjects.length === 0 ? (
+        <div className="rounded-[28px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] p-12 text-center space-y-4 shadow-sm">
+          <div className="size-16 rounded-2xl bg-[#666cff]/10 text-[#666cff] dark:text-[#8c90ff] flex items-center justify-center mx-auto">
+            <Search className="size-8" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="font-['Vazirmatn'] font-bold text-lg text-[#1e1e2d] dark:text-[#eaeafb]">
+              پروژه‌ای با این مشخصات یافت نشد
+            </h3>
+            <p className="font-['Vazirmatn'] text-xs sm:text-sm text-[#62657a] dark:text-[#8386a1]">
+              می‌توانید فیلترهای اعمال‌شده یا عبارت جست‌وجو را تغییر دهید یا همه فیلترها را پاک کنید.
+            </p>
+          </div>
+          <button
+            onClick={handleResetFilters}
+            className="px-5 py-2.5 rounded-xl bg-[#666cff] hover:bg-[#5b60e6] text-white text-xs font-['Vazirmatn'] font-semibold transition-all shadow-md hover:shadow-lg cursor-pointer active:scale-95"
+          >
+            پاک کردن همه فیلترها
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {paginatedProjects.map((project) => (
           <div
             key={project.id}
             className="rounded-[28px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.4)] p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#666cff]/60 hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300"
@@ -493,6 +686,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
           </div>
         ))}
       </div>
+    )}
 
       {/* 
         ==================================================
@@ -503,28 +697,49 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
         {/* Right: Items per page */}
         <div className="flex items-center gap-2 text-[#62657a] dark:text-[#8386a1]">
           <span>تعداد در صفحه:</span>
-          <div className="px-3 py-1 rounded-lg bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] font-mono font-semibold text-[#1e1e2d] dark:text-[#eaeafb] flex items-center gap-1.5">
-            <span>۱۰</span>
+          <button
+            type="button"
+            onClick={() => {
+              setPageSize((prev) => (prev === 10 ? 6 : 10));
+              setCurrentPage(1);
+            }}
+            className="px-3 py-1 rounded-lg bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] font-mono font-semibold text-[#1e1e2d] dark:text-[#eaeafb] flex items-center gap-1.5 cursor-pointer hover:border-[#666cff]/50 transition-colors"
+            title="تغییر تعداد در صفحه"
+          >
+            <span>{toPersianDigits(pageSize)}</span>
             <ChevronLeft className="size-3.5 -rotate-90 opacity-60" />
-          </div>
+          </button>
         </div>
 
         {/* Center: Page Info */}
         <div className="text-[#62657a] dark:text-[#8386a1] font-medium">
-          صفحه {toPersianDigits(1)} از {toPersianDigits(1)}
+          صفحه {toPersianDigits(currentPage)} از {toPersianDigits(totalPages)}
+          <span className="mr-2 text-[11px] opacity-75">
+            ({toPersianDigits(filteredProjects.length)} مورد)
+          </span>
         </div>
 
         {/* Left: Previous & Next Buttons */}
         <div className="flex items-center gap-2">
           <button
-            disabled
-            className="px-4 py-1.5 rounded-xl bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a]/50 dark:text-[#8386a1]/50 cursor-not-allowed font-medium"
+            disabled={currentPage <= 1}
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            className={`px-4 py-1.5 rounded-xl border font-medium transition-all ${
+              currentPage > 1
+                ? 'bg-white dark:bg-[#30334e] border-[#e0e2ec] dark:border-[#42455f] text-[#1e1e2d] dark:text-[#eaeafb] hover:border-[#666cff] cursor-pointer'
+                : 'bg-[#f4f5fa] dark:bg-[#34364d] border-[#e0e2ec] dark:border-[#42455f] text-[#62657a]/40 dark:text-[#8386a1]/40 cursor-not-allowed'
+            }`}
           >
             قبلی
           </button>
           <button
-            disabled
-            className="px-4 py-1.5 rounded-xl bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[#62657a]/50 dark:text-[#8386a1]/50 cursor-not-allowed font-medium"
+            disabled={currentPage >= totalPages}
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            className={`px-4 py-1.5 rounded-xl border font-medium transition-all ${
+              currentPage < totalPages
+                ? 'bg-white dark:bg-[#30334e] border-[#e0e2ec] dark:border-[#42455f] text-[#1e1e2d] dark:text-[#eaeafb] hover:border-[#666cff] cursor-pointer'
+                : 'bg-[#f4f5fa] dark:bg-[#34364d] border-[#e0e2ec] dark:border-[#42455f] text-[#62657a]/40 dark:text-[#8386a1]/40 cursor-not-allowed'
+            }`}
           >
             بعدی
           </button>

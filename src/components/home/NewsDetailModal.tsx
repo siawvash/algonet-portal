@@ -86,7 +86,7 @@ export const NewsDetailModal: React.FC<NewsDetailModalProps> = ({ news, onClose 
           </div>
 
           {/* Summary Callout */}
-          <div className="p-4 rounded-2xl bg-[#f4f5fa] dark:bg-[#34364d] border-r-4 border-[#666cff] border border-[#e0e2ec] dark:border-[#3d3f59] text-xs sm:text-sm font-['Vazirmatn'] text-[#1e1e2d] dark:text-[#eaeafb] leading-relaxed">
+          <div className="p-4 rounded-2xl bg-[#666cff]/5 dark:bg-[#666cff]/10 border border-[#666cff]/20 dark:border-[#666cff]/30 text-xs sm:text-sm font-['Vazirmatn'] text-[#1e1e2d] dark:text-[#eaeafb] leading-relaxed relative overflow-hidden">
             {news.summary}
           </div>
 

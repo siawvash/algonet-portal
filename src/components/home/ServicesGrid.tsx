@@ -783,7 +783,7 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({
                       key={cat.id}
                       type="button"
                       style={{
-                        animation: `springExpandMorph 0.3s cubic-bezier(0.34, 1.35, 0.4, 1) ${idx * 35}ms backwards`
+                        animation: `popoverExpandMorph 0.28s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 30}ms backwards`
                       }}
                       onClick={() => {
                         handleCategoryClick(cat.id);
