@@ -509,28 +509,24 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         {/* Left Section: Actions */}
         <div className="flex items-center gap-3 self-start sm:self-auto">
           {/* 
-            Button: + ایجاد جلسه
-            EXACT FIGMA PRIMARY BUTTON (Node 11:21996 - symbol 11:23224):
-            bg-[#666cff] text-[#17111f] font-medium font-['Vazirmatn'] rounded-[100px] border border-[rgba(255,255,255,0.2)] shadow-[0px_4px_14px_rgba(183,154,255,0.18)]
+            Button: + ایجاد جلسه (White text for high contrast on purple button)
           */}
           <button
             onClick={() => setIsCreateMeetingOpen(true)}
-            className="flex items-center gap-2 bg-[#666cff] hover:bg-[#7c82ff] active:bg-[#5b60e6] text-[#17111f] rounded-[100px] h-[42px] px-6 text-xs font-['Vazirmatn'] font-bold transition-all shadow-[0px_4px_14px_0px_rgba(183,154,255,0.22)] hover:shadow-[0px_6px_20px_0px_rgba(183,154,255,0.3)] cursor-pointer"
+            className="flex items-center gap-2 bg-[#666cff] hover:bg-[#7c82ff] active:bg-[#5b60e6] text-white rounded-[100px] h-[42px] px-6 text-xs font-['Vazirmatn'] font-bold transition-all shadow-[0px_4px_14px_0px_rgba(183,154,255,0.22)] hover:shadow-[0px_6px_20px_0px_rgba(183,154,255,0.3)] cursor-pointer"
           >
-            <Plus className="size-4 stroke-[3]" />
-            <span>ایجاد جلسه</span>
+            <Plus className="size-4 stroke-[3] text-white" />
+            <span className="text-white">ایجاد جلسه</span>
           </button>
 
           {/* 
             Button: تنظیمات یادآوری
-            EXACT FIGMA SECONDARY BUTTON (Node 11:21996 - symbol 11:23225):
-            bg-[rgba(32,30,47,0.7)] hover:bg-[rgba(40,37,58,0.85)] border border-[rgba(255,255,255,0.1)] text-[#eaeafb] rounded-[100px]
           */}
           <button
             onClick={() => setIsReminderSettingsOpen(true)}
-            className="flex items-center gap-2 backdrop-blur-[4px] bg-[rgba(32,30,47,0.7)] hover:bg-[rgba(40,37,58,0.85)] border border-[rgba(255,255,255,0.1)] hover:border-[rgba(255,255,255,0.18)] text-[#eaeafb] rounded-[100px] h-[42px] px-5 text-xs font-['Vazirmatn'] font-medium transition-all cursor-pointer shadow-sm"
+            className="flex items-center gap-2 backdrop-blur-[4px] bg-white dark:bg-[rgba(32,30,47,0.7)] hover:bg-[#f4f5fa] dark:hover:bg-[rgba(40,37,58,0.85)] border border-[#e0e2ec] dark:border-[rgba(255,255,255,0.1)] hover:border-[#666cff]/40 text-[#1e1e2d] dark:text-[#eaeafb] rounded-[100px] h-[42px] px-5 text-xs font-['Vazirmatn'] font-medium transition-all cursor-pointer shadow-xs"
           >
-            <Settings className="size-4 text-[#8386a1]" />
+            <Settings className="size-4 text-[#62657a] dark:text-[#8386a1]" />
             <span>تنظیمات یادآوری</span>
           </button>
         </div>
@@ -543,11 +539,11 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
            جستجوی جلسه | روز - هفته - ماه - برنامه - سال | فیلتر
         ================================================== 
       */}
-      <div className="rounded-[20px] bg-[#30334e] border border-[#3d3f59] p-3 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-[0px_4px_20px_-2px_rgba(0,0,0,0.3)]">
+      <div className="rounded-[20px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] p-3 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs dark:shadow-[0px_4px_20px_-2px_rgba(0,0,0,0.3)]">
         {/* Right Section: منو + عنوان + فلش‌ها + امروز */}
         <div className="flex items-center gap-3">
           <button
-            className="size-8 rounded-full hover:bg-[#34364d] text-[#8386a1] hover:text-[#eaeafb] flex items-center justify-center transition-colors cursor-pointer"
+            className="size-8 rounded-full hover:bg-[#f4f5fa] dark:hover:bg-[#34364d] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] flex items-center justify-center transition-colors cursor-pointer"
             title="منوی تقویم"
           >
             <Menu className="size-4" />
@@ -555,7 +551,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
 
           <button
             onClick={handleTodayClick}
-            className="px-4 py-1.5 rounded-[100px] bg-[#34364d] border border-[#3d3f59] hover:border-[#42455f] text-xs font-['Vazirmatn'] text-[#eaeafb] transition-all cursor-pointer"
+            className="px-4 py-1.5 rounded-[100px] bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff] text-xs font-['Vazirmatn'] font-semibold text-[#1e1e2d] dark:text-[#eaeafb] transition-all cursor-pointer"
           >
             امروز
           </button>
@@ -563,21 +559,21 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
           <div className="flex items-center gap-1">
             <button
               onClick={handlePrev}
-              className="size-8 rounded-full hover:bg-[#34364d] text-[#8386a1] hover:text-[#eaeafb] flex items-center justify-center transition-colors cursor-pointer"
+              className="size-8 rounded-full hover:bg-[#f4f5fa] dark:hover:bg-[#34364d] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] flex items-center justify-center transition-colors cursor-pointer"
               title="قبلی"
             >
               <ChevronRight className="size-4" />
             </button>
             <button
               onClick={handleNext}
-              className="size-8 rounded-full hover:bg-[#34364d] text-[#8386a1] hover:text-[#eaeafb] flex items-center justify-center transition-colors cursor-pointer"
+              className="size-8 rounded-full hover:bg-[#f4f5fa] dark:hover:bg-[#34364d] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] flex items-center justify-center transition-colors cursor-pointer"
               title="بعدی"
             >
               <ChevronLeft className="size-4" />
             </button>
           </div>
 
-          <h2 className="font-['Vazirmatn'] font-bold text-lg text-[#eaeafb] pr-2">
+          <h2 className="font-['Vazirmatn'] font-bold text-lg text-[#1e1e2d] dark:text-[#eaeafb] pr-2">
             {getToolbarTitle()}
           </h2>
         </div>
@@ -586,18 +582,18 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         <div className="flex items-center gap-3 justify-between sm:justify-end flex-wrap">
           {/* اینپوت جستجوی جلسه */}
           <div className="relative flex-1 sm:flex-initial sm:w-60">
-            <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#8386a1]" />
+            <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#62657a] dark:text-[#8386a1]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="جستجوی جلسه"
-              className="w-full h-9 pr-9 pl-3 rounded-[100px] bg-[rgba(13,14,20,0.9)] border border-[#42455f] focus:border-2 focus:border-[#666cff] text-xs text-[#eaeafb] placeholder:text-[#585b74] outline-none font-['Vazirmatn'] transition-all"
+              className="w-full h-9 pr-9 pl-3 rounded-[100px] bg-[#f8f9fd] dark:bg-[rgba(13,14,20,0.9)] border border-[#e0e2ec] dark:border-[#42455f] focus:border-2 focus:border-[#666cff] text-xs text-[#1e1e2d] dark:text-[#eaeafb] placeholder:text-[#8386a1] dark:placeholder:text-[#585b74] outline-none font-['Vazirmatn'] transition-all"
             />
           </div>
 
           {/* تب‌های حالت نمایش (روز، هفته، ماه، برنامه، سال) */}
-          <div className="flex items-center bg-[#34364d] border border-[#3d3f59] rounded-[100px] p-0.5 text-xs font-['Vazirmatn']">
+          <div className="flex items-center bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[100px] p-0.5 text-xs font-['Vazirmatn']">
             {(
               [
                 { id: 'day', label: 'روز' },
@@ -610,10 +606,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
               <button
                 key={t.id}
                 onClick={() => setActiveTab(t.id)}
-                className={`px-3 py-1 rounded-[100px] transition-all cursor-pointer whitespace-nowrap ${
+                className={`px-3 py-1 rounded-[100px] transition-all cursor-pointer whitespace-nowrap font-medium ${
                   activeTab === t.id
-                    ? 'bg-[#666cff] text-[#17111f] font-bold shadow-[0px_2px_8px_rgba(183,154,255,0.25)]'
-                    : 'text-[#8386a1] hover:text-[#eaeafb]'
+                    ? 'bg-[#666cff] text-white font-bold shadow-[0px_2px_8px_rgba(183,154,255,0.25)]'
+                    : 'text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb]'
                 }`}
               >
                 {t.label}
@@ -623,7 +619,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
 
           {/* آیکون فیلتر پیشرفته */}
           <button
-            className="size-9 rounded-full bg-[#34364d] border border-[#3d3f59] hover:border-[#42455f] text-[#8386a1] hover:text-[#eaeafb] flex items-center justify-center transition-colors cursor-pointer"
+            className="size-9 rounded-full bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] flex items-center justify-center transition-colors cursor-pointer"
             title="فیلترها"
           >
             <SlidersHorizontal className="size-4" />
@@ -641,9 +637,9 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         <div className="lg:col-span-9 space-y-4">
           {/* TAB 1: ماه (Month View) */}
           {activeTab === 'month' && (
-            <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col justify-between min-h-[680px]">
+            <div className="rounded-[24px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-xs dark:shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col justify-between min-h-[680px]">
               {/* Days of Week Header */}
-              <div className="grid grid-cols-7 border-b border-[#3d3f59] bg-[#34364d]/80 text-center py-3 font-['Vazirmatn'] text-xs font-semibold text-[#8386a1]">
+              <div className="grid grid-cols-7 border-b border-[#e0e2ec] dark:border-[#3d3f59] bg-[#f8f9fd] dark:bg-[#34364d]/80 text-center py-3 font-['Vazirmatn'] text-xs font-semibold text-[#62657a] dark:text-[#8386a1]">
                 <div className="text-right pr-4">شنبه</div>
                 <div className="text-right pr-4">یکشنبه</div>
                 <div className="text-right pr-4">دوشنبه</div>
@@ -654,7 +650,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
               </div>
 
               {/* 6 Rows Grid */}
-              <div className="grid grid-cols-7 divide-x divide-x-reverse divide-[#3d3f59] divide-y flex-1">
+              <div className="grid grid-cols-7 divide-x divide-x-reverse divide-[#e0e2ec] dark:divide-[#3d3f59] divide-y divide-[#e0e2ec] dark:divide-[#3d3f59] flex-1">
                 {calendarGridRows.map((row, rIdx) =>
                   row.map((cell, cIdx) => {
                     const isSelected = cell.isCurrentMonth && cell.dayNum === selectedDay;
@@ -671,10 +667,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                         }}
                         className={`min-h-[105px] sm:min-h-[115px] p-2 flex flex-col justify-between transition-colors cursor-pointer relative ${
                           !cell.isCurrentMonth
-                            ? 'bg-[#0e0f13]/60 text-[#4a4b56]'
+                            ? 'bg-[#fcfdff] dark:bg-[#0e0f13]/60 text-[#a5a7b8] dark:text-[#4a4b56]'
                             : isSelected
-                            ? 'bg-[#34364d] border-2 border-[#666cff] shadow-[inset_0_0_12px_rgba(183,154,255,0.18)] z-10'
-                            : 'bg-[#30334e] hover:bg-[#34364d]'
+                            ? 'bg-[#666cff]/8 dark:bg-[#34364d] border-2 border-[#666cff] shadow-[inset_0_0_12px_rgba(183,154,255,0.18)] z-10'
+                            : 'bg-white dark:bg-[#30334e] hover:bg-[#f8f9fd] dark:hover:bg-[#34364d]'
                         }`}
                       >
                         {/* Top Day Number (Right aligned) */}
@@ -684,19 +680,23 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                           )}
                           {!isCellUnavailable && <span />}
 
-                          <span
-                            className={`font-['Vazirmatn'] text-xs font-semibold ${
-                              cell.isFriday && cell.isCurrentMonth
-                                ? 'text-[#ef4444]'
-                                : !cell.isCurrentMonth
-                                ? 'text-[#4a4b56]'
-                                : isSelected
-                                ? 'text-[#eaeafb] font-bold'
-                                : 'text-[#8386a1]'
-                            }`}
-                          >
-                            {toPersianDigits(cell.dayNum)}
-                          </span>
+                          {isSelected ? (
+                            <span className="size-6 rounded-full bg-[#666cff] text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                              {toPersianDigits(cell.dayNum)}
+                            </span>
+                          ) : (
+                            <span
+                              className={`font-['Vazirmatn'] text-xs font-semibold px-1 ${
+                                cell.isFriday && cell.isCurrentMonth
+                                  ? 'text-[#ef4444]'
+                                  : !cell.isCurrentMonth
+                                  ? 'text-[#a5a7b8] dark:text-[#4a4b56]'
+                                  : 'text-[#1e1e2d] dark:text-[#8386a1]'
+                              }`}
+                            >
+                              {toPersianDigits(cell.dayNum)}
+                            </span>
+                          )}
                         </div>
 
                         {/* Meeting Badges inside cell */}
@@ -728,10 +728,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
               </div>
 
               {/* Bottom Footer Link inside grid */}
-              <div className="p-3 border-t border-[#3d3f59] bg-[#30334e] text-right">
+              <div className="p-3 border-t border-[#e0e2ec] dark:border-[#3d3f59] bg-[#f8f9fd] dark:bg-[#30334e] text-right">
                 <button
                   onClick={() => setIsUnavailableModalOpen(true)}
-                  className="text-xs font-['Vazirmatn'] text-[#8386a1] hover:text-[#666cff] transition-colors cursor-pointer"
+                  className="text-xs font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1] hover:text-[#666cff] transition-colors cursor-pointer"
                 >
                   زمان‌های عدم دسترسی من
                 </button>
@@ -741,10 +741,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
 
           {/* TAB 2: هفته (Week View - Corrected Persian Fonts for Hours) */}
           {activeTab === 'week' && (
-            <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col justify-between min-h-[680px]">
+            <div className="rounded-[24px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-xs dark:shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] overflow-hidden flex flex-col justify-between min-h-[680px]">
               {/* Week Header */}
-              <div className="flex border-b border-[#3d3f59] bg-[#34364d]/80 text-center py-2.5 font-['Vazirmatn'] text-xs font-semibold text-[#8386a1]">
-                <div className="flex-1 grid grid-cols-7 divide-x divide-x-reverse divide-[#3d3f59]/60">
+              <div className="flex border-b border-[#e0e2ec] dark:border-[#3d3f59] bg-[#f8f9fd] dark:bg-[#34364d]/80 text-center py-2.5 font-['Vazirmatn'] text-xs font-semibold text-[#62657a] dark:text-[#8386a1]">
+                <div className="flex-1 grid grid-cols-7 divide-x divide-x-reverse divide-[#e0e2ec] dark:divide-[#3d3f59]/60">
                   {currentWeekDays.map((d) => (
                     <div
                       key={d.dayNum}
@@ -752,26 +752,26 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                         setSelectedDay(d.dayNum);
                         setActiveTab('day');
                       }}
-                      className={`py-1 text-center cursor-pointer hover:text-[#eaeafb] transition-colors truncate px-1 ${
+                      className={`py-1 text-center cursor-pointer transition-colors truncate px-1 flex items-center justify-center ${
                         d.isFriday
                           ? 'text-[#ef4444]'
                           : d.dayNum === selectedDay
-                          ? 'text-[#666cff] font-bold'
-                          : 'text-[#8386a1]'
+                          ? 'bg-[#666cff] text-white font-bold rounded-full shadow-xs px-2'
+                          : 'text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb]'
                       }`}
                     >
                       {`۱۴۰۵ آبان ${toPersianDigits(d.dayNum)}، ${d.weekdayName}`}
                     </div>
                   ))}
                 </div>
-                <div className="w-16 shrink-0 border-r border-[#3d3f59]/60" />
+                <div className="w-16 shrink-0 border-r border-[#e0e2ec] dark:border-[#3d3f59]/60" />
               </div>
 
               {/* Week Time Grid with Persian Digits and Vazirmatn Font */}
-              <div className="flex-1 overflow-y-auto max-h-[620px] relative divide-y divide-[#3d3f59]/40">
+              <div className="flex-1 overflow-y-auto max-h-[620px] relative divide-y divide-[#e0e2ec] dark:divide-[#3d3f59]/40">
                 {WEEK_HOURS_LIST.map((hour, hIdx) => (
                   <div key={hIdx} className="flex min-h-[52px] group">
-                    <div className="flex-1 grid grid-cols-7 divide-x divide-x-reverse divide-[#3d3f59]/40">
+                    <div className="flex-1 grid grid-cols-7 divide-x divide-x-reverse divide-[#e0e2ec] dark:divide-[#3d3f59]/40">
                       {currentWeekDays.map((d) => {
                         const meetingAtHour = meetings.find(
                           (m) => m.dayNumber === d.dayNum && m.time.startsWith(hour.slice(0, 2))
@@ -790,7 +790,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                               setNewMeetingStartTime(hour);
                               setIsCreateMeetingOpen(true);
                             }}
-                            className={`p-1 hover:bg-[#34364d]/40 transition-colors relative cursor-pointer ${
+                            className={`p-1 hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]/40 transition-colors relative cursor-pointer ${
                               isUnavailable ? 'bg-[#f43f5e]/10 border-r border-l border-[#f43f5e]/30' : ''
                             }`}
                           >
@@ -819,7 +819,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                     </div>
 
                     {/* Time Label on the Right with Vazirmatn Persian Font */}
-                    <div className="w-16 shrink-0 border-r border-[#3d3f59]/60 flex items-start justify-center pt-1 text-xs font-['Vazirmatn'] font-semibold text-[#8386a1] select-none">
+                    <div className="w-16 shrink-0 border-r border-[#e0e2ec] dark:border-[#3d3f59]/60 flex items-start justify-center pt-1 text-xs font-['Vazirmatn'] font-semibold text-[#62657a] dark:text-[#8386a1] select-none">
                       {hour}
                     </div>
                   </div>
@@ -827,10 +827,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
               </div>
 
               {/* Bottom Footer Link inside grid */}
-              <div className="p-3 border-t border-[#3d3f59] bg-[#30334e] text-right">
+              <div className="p-3 border-t border-[#e0e2ec] dark:border-[#3d3f59] bg-[#f8f9fd] dark:bg-[#30334e] text-right">
                 <button
                   onClick={() => setIsUnavailableModalOpen(true)}
-                  className="text-xs font-['Vazirmatn'] text-[#8386a1] hover:text-[#666cff] transition-colors cursor-pointer"
+                  className="text-xs font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1] hover:text-[#666cff] transition-colors cursor-pointer"
                 >
                   زمان‌های عدم دسترسی من
                 </button>
@@ -842,26 +842,26 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
             TAB 3: روز (Day View - Vertical Timeline 7 AM to 7 PM + 24H Toggle, Persian Font Numbers & Meeting Tag Colors)
           */}
           {activeTab === 'day' && (
-            <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] p-6 space-y-6 min-h-[680px]">
+            <div className="rounded-[24px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-xs dark:shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] p-6 space-y-6 min-h-[680px]">
               {/* Day Header with 24H Toggle */}
-              <div className="border-b border-[#3d3f59] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="border-b border-[#e0e2ec] dark:border-[#3d3f59] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h3 className="font-['Vazirmatn'] font-bold text-base text-[#eaeafb]">
+                  <h3 className="font-['Vazirmatn'] font-bold text-base text-[#1e1e2d] dark:text-[#eaeafb]">
                     {`۱۴۰۵ آبان ${toPersianDigits(selectedDay)}، ${getDayOfWeekName(selectedDay)}`}
                   </h3>
-                  <p className="text-xs text-[#8386a1] mt-0.5">
+                  <p className="text-xs text-[#62657a] dark:text-[#8386a1] mt-0.5">
                     {toPersianDigits(meetingsToday.length)} جلسه برنامه‌ریزی‌شده در این روز
                   </p>
                 </div>
 
                 {/* 7 AM to 7 PM vs 24 Hours switcher capsule */}
-                <div className="flex items-center gap-1 bg-[#34364d] border border-[#3d3f59] rounded-[100px] p-1 text-xs">
+                <div className="flex items-center gap-1 bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] rounded-[100px] p-1 text-xs font-['Vazirmatn']">
                   <button
                     onClick={() => setDayViewMode('workhours')}
                     className={`px-3.5 py-1.5 rounded-[100px] transition-all cursor-pointer font-medium ${
                       dayViewMode === 'workhours'
-                        ? 'bg-[#666cff] text-[#17111f] font-bold shadow-sm'
-                        : 'text-[#8386a1] hover:text-[#eaeafb]'
+                        ? 'bg-[#666cff] text-white font-bold shadow-sm'
+                        : 'text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb]'
                     }`}
                   >
                     ساعات کاری (۰۷:۰۰ تا ۱۹:۰۰)
@@ -870,8 +870,8 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                     onClick={() => setDayViewMode('24hours')}
                     className={`px-3.5 py-1.5 rounded-[100px] transition-all cursor-pointer font-medium ${
                       dayViewMode === '24hours'
-                        ? 'bg-[#666cff] text-[#17111f] font-bold shadow-sm'
-                        : 'text-[#8386a1] hover:text-[#eaeafb]'
+                        ? 'bg-[#666cff] text-white font-bold shadow-sm'
+                        : 'text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb]'
                     }`}
                   >
                     ۲۴ ساعته (شبانه روز)
@@ -881,7 +881,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
 
               {/* Informational banner when meetings exist outside work hours */}
               {dayViewMode === 'workhours' && outsideWorkhoursMeetings.length > 0 && (
-                <div className="flex items-center justify-between p-3.5 rounded-[16px] bg-[#666cff]/10 border border-[#666cff]/25 text-xs text-[#eaeafb]">
+                <div className="flex items-center justify-between p-3.5 rounded-[16px] bg-[#666cff]/10 border border-[#666cff]/25 text-xs text-[#1e1e2d] dark:text-[#eaeafb]">
                   <div className="flex items-center gap-2">
                     <AlertCircle className="size-4 text-[#666cff] shrink-0" />
                     <span>
@@ -902,7 +902,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
               */}
               <div className="relative pr-2">
                 {/* Continuous Vertical Timeline Spine Line */}
-                <div className="absolute right-[86px] top-4 bottom-4 w-[2px] bg-gradient-to-b from-[#42455f] via-[#41414e] to-[#42455f] pointer-events-none" />
+                <div className="absolute right-[86px] top-4 bottom-4 w-[2px] bg-gradient-to-b from-[#e0e2ec] dark:from-[#42455f] via-[#cacede] dark:via-[#41414e] to-[#e0e2ec] dark:to-[#42455f] pointer-events-none" />
 
                 <div className="space-y-4">
                   {dayDisplayHours.map((hour, idx) => {
@@ -916,7 +916,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                     return (
                       <div key={idx} className="relative flex items-start gap-4 group">
                         {/* 1. Time Label with Persian font Vazirmatn */}
-                        <div className="w-16 shrink-0 pt-2.5 text-left font-['Vazirmatn'] font-semibold text-xs text-[#8386a1] select-none">
+                        <div className="w-16 shrink-0 pt-2.5 text-left font-['Vazirmatn'] font-semibold text-xs text-[#62657a] dark:text-[#8386a1] select-none">
                           {hour}
                         </div>
 
@@ -928,15 +928,15 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                                 backgroundColor: hourMeetings[0].bgColor,
                                 boxShadow: `0 0 16px ${hourMeetings[0].bgColor}55`
                               }}
-                              className="size-8 rounded-full flex items-center justify-center text-white shrink-0 border-2 border-[#30334e] transition-transform hover:scale-110 cursor-pointer shadow-md"
+                              className="size-8 rounded-full flex items-center justify-center text-white shrink-0 border-2 border-white dark:border-[#30334e] transition-transform hover:scale-110 cursor-pointer shadow-md"
                               onClick={() => setSelectedMeeting(hourMeetings[0])}
                               title={hourMeetings[0].title}
                             >
-                              <Video className="size-4" />
+                              <Video className="size-4 text-white" />
                             </div>
                           ) : isUnavailable ? (
                             <div
-                              className="size-8 rounded-full flex items-center justify-center text-white shrink-0 border-2 border-[#30334e] bg-[#f43f5e] shadow-[0_0_12px_rgba(244,63,94,0.4)]"
+                              className="size-8 rounded-full flex items-center justify-center text-white shrink-0 border-2 border-white dark:border-[#30334e] bg-[#f43f5e] shadow-[0_0_12px_rgba(244,63,94,0.4)]"
                               title="زمان عدم دسترسی"
                             >
                               <ShieldAlert className="size-4 text-white" />
@@ -949,7 +949,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                                 setNewMeetingStartTime(hour);
                                 setIsCreateMeetingOpen(true);
                               }}
-                              className="size-4 rounded-full border-2 border-[#42455f] bg-[#30334e] group-hover:border-[#666cff] group-hover:bg-[#666cff]/25 group-hover:scale-125 transition-all cursor-pointer mt-2"
+                              className="size-4 rounded-full border-2 border-[#cacede] dark:border-[#42455f] bg-[#f8f9fd] dark:bg-[#30334e] group-hover:border-[#666cff] group-hover:bg-[#666cff]/25 group-hover:scale-125 transition-all cursor-pointer mt-2"
                               title="ثبت جلسه در این ساعت"
                             />
                           )}
@@ -963,7 +963,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                                 <div
                                   key={meet.id}
                                   onClick={() => setSelectedMeeting(meet)}
-                                  className="rounded-[18px] bg-[#34364d] border border-[#3d3f59] hover:border-[#42455f] p-4.5 transition-all cursor-pointer shadow-sm relative overflow-hidden group/card hover:shadow-lg space-y-3"
+                                  className="rounded-[20px] bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/60 dark:hover:border-[#42455f] p-4.5 sm:p-5 transition-all cursor-pointer shadow-xs dark:shadow-sm relative overflow-hidden group/card hover:shadow-md space-y-3"
                                 >
                                   {/* Right vertical color accent line */}
                                   <div
@@ -976,36 +976,36 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                                     <div className="flex items-center gap-2">
                                       <span
                                         style={{
-                                          backgroundColor: `${meet.color}20`,
-                                          borderColor: `${meet.color}45`,
+                                          backgroundColor: `${meet.color}15`,
+                                          borderColor: `${meet.color}35`,
                                           color: meet.color
                                         }}
-                                        className="px-2.5 py-0.5 rounded-[100px] text-[11px] font-bold border"
+                                        className="px-3 py-1 rounded-[100px] text-[11px] font-bold border"
                                       >
                                         جلسه: {meet.categoryLabel}
                                       </span>
                                     </div>
 
-                                    <span className="font-['Vazirmatn'] text-xs text-[#8386a1] dir-ltr flex items-center gap-1.5">
-                                      <Clock className="size-3.5 text-[#8386a1]" />
+                                    <span className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] dir-ltr flex items-center gap-1.5 font-medium">
+                                      <Clock className="size-3.5 text-[#62657a] dark:text-[#8386a1]" />
                                       {toPersianDigits(meet.time)} – {toPersianDigits(meet.endTime || '۱۲:۰۰')}
                                     </span>
                                   </div>
 
                                   <div className="pr-2">
-                                    <h4 className="font-bold text-base text-[#eaeafb] group-hover/card:text-white transition-colors">
+                                    <h4 className="font-bold text-base text-[#1e1e2d] dark:text-[#eaeafb] group-hover/card:text-[#666cff] dark:group-hover/card:text-white transition-colors">
                                       {meet.title}
                                     </h4>
                                   </div>
 
-                                  <div className="flex items-center justify-between text-xs text-[#8386a1] pt-2 border-t border-[#3d3f59]/60 pr-2 flex-wrap gap-2">
+                                  <div className="flex items-center justify-between text-xs text-[#62657a] dark:text-[#8386a1] pt-2 border-t border-[#e0e2ec] dark:border-[#3d3f59]/60 pr-2 flex-wrap gap-2 font-medium">
                                     <div className="flex items-center gap-4 flex-wrap">
-                                      <span className="flex items-center gap-1.5 text-[#8386a1]">
+                                      <span className="flex items-center gap-1.5 text-[#1e1e2d] dark:text-[#eaeafb]">
                                         <Video className="size-3.5 text-[#666cff]" />
                                         {meet.room}
                                       </span>
                                       <span className="flex items-center gap-1.5">
-                                        <Users className="size-3.5 text-[#8386a1]" />
+                                        <Users className="size-3.5 text-[#62657a] dark:text-[#8386a1]" />
                                         {toPersianDigits(meet.attendeesCount)} نفر
                                       </span>
                                       <span>برگزارکننده: {meet.organizer}</span>
@@ -1017,10 +1017,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                                         target="_blank"
                                         rel="noreferrer"
                                         onClick={(e) => e.stopPropagation()}
-                                        className="px-3.5 py-1 rounded-[100px] bg-[#666cff]/20 hover:bg-[#666cff] border border-[#666cff]/40 text-[#eaeafb] hover:text-[#17111f] text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm"
+                                        className="px-4 py-1.5 rounded-[100px] bg-[#666cff] hover:bg-[#555ae6] text-white text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm active:scale-98 cursor-pointer"
                                       >
-                                        <Video className="size-3.5" />
-                                        <span>ورود به Meet</span>
+                                        <Video className="size-3.5 text-white" />
+                                        <span className="text-white">ورود به Meet</span>
                                       </a>
                                     )}
                                   </div>
@@ -1028,7 +1028,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                               ))}
                             </div>
                           ) : isUnavailable ? (
-                            <div className="rounded-[18px] bg-[#1a151b] border border-[#f43f5e]/30 p-4 transition-all shadow-sm space-y-2">
+                            <div className="rounded-[18px] bg-[#fff1f2] dark:bg-[#1a151b] border border-[#f43f5e]/30 p-4 transition-all shadow-xs space-y-2">
                               <div className="flex items-center justify-between flex-wrap gap-2">
                                 <span className="px-2.5 py-0.5 rounded-[100px] text-[11px] font-bold border border-[#f43f5e]/40 bg-[#f43f5e]/15 text-[#ea5455]">
                                   ⛔ زمان عدم دسترسی (بازه ثبت‌شده)
@@ -1038,7 +1038,7 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                                 </span>
                               </div>
                               <div className="flex items-center justify-between pt-1">
-                                <p className="text-xs text-[#8386a1]">
+                                <p className="text-xs text-[#62657a] dark:text-[#8386a1]">
                                   {isUnavailable.title} · در این بازه جلسه‌ای تنظیم نمی‌شود.
                                 </p>
                                 <button
@@ -1058,14 +1058,14 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                                 setNewMeetingStartTime(hour);
                                 setIsCreateMeetingOpen(true);
                               }}
-                              className="rounded-[14px] bg-[#34364d]/40 border border-[#3d3f59]/40 hover:bg-[#34364d]/70 hover:border-[#42455f] p-3 flex items-center justify-between transition-all cursor-pointer group/slot text-xs"
+                              className="rounded-[14px] bg-[#f8f9fd] dark:bg-[#34364d]/40 border border-[#e0e2ec] dark:border-[#3d3f59]/40 hover:bg-[#f1f3fa] dark:hover:bg-[#34364d]/70 hover:border-[#666cff]/40 p-3 flex items-center justify-between transition-all cursor-pointer group/slot text-xs"
                             >
-                              <span className="text-[#585b74] group-hover/slot:text-[#8386a1] font-medium">
+                              <span className="text-[#8386a1] group-hover/slot:text-[#666cff] font-medium">
                                 زمان آزاد
                               </span>
                               <button
                                 type="button"
-                                className="opacity-0 group-hover/slot:opacity-100 px-3 py-1 rounded-[100px] bg-[#34364d] border border-[#42455f] text-[#666cff] hover:border-[#666cff] text-[11px] font-semibold transition-all flex items-center gap-1 cursor-pointer"
+                                className="opacity-0 group-hover/slot:opacity-100 px-3 py-1 rounded-[100px] bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] text-[#666cff] hover:border-[#666cff] text-[11px] font-semibold transition-all flex items-center gap-1 cursor-pointer shadow-xs"
                               >
                                 <Plus className="size-3" />
                                 <span>ثبت جلسه در این ساعت</span>
@@ -1080,10 +1080,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
               </div>
 
               {/* Bottom Footer Link inside grid */}
-              <div className="p-3 border-t border-[#3d3f59] bg-[#30334e] text-right">
+              <div className="p-3 border-t border-[#e0e2ec] dark:border-[#3d3f59] bg-[#f8f9fd] dark:bg-[#30334e] text-right">
                 <button
                   onClick={() => setIsUnavailableModalOpen(true)}
-                  className="text-xs font-['Vazirmatn'] text-[#8386a1] hover:text-[#666cff] transition-colors cursor-pointer"
+                  className="text-xs font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1] hover:text-[#666cff] transition-colors cursor-pointer"
                 >
                   زمان‌های عدم دسترسی من
                 </button>
@@ -1093,92 +1093,92 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
 
           {/* TAB 4: برنامه (Agenda / Schedule View) */}
           {activeTab === 'agenda' && (
-            <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] overflow-hidden p-6 space-y-6 min-h-[680px]">
-              <div className="border-b border-[#3d3f59] pb-3 flex items-center justify-between">
-                <h3 className="font-['Vazirmatn'] font-bold text-sm text-[#eaeafb]">
+            <div className="rounded-[24px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-xs dark:shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] overflow-hidden p-6 space-y-6 min-h-[680px]">
+              <div className="border-b border-[#e0e2ec] dark:border-[#3d3f59] pb-3 flex items-center justify-between">
+                <h3 className="font-['Vazirmatn'] font-bold text-sm text-[#1e1e2d] dark:text-[#eaeafb]">
                   ۱۴۰۵ آبان ۶، چهارشنبه
                 </h3>
-                <span className="text-xs text-[#8386a1]">۲ جلسه برنامه‌ریزی‌شده</span>
+                <span className="text-xs text-[#62657a] dark:text-[#8386a1]">۲ جلسه برنامه‌ریزی‌شده</span>
               </div>
 
               <div className="space-y-3">
                 <div
                   onClick={() => setSelectedMeeting(meetings[0])}
-                  className="rounded-[16px] bg-[#34364d] border border-[#3d3f59] hover:border-[#42455f] p-4 flex items-center justify-between transition-all cursor-pointer shadow-sm relative overflow-hidden"
+                  className="rounded-[16px] bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/50 dark:hover:border-[#42455f] p-4 flex items-center justify-between transition-all cursor-pointer shadow-xs dark:shadow-sm relative overflow-hidden group hover:shadow-md"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-1.5 h-10 rounded-full bg-[#ea580c]" />
                     <div className="space-y-0.5">
-                      <h4 className="font-['Vazirmatn'] font-bold text-sm text-[#eaeafb]">
+                      <h4 className="font-['Vazirmatn'] font-bold text-sm text-[#1e1e2d] dark:text-[#eaeafb] group-hover:text-[#666cff] transition-colors">
                         تست ۴- ماندنی
                       </h4>
-                      <p className="font-['Vazirmatn'] text-xs text-[#8386a1] dir-ltr text-right">
+                      <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] dir-ltr text-right">
                         ۰۹:۰۰ – ۱۰:۰۰
                       </p>
                     </div>
                   </div>
 
-                  <div className="text-left font-['Vazirmatn'] text-xs text-[#8386a1]">
+                  <div className="text-left font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1]">
                     <span>تست جلسه رترو · ۲ نفر</span>
                   </div>
                 </div>
 
                 <div
                   onClick={() => setSelectedMeeting(meetings[1])}
-                  className="rounded-[16px] bg-[#34364d] border border-[#3d3f59] hover:border-[#42455f] p-4 flex items-center justify-between transition-all cursor-pointer shadow-sm relative overflow-hidden"
+                  className="rounded-[16px] bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/50 dark:hover:border-[#42455f] p-4 flex items-center justify-between transition-all cursor-pointer shadow-xs dark:shadow-sm relative overflow-hidden group hover:shadow-md"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-1.5 h-10 rounded-full bg-[#22c55e]" />
                     <div className="space-y-0.5">
-                      <h4 className="font-['Vazirmatn'] font-bold text-sm text-[#eaeafb]">
+                      <h4 className="font-['Vazirmatn'] font-bold text-sm text-[#1e1e2d] dark:text-[#eaeafb] group-hover:text-[#666cff] transition-colors">
                         تست ۵- ماندنی
                       </h4>
-                      <p className="font-['Vazirmatn'] text-xs text-[#8386a1] dir-ltr text-right">
+                      <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] dir-ltr text-right">
                         ۱۱:۰۰ – ۱۲:۰۰
                       </p>
                     </div>
                   </div>
 
-                  <div className="text-left font-['Vazirmatn'] text-xs text-[#8386a1]">
+                  <div className="text-left font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1]">
                     <span>تست جلسه آنبوردینگ · ۱ نفر</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#3d3f59] space-y-4">
+              <div className="pt-4 border-t border-[#e0e2ec] dark:border-[#3d3f59] space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-['Vazirmatn'] font-bold text-sm text-[#eaeafb]">
+                  <h3 className="font-['Vazirmatn'] font-bold text-sm text-[#1e1e2d] dark:text-[#eaeafb]">
                     ۱۴۰۵ آبان ۱۱، دوشنبه
                   </h3>
-                  <span className="text-xs text-[#8386a1]">۳ جلسه</span>
+                  <span className="text-xs text-[#62657a] dark:text-[#8386a1]">۳ جلسه</span>
                 </div>
 
                 <div
                   onClick={() => setSelectedMeeting(meetings[2])}
-                  className="rounded-[16px] bg-[#34364d] border border-[#3d3f59] hover:border-[#42455f] p-4 flex items-center justify-between transition-all cursor-pointer shadow-sm relative overflow-hidden"
+                  className="rounded-[16px] bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/50 dark:hover:border-[#42455f] p-4 flex items-center justify-between transition-all cursor-pointer shadow-xs dark:shadow-sm relative overflow-hidden group hover:shadow-md"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-1.5 h-10 rounded-full bg-[#3b82f6]" />
                     <div className="space-y-0.5">
-                      <h4 className="font-['Vazirmatn'] font-bold text-sm text-[#eaeafb]">
+                      <h4 className="font-['Vazirmatn'] font-bold text-sm text-[#1e1e2d] dark:text-[#eaeafb] group-hover:text-[#666cff] transition-colors">
                         جلسه استندآپ روزانه پلتفرم
                       </h4>
-                      <p className="font-['Vazirmatn'] text-xs text-[#8386a1] dir-ltr text-right">
+                      <p className="font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1] dir-ltr text-right">
                         ۱۰:۰۰ – ۱۰:۳۰
                       </p>
                     </div>
                   </div>
 
-                  <div className="text-left font-['Vazirmatn'] text-xs text-[#8386a1]">
+                  <div className="text-left font-['Vazirmatn'] text-xs text-[#62657a] dark:text-[#8386a1]">
                     <span>تست جلسه روزانه · ۶ نفر</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-[#3d3f59] text-right">
+              <div className="pt-6 border-t border-[#e0e2ec] dark:border-[#3d3f59] text-right">
                 <button
                   onClick={() => setIsUnavailableModalOpen(true)}
-                  className="text-xs font-['Vazirmatn'] text-[#8386a1] hover:text-[#666cff] transition-colors cursor-pointer"
+                  className="text-xs font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1] hover:text-[#666cff] transition-colors cursor-pointer"
                 >
                   زمان‌های عدم دسترسی من
                 </button>
@@ -1188,15 +1188,15 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
 
           {/* TAB 5: سال (Year View) */}
           {activeTab === 'year' && (
-            <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] overflow-hidden p-6 space-y-6 min-h-[680px]">
-              <div className="flex items-center justify-between border-b border-[#3d3f59] pb-4">
+            <div className="rounded-[24px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-xs dark:shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] overflow-hidden p-6 space-y-6 min-h-[680px]">
+              <div className="flex items-center justify-between border-b border-[#e0e2ec] dark:border-[#3d3f59] pb-4 flex-wrap gap-3">
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setYearHalf(0)}
                     className={`px-4 py-1.5 rounded-[100px] text-xs font-medium transition-all cursor-pointer ${
                       yearHalf === 0
-                        ? 'bg-[#666cff] text-[#17111f] font-bold shadow-sm'
-                        : 'bg-[#34364d] text-[#8386a1] hover:text-[#eaeafb]'
+                        ? 'bg-[#666cff] text-white font-bold shadow-sm'
+                        : 'bg-[#f4f5fa] dark:bg-[#34364d] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb]'
                     }`}
                   >
                     نیمه اول سال (بهار و تابستان)
@@ -1205,15 +1205,15 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                     onClick={() => setYearHalf(1)}
                     className={`px-4 py-1.5 rounded-[100px] text-xs font-medium transition-all cursor-pointer ${
                       yearHalf === 1
-                        ? 'bg-[#666cff] text-[#17111f] font-bold shadow-sm'
-                        : 'bg-[#34364d] text-[#8386a1] hover:text-[#eaeafb]'
+                        ? 'bg-[#666cff] text-white font-bold shadow-sm'
+                        : 'bg-[#f4f5fa] dark:bg-[#34364d] text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb]'
                     }`}
                   >
                     نیمه دوم سال (پاییز و زمستان)
                   </button>
                 </div>
 
-                <span className="text-xs text-[#8386a1] font-mono">سال ۱۴۰۵ هجری شمسی</span>
+                <span className="text-xs text-[#62657a] dark:text-[#8386a1] font-mono">سال ۱۴۰۵ هجری شمسی</span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -1229,13 +1229,13 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                   return (
                     <div
                       key={mIdx}
-                      className="rounded-[20px] bg-[#34364d] border border-[#3d3f59] p-4 flex flex-col justify-between space-y-3"
+                      className="rounded-[20px] bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] p-4 flex flex-col justify-between space-y-3 shadow-xs"
                     >
-                      <h4 className="text-center font-['Vazirmatn'] font-bold text-sm text-[#eaeafb]">
+                      <h4 className="text-center font-['Vazirmatn'] font-bold text-sm text-[#1e1e2d] dark:text-[#eaeafb]">
                         {m.name}
                       </h4>
 
-                      <div className="grid grid-cols-7 text-center font-['Vazirmatn'] text-[11px] text-[#8386a1] border-b border-[#3d3f59] pb-1.5">
+                      <div className="grid grid-cols-7 text-center font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1] border-b border-[#e0e2ec] dark:border-[#3d3f59] pb-1.5">
                         <span>ش</span>
                         <span>ی</span>
                         <span>د</span>
@@ -1259,10 +1259,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                               !d.isValid
                                 ? 'text-transparent pointer-events-none'
                                 : d.isCircled
-                                ? 'border-2 border-[#666cff] text-[#eaeafb] font-bold shadow-[0_0_8px_rgba(183,154,255,0.4)]'
+                                ? 'bg-[#666cff] border-2 border-[#666cff] text-white font-bold shadow-sm'
                                 : d.isFriday
-                                ? 'text-[#ef4444] hover:bg-[#34364d]'
-                                : 'text-[#8386a1] hover:text-[#eaeafb] hover:bg-[#34364d]'
+                                ? 'text-[#ef4444] hover:bg-[#f4f5fa] dark:hover:bg-[#282a40]'
+                                : 'text-[#1e1e2d] dark:text-[#8386a1] hover:text-[#666cff] dark:hover:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#282a40]'
                             }`}
                           >
                             {d.isValid ? toPersianDigits(d.dayNum) : ''}
@@ -1274,10 +1274,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                 })}
               </div>
 
-              <div className="pt-4 border-t border-[#3d3f59] text-right">
+              <div className="pt-4 border-t border-[#e0e2ec] dark:border-[#3d3f59] text-right">
                 <button
                   onClick={() => setIsUnavailableModalOpen(true)}
-                  className="text-xs font-['Vazirmatn'] text-[#8386a1] hover:text-[#666cff] transition-colors cursor-pointer"
+                  className="text-xs font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1] hover:text-[#666cff] transition-colors cursor-pointer"
                 >
                   زمان‌های عدم دسترسی من
                 </button>
@@ -1293,20 +1293,20 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
         */}
         <div className="lg:col-span-3 space-y-6 text-right">
           {/* 1. Mini Calendar Card */}
-          <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-[#3d3f59] pb-3">
-              <button className="text-[#8386a1] hover:text-[#eaeafb] p-1 cursor-pointer">
+          <div className="rounded-[24px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-xs dark:shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] p-5 space-y-4">
+            <div className="flex items-center justify-between border-b border-[#e0e2ec] dark:border-[#3d3f59] pb-3">
+              <button className="text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] p-1 cursor-pointer">
                 <ChevronRight className="size-4" />
               </button>
-              <h3 className="font-['Vazirmatn'] font-bold text-sm text-[#eaeafb]">
+              <h3 className="font-['Vazirmatn'] font-bold text-sm text-[#1e1e2d] dark:text-[#eaeafb]">
                 آبان ۱۴۰۵
               </h3>
-              <button className="text-[#8386a1] hover:text-[#eaeafb] p-1 cursor-pointer">
+              <button className="text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] p-1 cursor-pointer">
                 <ChevronLeft className="size-4" />
               </button>
             </div>
 
-            <div className="grid grid-cols-7 text-center font-['Vazirmatn'] text-[11px] text-[#8386a1] pb-1">
+            <div className="grid grid-cols-7 text-center font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#8386a1] pb-1">
               <span>ش</span>
               <span>ی</span>
               <span>د</span>
@@ -1337,10 +1337,10 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
                       }}
                       className={`h-7 w-7 mx-auto rounded-full flex flex-col items-center justify-center relative cursor-pointer transition-colors ${
                         isSelected
-                          ? 'bg-[#666cff] text-[#17111f] font-bold shadow-md'
+                          ? 'bg-[#666cff] text-white font-bold shadow-md'
                           : cell.isCurrentMonth
-                          ? 'text-[#eaeafb] hover:bg-[#34364d]'
-                          : 'text-[#42455f]'
+                          ? 'text-[#1e1e2d] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                          : 'text-[#cacede] dark:text-[#42455f]'
                       }`}
                     >
                       <span>{toPersianDigits(cell.dayNum)}</span>
@@ -1358,29 +1358,29 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
           </div>
 
           {/* 2. راهنمای انواع جلسه (Meeting Types Legend with 5 colored dots) */}
-          <div className="rounded-[24px] bg-[#30334e] border border-[#3d3f59] shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] p-5 space-y-3">
-            <h3 className="font-['Vazirmatn'] font-bold text-sm text-[#eaeafb]">
+          <div className="rounded-[24px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-xs dark:shadow-[0px_8px_32px_-4px_rgba(0,0,0,0.45)] p-5 space-y-3">
+            <h3 className="font-['Vazirmatn'] font-bold text-sm text-[#1e1e2d] dark:text-[#eaeafb]">
               انواع جلسه
             </h3>
 
             <div className="space-y-2.5 font-['Vazirmatn'] text-xs">
-              <div className="flex items-center gap-2 text-[#8386a1]">
+              <div className="flex items-center gap-2 text-[#62657a] dark:text-[#8386a1]">
                 <span className="size-2 rounded-full bg-[#22c55e] shrink-0" />
                 <span>تست جلسه آنبوردینگ</span>
               </div>
-              <div className="flex items-center gap-2 text-[#8386a1]">
+              <div className="flex items-center gap-2 text-[#62657a] dark:text-[#8386a1]">
                 <span className="size-2 rounded-full bg-[#ea580c] shrink-0" />
                 <span>تست جلسه رترو</span>
               </div>
-              <div className="flex items-center gap-2 text-[#8386a1]">
+              <div className="flex items-center gap-2 text-[#62657a] dark:text-[#8386a1]">
                 <span className="size-2 rounded-full bg-[#3b82f6] shrink-0" />
                 <span>تست جلسه روزانه</span>
               </div>
-              <div className="flex items-center gap-2 text-[#8386a1]">
+              <div className="flex items-center gap-2 text-[#62657a] dark:text-[#8386a1]">
                 <span className="size-2 rounded-full bg-[#06b6d4] shrink-0" />
                 <span>تست جلسه پلن</span>
               </div>
-              <div className="flex items-center gap-2 text-[#8386a1]">
+              <div className="flex items-center gap-2 text-[#62657a] dark:text-[#8386a1]">
                 <span className="size-2 rounded-full bg-[#a855f7] shrink-0" />
                 <span>تست جلسه گرومینگ</span>
               </div>
@@ -1393,14 +1393,14 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
           */}
           <button
             onClick={() => setIsUnavailableModalOpen(true)}
-            className="w-full py-3 px-4 rounded-[16px] bg-[#34364d] border border-[#3d3f59] hover:border-[#666cff] text-xs font-['Vazirmatn'] font-semibold text-[#eaeafb] hover:bg-[#34364d] transition-all cursor-pointer shadow-sm text-center flex items-center justify-center gap-2 group"
+            className="w-full py-3 px-4 rounded-[16px] bg-white dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff] text-xs font-['Vazirmatn'] font-semibold text-[#1e1e2d] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#383b59] transition-all cursor-pointer shadow-xs text-center flex items-center justify-center gap-2 group"
           >
-            <Clock className="size-4 text-[#8386a1] group-hover:text-[#666cff] transition-colors" />
+            <Clock className="size-4 text-[#62657a] dark:text-[#8386a1] group-hover:text-[#666cff] transition-colors" />
             <span>ثبت زمان عدم دسترسی</span>
           </button>
 
           {/* 4. Footer Timezone */}
-          <div className="text-center font-['Vazirmatn'] text-[11px] text-[#585b74]">
+          <div className="text-center font-['Vazirmatn'] text-[11px] text-[#62657a] dark:text-[#585b74]">
             تقویم شمسی · ساعت تهران
           </div>
         </div>

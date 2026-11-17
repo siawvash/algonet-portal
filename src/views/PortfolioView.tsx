@@ -24,6 +24,34 @@ interface PortfolioViewProps {
   onNavigate?: (navId: PortalNavId) => void;
 }
 
+// Helper functions to generate smooth Catmull-Rom cubic bezier spline paths for SVG chart
+function generateSplinePath(points: { x: number; y: number }[], tension = 0.22): string {
+  if (points.length === 0) return '';
+  let d = `M ${points[0].x.toFixed(1)},${points[0].y.toFixed(1)}`;
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = i > 0 ? points[i - 1] : points[i];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = i < points.length - 2 ? points[i + 2] : p2;
+
+    const cp1x = p1.x + (p2.x - p0.x) * tension;
+    const cp1y = p1.y + (p2.y - p0.y) * tension;
+    const cp2x = p2.x - (p3.x - p1.x) * tension;
+    const cp2y = p2.y - (p3.y - p1.y) * tension;
+
+    d += ` C ${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${p2.x.toFixed(1)},${p2.y.toFixed(1)}`;
+  }
+  return d;
+}
+
+function generateAreaPath(points: { x: number; y: number }[], zeroY: number, tension = 0.22): string {
+  if (points.length === 0) return '';
+  const curve = generateSplinePath(points, tension);
+  const last = points[points.length - 1];
+  const first = points[0];
+  return `${curve} L ${last.x.toFixed(1)},${zeroY} L ${first.x.toFixed(1)},${zeroY} Z`;
+}
+
 // Sample 14-day metrics for "حضور در برابر Worklog"
 interface DailyMetric {
   id: number;
@@ -369,11 +397,11 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
             {/* Legends */}
             <div className="flex items-center gap-4 text-xs font-['Vazirmatn']">
               <div className="flex items-center gap-1.5">
-                <span className="size-3 rounded-md bg-[#666cff] shadow-sm" />
+                <span className="size-3 rounded-full bg-[#0090ff] shadow-sm" />
                 <span className="text-[#62657a] dark:text-[#8386a1]">حضور</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="size-3 rounded-md bg-[#00cfe8] shadow-sm" />
+                <span className="size-3 rounded-full bg-[#10b981] shadow-sm" />
                 <span className="text-[#62657a] dark:text-[#8386a1]">Worklog</span>
               </div>
             </div>
@@ -386,151 +414,236 @@ export const PortfolioView: React.FC<PortfolioViewProps> = ({ onNavigate }) => {
                 {SAMPLE_14_DAYS[hoveredDayIndex].fullDate}
               </span>
               <div className="flex items-center gap-3">
-                <span className="text-[#666cff] dark:text-[#8c90ff] font-medium">
+                <span className="text-[#0090ff] dark:text-[#38bdf8] font-bold">
                   حضور: {toPersianDigits(SAMPLE_14_DAYS[hoveredDayIndex].attendance)} ساعت
                 </span>
-                <span className="text-[#00cfe8] font-medium">
+                <span className="text-[#10b981] dark:text-[#34d399] font-bold">
                   Worklog: {toPersianDigits(SAMPLE_14_DAYS[hoveredDayIndex].worklog)} ساعت
                 </span>
               </div>
             </div>
           )}
 
-          {/* Interactive Dual Bar SVG Chart Area - Expanded to fill the remaining space */}
-          <div className="flex-1 flex flex-col justify-center py-2 w-full overflow-x-auto min-h-[250px] sm:min-h-[280px]">
-            <svg
-              viewBox="0 0 650 250"
-              className="w-full h-[250px] sm:h-[280px] overflow-visible select-none"
-              style={{ direction: 'rtl' }}
-            >
-              <defs>
-                <linearGradient id="purpleBarGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#8c90ff" />
-                  <stop offset="100%" stopColor="#666cff" />
-                </linearGradient>
-                <linearGradient id="cyanBarGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#2dd4bf" />
-                  <stop offset="100%" stopColor="#00cfe8" />
-                </linearGradient>
-              </defs>
+          {/* Interactive Dual Spline Area SVG Chart - Smooth curves matching reference */}
+          {(() => {
+            const chartZeroY = 215;
+            const chartMaxH = 185;
+            const chartStartX = 45;
+            const chartEndX = 625;
+            const chartStepX = (chartEndX - chartStartX) / (SAMPLE_14_DAYS.length - 1);
 
-              {/* Horizontal reference grid lines (0h, 2.5h, 5h, 7.5h, 10h) */}
-              {[0, 2.5, 5, 7.5, 10].map((val) => {
-                const y = 215 - (val / 10) * 185;
-                return (
-                  <g key={val}>
-                    <line
-                      x1="32"
-                      y1={y}
-                      x2="628"
-                      y2={y}
-                      stroke="currentColor"
-                      strokeDasharray={val === 0 ? 'none' : '4 4'}
-                      className="text-[#e0e2ec] dark:text-[#3d3f59]"
-                      strokeWidth="1"
-                    />
-                    <text
-                      x="15"
-                      y={y + 3.5}
-                      textAnchor="middle"
-                      className="text-[10px] font-['Vazirmatn'] fill-[#62657a] dark:fill-[#8386a1]"
-                    >
-                      {toPersianDigits(val)}
-                    </text>
-                  </g>
-                );
-              })}
+            const attSplinePoints = SAMPLE_14_DAYS.map((item, idx) => ({
+              x: chartStartX + idx * chartStepX,
+              y: chartZeroY - (item.attendance / 10) * chartMaxH
+            }));
 
-              {/* 14 Days Dual Bars */}
-              {SAMPLE_14_DAYS.map((item, idx) => {
-                const colWidth = 40;
-                const startX = 45;
-                const xCenter = startX + idx * colWidth + colWidth / 2;
-                const maxH = 185;
-                const zeroY = 215;
+            const wlSplinePoints = SAMPLE_14_DAYS.map((item, idx) => ({
+              x: chartStartX + idx * chartStepX,
+              y: chartZeroY - (item.worklog / 10) * chartMaxH
+            }));
 
-                const attH = (item.attendance / 10) * maxH;
-                const attY = zeroY - attH;
+            const attLinePath = generateSplinePath(attSplinePoints);
+            const attAreaPath = generateAreaPath(attSplinePoints, chartZeroY);
 
-                const wlH = (item.worklog / 10) * maxH;
-                const wlY = zeroY - wlH;
+            const wlLinePath = generateSplinePath(wlSplinePoints);
+            const wlAreaPath = generateAreaPath(wlSplinePoints, chartZeroY);
 
-                const isHovered = hoveredDayIndex === idx;
+            return (
+              <div className="flex-1 flex flex-col justify-center py-2 w-full overflow-x-auto min-h-[250px] sm:min-h-[280px]">
+                <svg
+                  viewBox="0 0 650 250"
+                  className="w-full h-[250px] sm:h-[280px] overflow-visible select-none"
+                  style={{ direction: 'rtl' }}
+                >
+                  <defs>
+                    <linearGradient id="blueCurveAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#0090ff" stopOpacity="0.38" />
+                      <stop offset="55%" stopColor="#38bdf8" stopOpacity="0.18" />
+                      <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.02" />
+                    </linearGradient>
+                    <linearGradient id="greenCurveAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#10b981" stopOpacity="0.42" />
+                      <stop offset="55%" stopColor="#34d399" stopOpacity="0.20" />
+                      <stop offset="100%" stopColor="#34d399" stopOpacity="0.02" />
+                    </linearGradient>
+                  </defs>
 
-                return (
-                  <g
-                    key={item.id}
-                    className="cursor-pointer group"
-                    onMouseEnter={() => setHoveredDayIndex(idx)}
-                  >
-                    {/* Column hover background highlight */}
-                    <rect
-                      x={startX + idx * colWidth}
-                      y={15}
-                      width={colWidth}
-                      height={205}
-                      rx="8"
-                      className={`transition-all duration-150 ${
-                        isHovered
-                          ? 'fill-[#666cff]/10 dark:fill-[#666cff]/20'
-                          : 'fill-transparent hover:fill-[#666cff]/5'
-                      }`}
-                    />
+                  {/* Horizontal reference grid lines (0h, 2.5h, 5h, 7.5h, 10h) */}
+                  {[0, 2.5, 5, 7.5, 10].map((val) => {
+                    const y = chartZeroY - (val / 10) * chartMaxH;
+                    return (
+                      <g key={val}>
+                        <line
+                          x1="32"
+                          y1={y}
+                          x2="628"
+                          y2={y}
+                          stroke="currentColor"
+                          strokeDasharray={val === 0 ? 'none' : '4 4'}
+                          className="text-[#e0e2ec] dark:text-[#3d3f59]"
+                          strokeWidth="1"
+                        />
+                        <text
+                          x="15"
+                          y={y + 3.5}
+                          textAnchor="middle"
+                          className="text-[10px] font-['Vazirmatn'] fill-[#62657a] dark:fill-[#8386a1]"
+                        >
+                          {toPersianDigits(val)}
+                        </text>
+                      </g>
+                    );
+                  })}
 
-                    {/* Attendance Bar (Purple) */}
-                    {item.attendance > 0 ? (
-                      <rect
-                        x={xCenter - 13}
-                        y={attY}
-                        width="11"
-                        height={attH}
-                        rx="5"
-                        fill="url(#purpleBarGrad)"
-                        className={`transition-all duration-200 ${
-                          isHovered ? 'filter drop-shadow-[0_2px_8px_rgba(102,108,255,0.45)]' : ''
-                        }`}
+                  {/* Area Under Attendance Curve (Blue) */}
+                  <path d={attAreaPath} fill="url(#blueCurveAreaGrad)" />
+
+                  {/* Area Under Worklog Curve (Green) */}
+                  <path d={wlAreaPath} fill="url(#greenCurveAreaGrad)" />
+
+                  {/* Spline Lines */}
+                  <path
+                    d={attLinePath}
+                    fill="none"
+                    stroke="#0090ff"
+                    strokeWidth="3.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="filter drop-shadow-[0_2px_4px_rgba(0,144,255,0.3)]"
+                  />
+                  <path
+                    d={wlLinePath}
+                    fill="none"
+                    stroke="#10b981"
+                    strokeWidth="3.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="filter drop-shadow-[0_2px_4px_rgba(16,185,129,0.3)]"
+                  />
+
+                  {/* Discrete marker dots on curves */}
+                  {SAMPLE_14_DAYS.map((item, idx) => {
+                    const x = chartStartX + idx * chartStepX;
+                    const attPt = attSplinePoints[idx];
+                    const wlPt = wlSplinePoints[idx];
+                    const isHovered = hoveredDayIndex === idx;
+
+                    return (
+                      <g key={`dots-${item.id}`}>
+                        {/* Attendance Dot */}
+                        {item.attendance > 0 && !isHovered && (
+                          <circle
+                            cx={x}
+                            cy={attPt.y}
+                            r="2.5"
+                            fill="#0090ff"
+                            className="opacity-75"
+                          />
+                        )}
+                        {/* Worklog Dot */}
+                        {item.worklog > 0 && !isHovered && (
+                          <circle
+                            cx={x}
+                            cy={wlPt.y}
+                            r="2.5"
+                            fill="#10b981"
+                            className="opacity-75"
+                          />
+                        )}
+                      </g>
+                    );
+                  })}
+
+                  {/* Active Hover Indicators: Guide line and glowing intersection dots */}
+                  {hoveredDayIndex !== null && (
+                    <g className="pointer-events-none">
+                      {/* Vertical dotted guide line */}
+                      <line
+                        x1={attSplinePoints[hoveredDayIndex].x}
+                        y1={25}
+                        x2={attSplinePoints[hoveredDayIndex].x}
+                        y2={chartZeroY}
+                        stroke="#666cff"
+                        strokeWidth="1.5"
+                        strokeDasharray="4 3"
+                        className="opacity-70 dark:opacity-85"
                       />
-                    ) : (
-                      <circle cx={xCenter - 7.5} cy={zeroY - 4} r="2" className="fill-[#62657a]/40" />
-                    )}
 
-                    {/* Worklog Bar (Cyan) */}
-                    {item.worklog > 0 ? (
-                      <rect
-                        x={xCenter + 2}
-                        y={wlY}
-                        width="11"
-                        height={wlH}
-                        rx="5"
-                        fill="url(#cyanBarGrad)"
-                        className={`transition-all duration-200 ${
-                          isHovered ? 'filter drop-shadow-[0_2px_8px_rgba(0,207,232,0.45)]' : ''
-                        }`}
-                      />
-                    ) : (
-                      <circle cx={xCenter + 7.5} cy={zeroY - 4} r="2" className="fill-[#62657a]/40" />
-                    )}
+                      {/* Glowing dot on Attendance (Blue) */}
+                      {SAMPLE_14_DAYS[hoveredDayIndex].attendance > 0 && (
+                        <circle
+                          cx={attSplinePoints[hoveredDayIndex].x}
+                          cy={attSplinePoints[hoveredDayIndex].y}
+                          r="6"
+                          fill="#0090ff"
+                          stroke="#ffffff"
+                          strokeWidth="2.5"
+                          className="filter drop-shadow-[0_2px_8px_rgba(0,144,255,0.7)]"
+                        />
+                      )}
 
-                    {/* Day Label at bottom */}
-                    <text
-                      x={xCenter}
-                      y="236"
-                      textAnchor="middle"
-                      className={`text-[11px] font-['Vazirmatn'] transition-colors ${
-                        isHovered
-                          ? 'fill-[#666cff] dark:fill-[#8c90ff] font-bold'
-                          : item.isWeekend
-                          ? 'fill-[#ea5455] dark:fill-[#ea5455]'
-                          : 'fill-[#62657a] dark:fill-[#8386a1]'
-                      }`}
-                    >
-                      {toPersianDigits(item.dayNum)}
-                    </text>
-                  </g>
-                );
-              })}
-            </svg>
-          </div>
+                      {/* Glowing dot on Worklog (Green) */}
+                      {SAMPLE_14_DAYS[hoveredDayIndex].worklog > 0 && (
+                        <circle
+                          cx={wlSplinePoints[hoveredDayIndex].x}
+                          cy={wlSplinePoints[hoveredDayIndex].y}
+                          r="6"
+                          fill="#10b981"
+                          stroke="#ffffff"
+                          strokeWidth="2.5"
+                          className="filter drop-shadow-[0_2px_8px_rgba(16,185,129,0.7)]"
+                        />
+                      )}
+                    </g>
+                  )}
+
+                  {/* Interactive Column Hover Bands & Day Labels */}
+                  {SAMPLE_14_DAYS.map((item, idx) => {
+                    const x = chartStartX + idx * chartStepX;
+                    const isHovered = hoveredDayIndex === idx;
+
+                    return (
+                      <g
+                        key={`col-${item.id}`}
+                        className="cursor-pointer group"
+                        onMouseEnter={() => setHoveredDayIndex(idx)}
+                      >
+                        {/* Interactive vertical hit zone */}
+                        <rect
+                          x={x - chartStepX / 2}
+                          y={15}
+                          width={chartStepX}
+                          height={205}
+                          rx="6"
+                          className={`transition-colors duration-150 ${
+                            isHovered
+                              ? 'fill-[#666cff]/10 dark:fill-[#666cff]/20'
+                              : 'fill-transparent hover:fill-[#666cff]/5'
+                          }`}
+                        />
+
+                        {/* Day Label at bottom */}
+                        <text
+                          x={x}
+                          y="236"
+                          textAnchor="middle"
+                          className={`text-[11px] font-['Vazirmatn'] transition-colors ${
+                            isHovered
+                              ? 'fill-[#0090ff] dark:fill-[#38bdf8] font-bold text-[12px]'
+                              : item.isWeekend
+                              ? 'fill-[#ea5455] dark:fill-[#ea5455]'
+                              : 'fill-[#62657a] dark:fill-[#8386a1]'
+                          }`}
+                        >
+                          {toPersianDigits(item.dayNum)}
+                        </text>
+                      </g>
+                    );
+                  })}
+                </svg>
+              </div>
+            );
+          })()}
 
           {/* Bottom Summary Indicators */}
           <div className="pt-3 border-t border-[#e0e2ec] dark:border-[#3d3f59] flex items-center justify-between flex-wrap gap-3 text-xs font-['Vazirmatn'] text-[#62657a] dark:text-[#8386a1]">
