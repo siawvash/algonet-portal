@@ -506,28 +506,28 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
           </p>
         </div>
 
-        {/* Left Section: Actions */}
+        {/* Left Section: Actions (Both buttons with identical height, width, padding & font-bold) */}
         <div className="flex items-center gap-3 self-start sm:self-auto">
           {/* 
             Button: + ایجاد جلسه (White text for high contrast on purple button)
           */}
           <button
             onClick={() => setIsCreateMeetingOpen(true)}
-            className="flex items-center gap-2 bg-[#666cff] hover:bg-[#7c82ff] active:bg-[#5b60e6] text-white rounded-[100px] h-[42px] px-6 text-xs font-['Vazirmatn'] font-bold transition-all shadow-[0px_4px_14px_0px_rgba(183,154,255,0.22)] hover:shadow-[0px_6px_20px_0px_rgba(183,154,255,0.3)] cursor-pointer"
+            className="flex items-center justify-center gap-2 bg-[#666cff] hover:bg-[#5b60e6] active:bg-[#555ae6] text-white rounded-[100px] h-[42px] px-5 sm:px-6 min-w-[145px] sm:min-w-[155px] text-xs font-['Vazirmatn'] font-bold transition-all shadow-[0px_4px_14px_0px_rgba(102,108,255,0.3)] hover:shadow-[0px_6px_20px_0px_rgba(102,108,255,0.4)] cursor-pointer active:scale-98 select-none"
           >
-            <Plus className="size-4 stroke-[3] text-white" />
-            <span className="text-white">ایجاد جلسه</span>
+            <Plus className="size-4 stroke-[2.5] text-white shrink-0" />
+            <span className="text-white whitespace-nowrap">ایجاد جلسه</span>
           </button>
 
           {/* 
-            Button: تنظیمات یادآوری
+            Button: تنظیمات یادآوری (Identical size & shape as ایجاد جلسه)
           */}
           <button
             onClick={() => setIsReminderSettingsOpen(true)}
-            className="flex items-center gap-2 backdrop-blur-[4px] bg-white dark:bg-[rgba(32,30,47,0.7)] hover:bg-[#f4f5fa] dark:hover:bg-[rgba(40,37,58,0.85)] border border-[#e0e2ec] dark:border-[rgba(255,255,255,0.1)] hover:border-[#666cff]/40 text-[#1e1e2d] dark:text-[#eaeafb] rounded-[100px] h-[42px] px-5 text-xs font-['Vazirmatn'] font-medium transition-all cursor-pointer shadow-xs"
+            className="group flex items-center justify-center gap-2 bg-white dark:bg-[#30334e] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d] border border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/50 text-[#1e1e2d] dark:text-[#eaeafb] rounded-[100px] h-[42px] px-5 sm:px-6 min-w-[145px] sm:min-w-[155px] text-xs font-['Vazirmatn'] font-bold transition-all cursor-pointer shadow-xs active:scale-98 select-none"
           >
-            <Settings className="size-4 text-[#62657a] dark:text-[#8386a1]" />
-            <span>تنظیمات یادآوری</span>
+            <Settings className="size-4 text-[#62657a] dark:text-[#8386a1] group-hover:rotate-45 transition-transform shrink-0" />
+            <span className="whitespace-nowrap">تنظیمات یادآوری</span>
           </button>
         </div>
       </div>
@@ -580,15 +580,15 @@ export const CalendarView: React.FC<CalendarViewProps> = () => {
 
         {/* Left Section: جستجو + تب‌های حالت نمایش + فیلتر */}
         <div className="flex items-center gap-3 justify-between sm:justify-end flex-wrap">
-          {/* اینپوت جستجوی جلسه */}
-          <div className="relative flex-1 sm:flex-initial sm:w-60">
-            <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#62657a] dark:text-[#8386a1]" />
+          {/* اینپوت جستجوی جلسه (مشابه استایل و رنگ سرچ صفحه اصلی) */}
+          <div className="relative flex-1 sm:flex-initial sm:w-60 group">
+            <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#666cff] group-hover:scale-110 transition-transform pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="جستجوی جلسه"
-              className="w-full h-9 pr-9 pl-3 rounded-[100px] bg-[#f8f9fd] dark:bg-[rgba(13,14,20,0.9)] border border-[#e0e2ec] dark:border-[#42455f] focus:border-2 focus:border-[#666cff] text-xs text-[#1e1e2d] dark:text-[#eaeafb] placeholder:text-[#8386a1] dark:placeholder:text-[#585b74] outline-none font-['Vazirmatn'] transition-all"
+              placeholder="جستجوی جلسه..."
+              className="w-full h-9 pr-9 pl-3 rounded-[100px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] hover:border-[#666cff]/50 focus:border-[#666cff] focus:ring-1 focus:ring-[#666cff]/30 text-xs text-[#1e1e2d] dark:text-[#eaeafb] placeholder:text-[#62657a] dark:placeholder:text-[#8386a1] outline-none font-['Vazirmatn'] transition-all shadow-xs"
             />
           </div>
 
