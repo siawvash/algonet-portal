@@ -21,7 +21,7 @@ interface HeaderProps {
   onSearchChange: (q: string) => void;
   onOpenQuickAction: () => void;
   theme: 'dark' | 'light';
-  onToggleTheme: () => void;
+  onToggleTheme: (event?: React.MouseEvent) => void;
   unreadNotificationsCount: number;
   onNavigate: (navId: PortalNavId) => void;
   activeNav: PortalNavId;
@@ -150,8 +150,9 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Theme Switcher */}
           <button
-            onClick={onToggleTheme}
-            className="w-10 h-10 rounded-full bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors"
+            onClick={(e) => onToggleTheme(e)}
+            data-theme-switcher="true"
+            className="w-10 h-10 rounded-full bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors active:scale-90"
             title={theme === 'dark' ? 'تم روشن' : 'تم تیره'}
           >
             {theme === 'dark' ? <Sun className="w-4 h-4 text-[#CFFF04]" /> : <Moon className="w-4 h-4 text-[#5F5CE1]" />}

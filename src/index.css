@@ -1082,6 +1082,51 @@ button:not(.project-card-btn)[class*="bg-[#666cff]"] * {
               0 2px 8px 0 color-mix(in srgb, var(--meet-color, #666cff) 12%, transparent);
 }
 
+/* ==========================================================================
+   Circular Theme Reveal Animation (View Transitions API)
+   تغییر تم تاریک/روشن با انیمیشن دایره‌ای در حال گسترش از سمت چپ بالا
+   ========================================================================== */
+
+/* Disable default browser cross-fade so clip-path reveal takes full effect */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Old theme snapshot stays behind at z-index 1 */
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+/* New incoming theme snapshot expands on top in a growing circle */
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* Hardware-accelerated CSS keyframe for circular reveal */
+@keyframes vt-circle-reveal {
+  from {
+    clip-path: circle(0px at var(--vt-x, 60px) var(--vt-y, 40px));
+  }
+  to {
+    clip-path: circle(var(--vt-radius, 2500px) at var(--vt-x, 60px) var(--vt-y, 40px));
+  }
+}
+
+.theme-transitioning::view-transition-new(root) {
+  animation: 700ms cubic-bezier(0.22, 1, 0.36, 1) both vt-circle-reveal;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
 
 
 

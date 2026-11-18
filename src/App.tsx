@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { flushSync } from 'react-dom';
 import { PortalNavId, UserPresenceStatus } from './types';
 import { Sidebar } from './components/layout/Sidebar';
 import { Topbar } from './components/layout/Topbar';
@@ -142,8 +143,97 @@ export const App: React.FC = () => {
     }
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  // Circular expanding reveal theme toggle (from top-left / theme switcher)
+  const toggleTheme = (event?: React.MouseEvent) => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+
+    // Check if View Transition API is supported and motion is not reduced
+    const isViewTransitionSupported =
+      typeof document !== 'undefined' &&
+      'startViewTransition' in document &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!isViewTransitionSupported) {
+      if (nextTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      setTheme(nextTheme);
+      return;
+    }
+
+    // Determine circular reveal origin (top-left theme switcher coordinates)
+    let x = 60;
+    let y = 40;
+    if (event) {
+      const rect = (event.currentTarget as HTMLElement)?.getBoundingClientRect?.();
+      if (rect) {
+        x = rect.left + rect.width / 2;
+        y = rect.top + rect.height / 2;
+      } else if (event.clientX || event.clientY) {
+        x = event.clientX;
+        y = event.clientY;
+      }
+    } else {
+      const switcherEl = document.querySelector('[data-theme-switcher]') as HTMLElement;
+      if (switcherEl) {
+        const rect = switcherEl.getBoundingClientRect();
+        x = rect.left + rect.width / 2;
+        y = rect.top + rect.height / 2;
+      }
+    }
+
+    // Radius needed to cover entire viewport from (x, y)
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    // Pass custom properties for CSS
+    document.documentElement.style.setProperty('--vt-x', `${x}px`);
+    document.documentElement.style.setProperty('--vt-y', `${y}px`);
+    document.documentElement.style.setProperty('--vt-radius', `${endRadius}px`);
+    document.documentElement.classList.add('theme-transitioning');
+
+    const transition = (document as any).startViewTransition(() => {
+      // Synchronously commit class and React state
+      if (nextTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      flushSync(() => {
+        setTheme(nextTheme);
+      });
+    });
+
+    transition.ready.then(() => {
+      try {
+        const anim = document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${endRadius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 700,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            pseudoElement: '::view-transition-new(root)',
+          }
+        );
+        anim.addEventListener('finish', () => {
+          document.documentElement.classList.remove('theme-transitioning');
+        });
+      } catch {
+        setTimeout(() => {
+          document.documentElement.classList.remove('theme-transitioning');
+        }, 750);
+      }
+    }).catch(() => {
+      document.documentElement.classList.remove('theme-transitioning');
+    });
   };
 
   // Smooth Morph Navigation Handler (native ViewTransition when supported + morph keyframe fallback)

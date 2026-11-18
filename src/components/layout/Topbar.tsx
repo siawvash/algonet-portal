@@ -14,7 +14,7 @@ interface TopbarProps {
   searchQuery?: string;
   onSearchChange?: (q: string) => void;
   theme: 'dark' | 'light';
-  onToggleTheme: () => void;
+  onToggleTheme: (event?: React.MouseEvent) => void;
   unreadNotificationsCount: number;
   onNavigate: (navId: PortalNavId) => void;
   presence?: UserPresenceStatus;
@@ -162,31 +162,32 @@ export const Topbar: React.FC<TopbarProps> = ({
         {/* Dark / Light Mode Switcher Capsule */}
         <button
           type="button"
-          onClick={onToggleTheme}
+          data-theme-switcher="true"
+          onClick={(e) => onToggleTheme(e)}
           aria-label={theme === 'dark' ? 'تغییر به تم روشن' : 'تغییر به تم تاریک'}
           title={theme === 'dark' ? 'تغییر به تم روشن' : 'تغییر به تم تاریک'}
-          className="h-[32px] w-[56px] sm:w-[62px] rounded-full bg-[#f0f1f7] dark:bg-[#242638] border border-[#e0e2ec] dark:border-[#3d3f59] p-0.5 flex items-center justify-between cursor-pointer relative transition-all shadow-inner select-none"
+          className="h-[32px] w-[56px] sm:w-[62px] rounded-full bg-[#f0f1f7] dark:bg-[#242638] border border-[#e0e2ec] dark:border-[#3d3f59] p-0.5 flex items-center justify-between cursor-pointer relative transition-all duration-200 shadow-inner select-none active:scale-90 hover:border-[#666cff]/50"
         >
           {/* Moon button / state */}
           <div
-            className={`w-[25px] sm:w-[28px] h-[26px] rounded-full flex items-center justify-center transition-all duration-200 ${
+            className={`w-[25px] sm:w-[28px] h-[26px] rounded-full flex items-center justify-center transition-all duration-300 ${
               theme === 'dark'
-                ? 'bg-gradient-to-r from-[#666cff] to-[#5538ee] text-white shadow-[0_0_12px_rgba(102,108,255,0.45)]'
-                : 'text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb]'
+                ? 'bg-gradient-to-r from-[#666cff] to-[#5538ee] text-white shadow-[0_0_12px_rgba(102,108,255,0.45)] scale-100'
+                : 'text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] scale-90 opacity-50'
             }`}
           >
-            <Moon className="size-3 sm:size-3.5" />
+            <Moon className={`size-3 sm:size-3.5 transition-transform duration-500 ease-out ${theme === 'dark' ? 'rotate-0' : '-rotate-90'}`} />
           </div>
 
           {/* Sun button / state */}
           <div
-            className={`w-[25px] sm:w-[28px] h-[26px] rounded-full flex items-center justify-center transition-all duration-200 ${
+            className={`w-[25px] sm:w-[28px] h-[26px] rounded-full flex items-center justify-center transition-all duration-300 ${
               theme === 'light'
-                ? 'bg-gradient-to-r from-[#666cff] to-[#5538ee] text-white shadow-[0_0_12px_rgba(102,108,255,0.45)]'
-                : 'text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb]'
+                ? 'bg-gradient-to-r from-[#666cff] to-[#5538ee] text-white shadow-[0_0_12px_rgba(102,108,255,0.45)] scale-100'
+                : 'text-[#62657a] dark:text-[#8386a1] hover:text-[#1e1e2d] dark:hover:text-[#eaeafb] scale-90 opacity-50'
             }`}
           >
-            <Sun className="size-3 sm:size-3.5" />
+            <Sun className={`size-3 sm:size-3.5 transition-transform duration-500 ease-out ${theme === 'light' ? 'rotate-0' : 'rotate-90'}`} />
           </div>
         </button>
 
