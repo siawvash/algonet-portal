@@ -198,6 +198,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [isPageSizeDropdownOpen, setIsPageSizeDropdownOpen] = useState<boolean>(false);
 
   // Scorecard Modal State (کارنامه پروژه)
   const [selectedScorecardProject, setSelectedScorecardProject] = useState<ProjectItem | null>(null);
@@ -271,7 +272,8 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="space-y-6 pb-16 animate-in fade-in duration-200 select-none text-right">
+    <div className="flex flex-col min-h-[calc(100vh-175px)] sm:min-h-[calc(100vh-190px)] justify-between pb-6 animate-in fade-in duration-200 select-none text-right">
+      <div className="flex-1 space-y-6">
       {/* 
         ==================================================
         1. PAGE HEADER & FILTER BAR (مشابه هدر عکس ارسالی)
@@ -687,28 +689,51 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
         ))}
       </div>
     )}
+      </div>
 
       {/* 
         ==================================================
-        3. FOOTER PAGINATION BAR (مشابه فوتر عکس ارسالی)
+        3. STICKY FOOTER PAGINATION BAR (استیکی و در پایین صفحه)
         ================================================== 
       */}
-      <div className="rounded-[20px] bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-['Vazirmatn'] shadow-xs">
-        {/* Right: Items per page */}
-        <div className="flex items-center gap-2 text-[#62657a] dark:text-[#8386a1]">
+      <div className="sticky bottom-20 lg:bottom-4 z-20 mt-8 rounded-[20px] bg-white/95 dark:bg-[#30334e]/95 backdrop-blur-md border border-[#e0e2ec] dark:border-[#3d3f59] p-3.5 sm:p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-['Vazirmatn'] shadow-[0_8px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.4)] transition-all">
+        {/* Right: Items per page with popover dropdown */}
+        <div className="relative flex items-center gap-2 text-[#62657a] dark:text-[#8386a1]">
           <span>تعداد در صفحه:</span>
           <button
             type="button"
-            onClick={() => {
-              setPageSize((prev) => (prev === 10 ? 6 : 10));
-              setCurrentPage(1);
-            }}
-            className="px-3 py-1 rounded-lg bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] font-mono font-semibold text-[#1e1e2d] dark:text-[#eaeafb] flex items-center gap-1.5 cursor-pointer hover:border-[#666cff]/50 transition-colors"
+            onClick={() => setIsPageSizeDropdownOpen((prev) => !prev)}
+            className="px-3 py-1.5 rounded-lg bg-[#f4f5fa] dark:bg-[#34364d] border border-[#e0e2ec] dark:border-[#42455f] font-mono font-semibold text-[#1e1e2d] dark:text-[#eaeafb] flex items-center gap-1.5 cursor-pointer hover:border-[#666cff]/50 transition-colors active:scale-95"
             title="تغییر تعداد در صفحه"
           >
             <span>{toPersianDigits(pageSize)}</span>
-            <ChevronLeft className="size-3.5 -rotate-90 opacity-60" />
+            <ChevronLeft className={`size-3.5 transition-transform duration-200 ${isPageSizeDropdownOpen ? 'rotate-90' : '-rotate-90'} opacity-70`} />
           </button>
+
+          {/* Page size dropdown */}
+          {isPageSizeDropdownOpen && (
+            <div className="absolute right-0 bottom-full mb-2 w-28 rounded-xl bg-white dark:bg-[#30334e] border border-[#e0e2ec] dark:border-[#3d3f59] shadow-xl p-1 z-30 space-y-0.5 animate-in zoom-in-95 duration-150">
+              {[5, 10, 20, 50].map((size) => (
+                <button
+                  key={size}
+                  type="button"
+                  onClick={() => {
+                    setPageSize(size);
+                    setCurrentPage(1);
+                    setIsPageSizeDropdownOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-['Vazirmatn'] transition-colors ${
+                    pageSize === size
+                      ? 'bg-[#666cff]/10 text-[#666cff] font-bold'
+                      : 'text-[#62657a] dark:text-[#eaeafb] hover:bg-[#f4f5fa] dark:hover:bg-[#34364d]'
+                  }`}
+                >
+                  <span className="font-mono">{toPersianDigits(size)}</span>
+                  {pageSize === size && <Check className="size-3 text-[#666cff]" />}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Center: Page Info */}
@@ -726,7 +751,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             className={`px-4 py-1.5 rounded-xl border font-medium transition-all ${
               currentPage > 1
-                ? 'bg-white dark:bg-[#30334e] border-[#e0e2ec] dark:border-[#42455f] text-[#1e1e2d] dark:text-[#eaeafb] hover:border-[#666cff] cursor-pointer'
+                ? 'bg-white dark:bg-[#30334e] border-[#e0e2ec] dark:border-[#42455f] text-[#1e1e2d] dark:text-[#eaeafb] hover:border-[#666cff] cursor-pointer active:scale-95'
                 : 'bg-[#f4f5fa] dark:bg-[#34364d] border-[#e0e2ec] dark:border-[#42455f] text-[#62657a]/40 dark:text-[#8386a1]/40 cursor-not-allowed'
             }`}
           >
@@ -737,7 +762,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({ onNavigate }) => {
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             className={`px-4 py-1.5 rounded-xl border font-medium transition-all ${
               currentPage < totalPages
-                ? 'bg-white dark:bg-[#30334e] border-[#e0e2ec] dark:border-[#42455f] text-[#1e1e2d] dark:text-[#eaeafb] hover:border-[#666cff] cursor-pointer'
+                ? 'bg-white dark:bg-[#30334e] border-[#e0e2ec] dark:border-[#42455f] text-[#1e1e2d] dark:text-[#eaeafb] hover:border-[#666cff] cursor-pointer active:scale-95'
                 : 'bg-[#f4f5fa] dark:bg-[#34364d] border-[#e0e2ec] dark:border-[#42455f] text-[#62657a]/40 dark:text-[#8386a1]/40 cursor-not-allowed'
             }`}
           >
